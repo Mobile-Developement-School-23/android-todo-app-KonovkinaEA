@@ -1,4 +1,4 @@
-package com.example.todoapp.data
+package com.example.todoapp.recyclerview.data
 
 import java.util.Date
 
@@ -50,8 +50,8 @@ class TodoItemsRepository {
                 null, false, Date(), null
             ),
             TodoItem(
-                "9", "Посетить конференцию по разработке", TodoItem.Importance.URGENT,
-                Date(), false, Date(), null
+                "9", "Проверить и отредактировать доклад для конференции по программированию. Подготовить презентацию, составить план выступления и подобрать иллюстрации. Уделить особое внимание структуре и логической последовательности. Проверить правильность использования терминов и грамматических конструкций.",
+                TodoItem.Importance.URGENT, Date(), false, Date(), null
             ),
             TodoItem(
                 "10", "Прогуляться в парке", TodoItem.Importance.LOW,
