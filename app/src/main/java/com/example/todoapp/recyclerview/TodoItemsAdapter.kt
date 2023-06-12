@@ -28,7 +28,7 @@ class TodoItemsAdapter : RecyclerView.Adapter<ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (holder) {
-            is TodoItemViewHolder -> holder.onBind(todoItemsList[position] as TodoItem)
+            is TodoItemViewHolder -> holder.onBind(todoItemsList[position])
         }
     }
 

@@ -7,7 +7,7 @@
         android:id="@+id/checkBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:theme="@style/checkboxTheme"/>
+        android:theme="@style/checkboxTheme" />
 
     <TextView
         android:id="@+id/todo_text"
@@ -17,7 +17,6 @@
         android:maxLines="3"
         android:ellipsize="end"
         android:textSize="16sp"
-        android:textColor="@color/black"
         android:gravity="start|center_vertical"/>
 
 </LinearLayout>

@@ -56,6 +56,26 @@ class TodoItemsRepository {
             TodoItem(
                 "10", "Прогуляться в парке", TodoItem.Importance.LOW,
                 null, false, Date(), null
+            ),
+            TodoItem(
+                "11", "Завершить исследовательскую работу", TodoItem.Importance.URGENT,
+                null, false, Date(), null
+            ),
+            TodoItem(
+                "12", "Оплатить счета", TodoItem.Importance.NORMAL,
+                null, false, Date(), null
+            ),
+            TodoItem(
+                "13", "Разработать новый дизайн интерфейса", TodoItem.Importance.URGENT,
+                Date(), false, Date(), null
+            ),
+            TodoItem(
+                "14", "Посмотреть новый фильм", TodoItem.Importance.LOW,
+                Date(), false, Date(), Date()
+            ),
+            TodoItem(
+                "15", "Подготовиться к собеседованию", TodoItem.Importance.NORMAL,
+                null, false, Date(), null
             )
         )
     }
