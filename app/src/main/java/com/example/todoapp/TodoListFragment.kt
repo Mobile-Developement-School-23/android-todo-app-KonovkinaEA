@@ -5,11 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.content.Intent
 import android.content.res.Resources
-import androidx.appcompat.app.AppCompatActivity
 import android.util.TypedValue
-import android.view.Window
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.recyclerview.PreviewOffsetTodoItemDecoration
@@ -17,7 +14,7 @@ import com.example.todoapp.recyclerview.TodoItemsAdapter
 import com.example.todoapp.recyclerview.data.TodoItemsRepository
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class TodoListFragment : Fragment() {
+class TodoListFragment : Fragment(), TodoItemsAdapter.OnItemClickListener {
     private lateinit var todoItemsRecyclerView: RecyclerView
     private val todoItemsRepository = TodoItemsRepository()
 
@@ -32,7 +29,7 @@ class TodoListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         todoItemsRecyclerView = view.findViewById(R.id.todo_items_list)
-        val todoItemsAdapter = TodoItemsAdapter()
+        val todoItemsAdapter = TodoItemsAdapter(this)
         val layoutManager = LinearLayoutManager(requireContext())
         todoItemsRecyclerView.adapter = todoItemsAdapter
         todoItemsRecyclerView.layoutManager = layoutManager
@@ -40,9 +37,16 @@ class TodoListFragment : Fragment() {
         todoItemsAdapter.todoItemsList = todoItemsRepository.getTodoItems()
 
         val floatingActionButton = view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
-        floatingActionButton.setOnClickListener {
+        floatingActionButton.setOnClickListener { onItemClick() }
+    }
 
-        }
+    override fun onItemClick() {
+        val addTodoItemFragment = AddTodoItemFragment()
+        val fragmentManager = requireActivity().supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.todo_list_fragment, addTodoItemFragment)
+            .addToBackStack(null)
+            .commit()
     }
 }
 

@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.todoapp.R
 import com.example.todoapp.recyclerview.data.TodoItem
 
-class TodoItemsAdapter : RecyclerView.Adapter<ViewHolder>() {
+class TodoItemsAdapter(private val itemClickListener: OnItemClickListener) : RecyclerView.Adapter<ViewHolder>() {
     var todoItemsList = listOf<TodoItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,8 +28,15 @@ class TodoItemsAdapter : RecyclerView.Adapter<ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (holder) {
-            is TodoItemViewHolder -> holder.onBind(todoItemsList[position])
+            is TodoItemViewHolder -> {
+                holder.onBind(todoItemsList[position])
+                holder.itemView.setOnClickListener { itemClickListener.onItemClick() }
+            }
         }
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick()
     }
 
     companion object {
