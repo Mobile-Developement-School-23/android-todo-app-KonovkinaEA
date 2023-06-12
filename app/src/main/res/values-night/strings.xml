@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="fab_description">Add new todo item</string>
+    <string name="save_button">СОХРАНИТЬ</string>
+    <string name="title_importance">Важность</string>
+    <string name="deadline">Сделать до</string>
 </resources>

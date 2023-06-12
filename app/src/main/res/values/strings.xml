@@ -1,6 +1,15 @@
 <resources>
     <string name="app_name">ToDoApp</string>
-    <string name="fab_description">Add new todo item</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fab_description">Кнопка добавления нового дела</string>
+    <string name="close_add_edit_todo_item_button">Кнопка закрытия окна создания/редактирования дела</string>
+    <string name="save_button">СОХРАНИТЬ</string>
+    <string name="descr_edit_text">Поле ввода текста для нового дела</string>
+    <string name="hint_edit_text">Что надо сделать…</string>
+    <string name="title_importance">Важность</string>
+    <string name="deadline">Сделать до</string>
+    <string-array name="list_importance">
+        <item>Нет</item>
+        <item>Низкий</item>
+        <item>!! Высокий</item>
+    </string-array>
 </resources>
