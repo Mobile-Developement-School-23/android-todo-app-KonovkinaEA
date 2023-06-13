@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.content.res.Resources
 import android.util.TypedValue
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.recyclerview.PreviewOffsetTodoItemDecoration
@@ -41,12 +42,8 @@ class TodoListFragment : Fragment(), TodoItemsAdapter.OnItemClickListener {
     }
 
     override fun onItemClick() {
-        val addTodoItemFragment = AddTodoItemFragment()
-        val fragmentManager = requireActivity().supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.todo_list_fragment, addTodoItemFragment)
-            .addToBackStack(null)
-            .commit()
+        val action = TodoListFragmentDirections.actionTodoListFragmentToAddTodoItemFragment2()
+        findNavController().navigate(action)
     }
 }
 
