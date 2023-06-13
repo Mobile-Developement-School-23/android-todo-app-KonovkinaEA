@@ -8,8 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
+import androidx.navigation.fragment.findNavController
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -28,6 +32,14 @@ class AddTodoItemFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val buttonClose: ImageButton = view.findViewById(R.id.close_button)
+        val buttonSave: Button = view.findViewById(R.id.save_button)
+        val buttonDelete: Button = view.findViewById(R.id.delete_button)
+        val buttons = listOf(buttonClose, buttonSave, buttonDelete)
+        buttons.forEach { button ->
+            button.setOnClickListener { backToTodoList() }
+        }
+
         val spinner: Spinner = view.findViewById(R.id.importance_list)
         val importanceList = requireContext().resources.getStringArray(R.array.list_importance).toList()
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, importanceList)
@@ -36,16 +48,21 @@ class AddTodoItemFragment : Fragment() {
         spinner.setSelection(0)
 
         val switchDeadline = view.findViewById<SwitchCompat>(R.id.switch_deadline)
+        val textDeadlineDate = view.findViewById<TextView>(R.id.deadline_date)
         switchDeadline.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                showDatePickerDialog(switchDeadline)
+                showDatePickerDialog(switchDeadline, textDeadlineDate)
             } else {
-                clearDeadlineData(switchDeadline)
+                clearDeadlineData(switchDeadline, textDeadlineDate)
             }
         }
     }
 
-    private fun showDatePickerDialog(switchDeadline: SwitchCompat) {
+    private fun backToTodoList() {
+        findNavController().navigateUp()
+    }
+
+    private fun showDatePickerDialog(switchDeadline: SwitchCompat, textDeadlineDate: TextView) {
         val datePickerDialog = DatePickerDialog(
             requireContext(),
             { _, year, monthOfYear, dayOfMonth ->
@@ -58,27 +75,25 @@ class AddTodoItemFragment : Fragment() {
             calendar.get(Calendar.DAY_OF_MONTH)
         )
         datePickerDialog.show()
-        datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "ОТМЕНА") { _, _ ->
-            clearDeadlineData(switchDeadline)
-        }
-        datePickerDialog.setButton(DialogInterface.BUTTON_POSITIVE, "ГОТОВО") { dialog, _ ->
-            showDeadlineData(switchDeadline)
+        datePickerDialog.setOnCancelListener { clearDeadlineData(switchDeadline, textDeadlineDate) }
+        datePickerDialog.setButton(DialogInterface.BUTTON_POSITIVE, "") { dialog, _ ->
+            showDeadlineData(textDeadlineDate)
             dialog.dismiss()
         }
     }
 
-    private fun clearDeadlineData(switchDeadline: SwitchCompat) {
+    private fun clearDeadlineData(switchDeadline: SwitchCompat, textDeadlineDate: TextView) {
         calendar.time = Date()
         switchDeadline.isChecked = false
-        switchDeadline.text = ""
+        textDeadlineDate.text = ""
     }
 
-    private fun showDeadlineData(switchDeadline: SwitchCompat) {
+    private fun showDeadlineData(textDeadlineDate: TextView) {
         val formattedDate = formatDate(calendar.time)
-        switchDeadline.text = formattedDate
+        textDeadlineDate.text = formattedDate
     }
 
     private fun formatDate(date: Date): String {
-        return SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(date)
+        return SimpleDateFormat("d MMMM yyyy", Locale.getDefault()).format(date)
     }
 }

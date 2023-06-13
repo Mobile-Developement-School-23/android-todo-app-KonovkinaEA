@@ -6,4 +6,5 @@
     <string name="deadline">Сделать до</string>
     <string name="switch_on">Дедлайн вкл</string>
     <string name="switch_off">Дедлайн выкл</string>
+    <string name="trash">Кнопка удалить</string>
 </resources>

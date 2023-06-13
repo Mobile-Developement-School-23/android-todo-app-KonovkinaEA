@@ -7,7 +7,7 @@
         android:id="@+id/checkBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:theme="@style/checkboxTheme" />
+        android:theme="@style/CheckboxTheme" />
 
     <TextView
         android:id="@+id/todo_text"
