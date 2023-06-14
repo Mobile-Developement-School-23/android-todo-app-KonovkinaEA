@@ -29,14 +29,15 @@ class TodoItemsAdapter(private val itemClickListener: OnItemClickListener) : Rec
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (holder) {
             is TodoItemViewHolder -> {
-                holder.onBind(todoItemsList[position])
-                holder.itemView.setOnClickListener { itemClickListener.onItemClick() }
+                val todoItem = todoItemsList[position]
+                holder.onBind(todoItem)
+                holder.itemView.setOnClickListener { itemClickListener.onItemClick(todoItem) }
             }
         }
     }
 
     interface OnItemClickListener {
-        fun onItemClick()
+        fun onItemClick(todoItem: TodoItem)
     }
 
     companion object {

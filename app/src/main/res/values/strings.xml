@@ -1,18 +1,14 @@
 <resources>
     <string name="app_name">ToDoApp</string>
-    <string name="fab_description">Кнопка добавления нового дела</string>
-    <string name="close_add_edit_todo_item_button">Кнопка закрытия окна создания/редактирования дела</string>
-    <string name="save_button">СОХРАНИТЬ</string>
-    <string name="descr_edit_text">Поле ввода текста для нового дела</string>
-    <string name="hint_edit_text">Что надо сделать…</string>
-    <string name="title_importance">Важность</string>
-    <string name="deadline">Сделать до</string>
-    <string name="switch_on">Дедлайн вкл</string>
-    <string name="switch_off">Дедлайн выкл</string>
-    <string name="trash">Удалить</string>
-    <string-array name="list_importance">
-        <item>Нет</item>
-        <item>Низкий</item>
-        <item>!! Высокий</item>
-    </string-array>
+    <string name="fab_description">Button for adding a new todo item</string>
+    <string name="close_add_edit_todo_item_button">Button to close the todo item creation/editing window</string>
+    <string name="save_button">SAVE</string>
+    <string name="descr_edit_text">Text input field for a new todo item</string>
+    <string name="hint_edit_text">What needs to be done…</string>
+    <string name="title_importance">Importance</string>
+    <string name="deadline">Deadline</string>
+    <string name="trash">Delete</string>
+    <string name="importance_low">Low</string>
+    <string name="importance_normal">Normal</string>
+    <string name="importance_urgent">Urgent</string>
 </resources>

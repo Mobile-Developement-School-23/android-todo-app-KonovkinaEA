@@ -7,20 +7,29 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.Spinner
+import android.widget.PopupMenu
 import android.widget.TextView
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.appcompat.widget.SwitchCompat
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.example.todoapp.recyclerview.data.TodoItem
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
 class AddTodoItemFragment : Fragment() {
+    private val args by navArgs<AddTodoItemFragmentArgs>()
     private val calendar = Calendar.getInstance()
+
+//    private val id = args.id
+//    private lateinit var todoText: String
+//    private lateinit var importance: TodoItem.Importance
+//    private lateinit var deadline: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,15 +49,68 @@ class AddTodoItemFragment : Fragment() {
             button.setOnClickListener { backToTodoList() }
         }
 
-        val spinner: Spinner = view.findViewById(R.id.importance_list)
-        val importanceList = requireContext().resources.getStringArray(R.array.list_importance).toList()
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, importanceList)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner.adapter = adapter
-        spinner.setSelection(0)
+        setTodoText(view)
+        setImportance(view)
+        setupDeadlineSwitch(view)
+    }
 
+    private fun setTodoText(view: View) {
+        val textOfTodoItem = view.findViewById<EditText>(R.id.text_of_todo_item)
+        textOfTodoItem.setText(args.text)
+    }
+
+    private fun setImportance(view: View) {
+//        importance = args.importance
+        val importanceValue = view.findViewById<TextView>(R.id.importance_value)
+        importanceValue.text = args.importance.getLocalizedName(requireContext())
+        showPopUpMenu(view)
+    }
+
+    private fun showPopUpMenu(view: View) {
+        val linearLayout = view.findViewById<LinearLayoutCompat>(R.id.importance)
+        linearLayout.setOnClickListener { view ->
+            val popupMenu = PopupMenu(requireContext(), view)
+            popupMenu.inflate(R.menu.importance_menu)
+
+            popupMenu.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.menu_item_high -> {
+//                        importance = TodoItem.Importance.URGENT
+//                        setTextImportance(view)
+                        true
+                    }
+                    R.id.menu_item_medium -> {
+//                        importance = TodoItem.Importance.NORMAL
+//                        setTextImportance(view)
+                        true
+                    }
+                    R.id.menu_item_low -> {
+//                        importance = TodoItem.Importance.LOW
+//                        setTextImportance(view)
+                        true
+                    }
+                    else -> false
+                }
+            }
+
+            popupMenu.show()
+        }
+    }
+
+//    private fun setTextImportance(view: View) {
+//        val importanceValue = view.findViewById<TextView>(R.id.importance_value)
+//        importanceValue.text = importance.getLocalizedName(requireContext())
+//    }
+
+    private fun setupDeadlineSwitch(view: View) {
         val switchDeadline = view.findViewById<SwitchCompat>(R.id.switch_deadline)
         val textDeadlineDate = view.findViewById<TextView>(R.id.deadline_date)
+        val deadlineDate = args.deadline
+
+        if (deadlineDate != null) {
+            textDeadlineDate.text = deadlineDate
+            switchDeadline.isChecked = true
+        }
         switchDeadline.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 showDatePickerDialog(switchDeadline, textDeadlineDate)
@@ -56,10 +118,6 @@ class AddTodoItemFragment : Fragment() {
                 clearDeadlineData(switchDeadline, textDeadlineDate)
             }
         }
-    }
-
-    private fun backToTodoList() {
-        findNavController().navigateUp()
     }
 
     private fun showDatePickerDialog(switchDeadline: SwitchCompat, textDeadlineDate: TextView) {
@@ -85,6 +143,7 @@ class AddTodoItemFragment : Fragment() {
     private fun clearDeadlineData(switchDeadline: SwitchCompat, textDeadlineDate: TextView) {
         calendar.time = Date()
         switchDeadline.isChecked = false
+//        deadline = ""
         textDeadlineDate.text = ""
     }
 
@@ -96,4 +155,13 @@ class AddTodoItemFragment : Fragment() {
     private fun formatDate(date: Date): String {
         return SimpleDateFormat("d MMMM yyyy", Locale.getDefault()).format(date)
     }
+
+    private fun backToTodoList() {
+        findNavController().navigateUp()
+    }
+
+//    private fun getTodoText(view: View) {
+//        val textOfTodoItem = view.findViewById<EditText>(R.id.text_of_todo_item)
+//        todoText = textOfTodoItem.text.toString()
+//    }
 }

@@ -1,17 +1,36 @@
 package com.example.todoapp.recyclerview.data
 
+import android.content.Context
+import com.example.todoapp.R
 import java.util.Date
 
 data class TodoItem(
     val id: String,
-    val text: String,
-    val importance: Importance,
-    val deadline: Date?,
-    val isDone: Boolean,
-    val creationDate: Date,
-    val modificationDate: Date?
+    val text: String = "",
+    val importance: Importance = Importance.LOW,
+    val deadline: Date? = null,
+    val isDone: Boolean = false,
+    val creationDate: Date = Date(),
+    val modificationDate: Date? = null
 ) {
     enum class Importance {
-        LOW, NORMAL, URGENT
+        LOW {
+            override fun getLocalizedName(context: Context): String {
+                return context.getString(R.string.importance_low)
+            }
+        },
+        NORMAL {
+            override fun getLocalizedName(context: Context): String {
+                return context.getString(R.string.importance_normal)
+            }
+        },
+        URGENT {
+            override fun getLocalizedName(context: Context): String {
+                return context.getString(R.string.importance_urgent)
+            }
+        };
+
+        abstract fun getLocalizedName(context: Context): String
     }
+
 }

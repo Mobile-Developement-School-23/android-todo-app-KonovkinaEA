@@ -12,10 +12,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.recyclerview.PreviewOffsetTodoItemDecoration
 import com.example.todoapp.recyclerview.TodoItemsAdapter
+import com.example.todoapp.recyclerview.data.TodoItem
 import com.example.todoapp.recyclerview.data.TodoItemsRepository
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.text.SimpleDateFormat
+import java.util.Locale
+import kotlin.random.Random
 
 class TodoListFragment : Fragment(), TodoItemsAdapter.OnItemClickListener {
+//    private val args by navArgs<TodoListFragmentArgs>()
     private lateinit var todoItemsRecyclerView: RecyclerView
     private val todoItemsRepository = TodoItemsRepository()
 
@@ -38,12 +43,33 @@ class TodoListFragment : Fragment(), TodoItemsAdapter.OnItemClickListener {
         todoItemsAdapter.todoItemsList = todoItemsRepository.getTodoItems()
 
         val floatingActionButton = view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
-        floatingActionButton.setOnClickListener { onItemClick() }
+        floatingActionButton.setOnClickListener { onItemClick(emptyTodoItem()) }
     }
 
-    override fun onItemClick() {
-        val action = TodoListFragmentDirections.actionTodoListFragmentToAddTodoItemFragment2()
+    override fun onItemClick(todoItem: TodoItem) {
+        val deadline = if (todoItem.deadline != null) {
+            SimpleDateFormat("d MMMM yyyy", Locale.getDefault()).format(todoItem.deadline)
+        } else {
+            null
+        }
+        val action = TodoListFragmentDirections.actionTodoListFragmentToAddTodoItemFragment2(
+            todoItem.id,
+            todoItem.text,
+            todoItem.importance,
+            deadline
+        )
         findNavController().navigate(action)
+    }
+
+//    private fun addNewItemClick() {
+//        val action = TodoListFragmentDirections.actionTodoListFragmentToAddTodoItemFragment2(
+//            id = Random.nextInt(10000).toString()
+//        )
+//        findNavController().navigate(action)
+//    }
+
+    private fun emptyTodoItem(): TodoItem {
+        return TodoItem(id = Random.nextInt(10000).toString())
     }
 }
 

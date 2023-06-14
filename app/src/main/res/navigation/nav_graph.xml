@@ -15,5 +15,21 @@
     <fragment
         android:id="@+id/addTodoItemFragment"
         android:name="com.example.todoapp.AddTodoItemFragment"
-        android:label="AddTodoItemFragment" />
+        android:label="AddTodoItemFragment" >
+        <argument
+            android:name="id"
+            app:argType="string" />
+        <argument
+            android:name="text"
+            app:argType="string" />
+        <argument
+            android:name="importance"
+            app:argType="com.example.todoapp.recyclerview.data.TodoItem$Importance"
+            android:defaultValue="LOW" />
+        <argument
+            android:name="deadline"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 </navigation>
