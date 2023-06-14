@@ -9,16 +9,16 @@ class TodoItemsRepository {
         todoItems.addAll(getHardcodedTodoItems())
     }
 
-    fun getTodoItems(): List<TodoItem> {
-        return todoItems.toList()
-    }
+    fun getTodoItems() = todoItems.toList()
+
+    fun getTodoItem(id: String) = todoItems.find { it.id == id }
 
     fun addTodoItem(todoItem: TodoItem) {
         todoItems.add(todoItem)
     }
 
-    fun removeTodoItem(position: Int) {
-        todoItems.removeAt(position)
+    fun removeTodoItem(id: String) {
+        todoItems.removeIf { it.id == id }
     }
 
     private fun getHardcodedTodoItems(): List<TodoItem> {

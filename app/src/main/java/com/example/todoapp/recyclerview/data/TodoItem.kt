@@ -6,12 +6,12 @@ import java.util.Date
 
 data class TodoItem(
     val id: String,
-    val text: String = "",
-    val importance: Importance = Importance.LOW,
-    val deadline: Date? = null,
-    val isDone: Boolean = false,
+    var text: String = "",
+    var importance: Importance = Importance.LOW,
+    var deadline: Date? = null,
+    var isDone: Boolean = false,
     val creationDate: Date = Date(),
-    val modificationDate: Date? = null
+    var modificationDate: Date? = null
 ) {
     enum class Importance {
         LOW {

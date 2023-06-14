@@ -31,13 +31,15 @@ class TodoItemsAdapter(private val itemClickListener: OnItemClickListener) : Rec
             is TodoItemViewHolder -> {
                 val todoItem = todoItemsList[position]
                 holder.onBind(todoItem)
-                holder.itemView.setOnClickListener { itemClickListener.onItemClick(todoItem) }
+                holder.itemView.setOnClickListener {
+                    itemClickListener.onItemClick(todoItem.id, false)
+                }
             }
         }
     }
 
     interface OnItemClickListener {
-        fun onItemClick(todoItem: TodoItem)
+        fun onItemClick(id: String, isNewItem: Boolean)
     }
 
     companion object {

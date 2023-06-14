@@ -20,16 +20,8 @@
             android:name="id"
             app:argType="string" />
         <argument
-            android:name="text"
-            app:argType="string" />
-        <argument
-            android:name="importance"
-            app:argType="com.example.todoapp.recyclerview.data.TodoItem$Importance"
-            android:defaultValue="LOW" />
-        <argument
-            android:name="deadline"
-            app:argType="string"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            android:name="isNewItem"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
 </navigation>

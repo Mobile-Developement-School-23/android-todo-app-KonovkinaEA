@@ -43,21 +43,11 @@ class TodoListFragment : Fragment(), TodoItemsAdapter.OnItemClickListener {
         todoItemsAdapter.todoItemsList = todoItemsRepository.getTodoItems()
 
         val floatingActionButton = view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
-        floatingActionButton.setOnClickListener { onItemClick(emptyTodoItem()) }
+        floatingActionButton.setOnClickListener { onItemClick(Random.nextInt(10000).toString(), true) }
     }
 
-    override fun onItemClick(todoItem: TodoItem) {
-        val deadline = if (todoItem.deadline != null) {
-            SimpleDateFormat("d MMMM yyyy", Locale.getDefault()).format(todoItem.deadline)
-        } else {
-            null
-        }
-        val action = TodoListFragmentDirections.actionTodoListFragmentToAddTodoItemFragment2(
-            todoItem.id,
-            todoItem.text,
-            todoItem.importance,
-            deadline
-        )
+    override fun onItemClick(id: String, isNewItem: Boolean) {
+        val action = TodoListFragmentDirections.actionTodoListFragmentToAddTodoItemFragment2(id, isNewItem)
         findNavController().navigate(action)
     }
 
@@ -68,9 +58,9 @@ class TodoListFragment : Fragment(), TodoItemsAdapter.OnItemClickListener {
 //        findNavController().navigate(action)
 //    }
 
-    private fun emptyTodoItem(): TodoItem {
-        return TodoItem(id = Random.nextInt(10000).toString())
-    }
+//    private fun emptyTodoItem(): TodoItem {
+//        return TodoItem(id = Random.nextInt(10000).toString())
+//    }
 }
 
 val Number.toPx
