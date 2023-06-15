@@ -2,12 +2,14 @@ package com.example.todoapp
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.text.Editable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.PopupMenu
+import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.todoapp.databinding.FragmentAddTodoItemBinding
@@ -22,7 +24,7 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private var _binding: FragmentAddTodoItemBinding? = null
     private val binding get() = _binding!!
     private val args by navArgs<AddTodoItemFragmentArgs>()
-    private val todoItemsRepository = TodoItemsRepository()
+    private val todoItemsRepository = TodoItemsRepository.getInstance()
     private lateinit var calendar: Calendar
 
     private lateinit var todoItem: TodoItem
@@ -49,14 +51,23 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             id = args.id
         )
 
+        binding.textOfTodoItem.addTextChangedListener { text -> buttonsState(text) }
+
         binding.closeButton.setOnClickListener { backToTodoList() }
         binding.saveButton.setOnClickListener { onSaveClick() }
         binding.deleteButton.setOnClickListener { onDeleteClick() }
 
         binding.textOfTodoItem.setText(todoItem.text)
         binding.importanceValue.text = todoItem.importance.getLocalizedName(requireContext())
+        buttonsState(binding.textOfTodoItem.text)
         showPopUpMenu()
         setupDeadlineSwitch()
+    }
+
+    private fun buttonsState(text: Editable?) {
+        val hasText = !text.isNullOrBlank()
+        binding.saveButton.isEnabled = hasText
+        binding.deleteButton.isEnabled = hasText
     }
 
     private fun showPopUpMenu() {
@@ -135,6 +146,8 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private fun formatDate(date: Date): String {
         return SimpleDateFormat("d MMMM yyyy", Locale.getDefault()).format(date)
     }
+
+
 
     private fun backToTodoList() {
         findNavController().navigateUp()

@@ -21,16 +21,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
-        android:background="@android:color/transparent"
+        android:theme="@style/SaveButtonTheme"
         android:text="@string/save_button"
-        android:textColor="@color/color_light_blue"
         app:layout_constraintBottom_toBottomOf="@+id/close_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/close_button"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="10dp"
-        android:textSize="20sp"/>
+        android:textSize="20sp"
+        android:background="@android:color/transparent"
+        android:enabled="true"/>
 
     <EditText
         android:id="@+id/text_of_todo_item"

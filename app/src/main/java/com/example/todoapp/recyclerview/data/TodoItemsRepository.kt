@@ -2,7 +2,7 @@ package com.example.todoapp.recyclerview.data
 
 import java.util.Date
 
-class TodoItemsRepository {
+class TodoItemsRepository private constructor() {
     private val todoItems: MutableList<TodoItem> = mutableListOf()
 
     init {
@@ -86,5 +86,16 @@ class TodoItemsRepository {
                 null, false, Date(), null
             )
         )
+    }
+
+    companion object {
+        @Volatile
+        private var instance: TodoItemsRepository? = null
+
+        fun getInstance(): TodoItemsRepository {
+            return instance ?: synchronized(this) {
+                instance ?: TodoItemsRepository().also { instance = it }
+            }
+        }
     }
 }

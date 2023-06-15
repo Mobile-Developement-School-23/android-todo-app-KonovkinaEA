@@ -6,28 +6,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.content.res.Resources
+import android.util.Log
 import android.util.TypedValue
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.recyclerview.PreviewOffsetTodoItemDecoration
 import com.example.todoapp.recyclerview.TodoItemsAdapter
-import com.example.todoapp.recyclerview.data.TodoItem
 import com.example.todoapp.recyclerview.data.TodoItemsRepository
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.text.SimpleDateFormat
-import java.util.Locale
 import kotlin.random.Random
 
 class TodoListFragment : Fragment(), TodoItemsAdapter.OnItemClickListener {
-//    private val args by navArgs<TodoListFragmentArgs>()
     private lateinit var todoItemsRecyclerView: RecyclerView
-    private val todoItemsRepository = TodoItemsRepository()
+    private val todoItemsRepository = TodoItemsRepository.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d("TodoListFragment", "onCreateView")
         return inflater.inflate(R.layout.fragment_todo_list, container, false)
     }
 
@@ -44,23 +42,18 @@ class TodoListFragment : Fragment(), TodoItemsAdapter.OnItemClickListener {
 
         val floatingActionButton = view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
         floatingActionButton.setOnClickListener { onItemClick(Random.nextInt(10000).toString(), true) }
+        Log.d("TodoListFragment", "onViewCreated")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("TodoListFragment", "onResume")
     }
 
     override fun onItemClick(id: String, isNewItem: Boolean) {
         val action = TodoListFragmentDirections.actionTodoListFragmentToAddTodoItemFragment2(id, isNewItem)
         findNavController().navigate(action)
     }
-
-//    private fun addNewItemClick() {
-//        val action = TodoListFragmentDirections.actionTodoListFragmentToAddTodoItemFragment2(
-//            id = Random.nextInt(10000).toString()
-//        )
-//        findNavController().navigate(action)
-//    }
-
-//    private fun emptyTodoItem(): TodoItem {
-//        return TodoItem(id = Random.nextInt(10000).toString())
-//    }
 }
 
 val Number.toPx
