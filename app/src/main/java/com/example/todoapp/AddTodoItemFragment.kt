@@ -147,8 +147,6 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         return SimpleDateFormat("d MMMM yyyy", Locale.getDefault()).format(date)
     }
 
-
-
     private fun backToTodoList() {
         findNavController().navigateUp()
     }

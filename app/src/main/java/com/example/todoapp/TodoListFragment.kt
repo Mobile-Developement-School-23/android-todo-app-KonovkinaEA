@@ -25,7 +25,6 @@ class TodoListFragment : Fragment(), TodoItemsAdapter.OnItemClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d("TodoListFragment", "onCreateView")
         return inflater.inflate(R.layout.fragment_todo_list, container, false)
     }
 
@@ -42,12 +41,6 @@ class TodoListFragment : Fragment(), TodoItemsAdapter.OnItemClickListener {
 
         val floatingActionButton = view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
         floatingActionButton.setOnClickListener { onItemClick(Random.nextInt(10000).toString(), true) }
-        Log.d("TodoListFragment", "onViewCreated")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d("TodoListFragment", "onResume")
     }
 
     override fun onItemClick(id: String, isNewItem: Boolean) {
