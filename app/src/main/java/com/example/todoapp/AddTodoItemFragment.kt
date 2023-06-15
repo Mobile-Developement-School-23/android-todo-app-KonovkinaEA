@@ -1,24 +1,16 @@
 package com.example.todoapp
 
 import android.app.DatePickerDialog
-import android.content.DialogInterface
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Im
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.DatePicker
-import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.PopupMenu
-import android.widget.TextView
-import androidx.appcompat.widget.LinearLayoutCompat
-import androidx.appcompat.widget.SwitchCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.todoapp.databinding.FragmentAddTodoItemBinding
 import com.example.todoapp.recyclerview.data.TodoItem
 import com.example.todoapp.recyclerview.data.TodoItemsRepository
 import java.text.SimpleDateFormat
@@ -27,21 +19,27 @@ import java.util.Date
 import java.util.Locale
 
 class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
-    private lateinit var calendar: Calendar
+    private var _binding: FragmentAddTodoItemBinding? = null
+    private val binding get() = _binding!!
     private val args by navArgs<AddTodoItemFragmentArgs>()
     private val todoItemsRepository = TodoItemsRepository()
+    private lateinit var calendar: Calendar
 
     private lateinit var todoItem: TodoItem
-    private lateinit var importance: TodoItem.Importance
-    private var deadline = false
-
-    private lateinit var textDeadlineDate: TextView
+    private var importance = TodoItem.Importance.LOW
+    private var deadline: Date? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_add_todo_item, container, false)
+    ): View {
+        _binding = FragmentAddTodoItemBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,35 +49,18 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             id = args.id
         )
 
-        textDeadlineDate = view.findViewById(R.id.deadline_date)
+        binding.closeButton.setOnClickListener { backToTodoList() }
+        binding.saveButton.setOnClickListener { onSaveClick() }
+        binding.deleteButton.setOnClickListener { onDeleteClick() }
 
-        val buttonClose: ImageButton = view.findViewById(R.id.close_button)
-        val buttonSave: Button = view.findViewById(R.id.save_button)
-        val buttonDelete: Button = view.findViewById(R.id.delete_button)
-        val buttons = listOf(buttonClose, buttonSave, buttonDelete)
-        buttons.forEach { button ->
-            button.setOnClickListener { backToTodoList() }
-        }
-
-        setTodoText(view)
-        setImportance(view)
-        setupDeadlineSwitch(view)
+        binding.textOfTodoItem.setText(todoItem.text)
+        binding.importanceValue.text = todoItem.importance.getLocalizedName(requireContext())
+        showPopUpMenu()
+        setupDeadlineSwitch()
     }
 
-    private fun setTodoText(view: View) {
-        val textOfTodoItem = view.findViewById<EditText>(R.id.text_of_todo_item)
-        textOfTodoItem.setText(todoItem.text)
-    }
-
-    private fun setImportance(view: View) {
-        val importanceValue = view.findViewById<TextView>(R.id.importance_value)
-        importanceValue.text = todoItem.importance.getLocalizedName(requireContext())
-        showPopUpMenu(view)
-    }
-
-    private fun showPopUpMenu(view: View) {
-        val linearLayout = view.findViewById<LinearLayoutCompat>(R.id.importance)
-        linearLayout.setOnClickListener { view ->
+    private fun showPopUpMenu() {
+        binding.importance.setOnClickListener { view ->
             val popupMenu = PopupMenu(requireContext(), view)
             popupMenu.inflate(R.menu.importance_menu)
 
@@ -87,45 +68,42 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 when (menuItem.itemId) {
                     R.id.menu_item_high -> {
                         importance = TodoItem.Importance.URGENT
-                        setTextImportance(view)
+                        setTextImportance()
                         true
                     }
                     R.id.menu_item_medium -> {
                         importance = TodoItem.Importance.NORMAL
-                        setTextImportance(view)
+                        setTextImportance()
                         true
                     }
                     R.id.menu_item_low -> {
                         importance = TodoItem.Importance.LOW
-                        setTextImportance(view)
+                        setTextImportance()
                         true
                     }
                     else -> false
                 }
             }
-
             popupMenu.show()
         }
     }
 
-    private fun setTextImportance(view: View) {
-        val importanceValue = view.findViewById<TextView>(R.id.importance_value)
-        importanceValue.text = importance.getLocalizedName(requireContext())
+    private fun setTextImportance() {
+        binding.importanceValue.text = importance.getLocalizedName(requireContext())
     }
 
-    private fun setupDeadlineSwitch(view: View) {
-        val switchDeadline = view.findViewById<SwitchCompat>(R.id.switch_deadline)
+    private fun setupDeadlineSwitch() {
         val deadlineDate = todoItem.deadline
 
         if (deadlineDate != null) {
-            textDeadlineDate.text = formatDate(deadlineDate)
-            switchDeadline.isChecked = true
+            binding.deadlineDate.text = formatDate(deadlineDate)
+            binding.switchDeadline.isChecked = true
         }
-        switchDeadline.setOnCheckedChangeListener { _, isChecked ->
+        binding.switchDeadline.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 showDatePickerDialog()
             } else {
-                clearDeadlineDate(switchDeadline)
+                clearDeadlineDate()
             }
         }
     }
@@ -144,14 +122,14 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
         calendar.set(p1, p2, p3)
-        deadline = true
-        textDeadlineDate.text = formatDate(calendar.time)
+        deadline = calendar.time
+        binding.deadlineDate.text = formatDate(calendar.time)
     }
 
-    private fun clearDeadlineDate(switchDeadline: SwitchCompat) {
-        switchDeadline.isChecked = false
-        deadline = false
-        textDeadlineDate.text = ""
+    private fun clearDeadlineDate() {
+        binding.switchDeadline.isChecked = false
+        deadline = null
+        binding.deadlineDate.text = ""
     }
 
     private fun formatDate(date: Date): String {
@@ -162,8 +140,20 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         findNavController().navigateUp()
     }
 
-//    private fun getTodoText(view: View) {
-//        val textOfTodoItem = view.findViewById<EditText>(R.id.text_of_todo_item)
-//        todoText = textOfTodoItem.text.toString()
-//    }
+    private fun onSaveClick() {
+        todoItem.text = binding.textOfTodoItem.text.toString()
+        todoItem.importance = importance
+        todoItem.deadline = deadline
+        if (args.isNewItem) {
+            todoItemsRepository.addTodoItem(todoItem)
+        } else {
+            todoItem.modificationDate = Calendar.getInstance().time
+        }
+        backToTodoList()
+    }
+
+    private fun onDeleteClick() {
+        if (!args.isNewItem) todoItemsRepository.removeTodoItem(args.id)
+        backToTodoList()
+    }
 }
