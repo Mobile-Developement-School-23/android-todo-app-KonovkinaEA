@@ -3,22 +3,16 @@ package com.example.todoapp.recyclerview
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.example.todoapp.R
+import com.example.todoapp.databinding.TodoitemPreviewBinding
 import com.example.todoapp.recyclerview.data.TodoItem
 
-class TodoItemsAdapter(private val itemClickListener: OnItemClickListener) : RecyclerView.Adapter<ViewHolder>() {
+class TodoItemsAdapter(private val itemClickListener: OnItemClickListener) : RecyclerView.Adapter<TodoItemViewHolder>() {
     var todoItemsList = listOf<TodoItem>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoItemViewHolder {
         return when (viewType) {
             TODO_ITEM_PREVIEW_TYPE -> TodoItemViewHolder(
-                layoutInflater.inflate(
-                    R.layout.todoitem_preview,
-                    parent,
-                    false
-                )
+                TodoitemPreviewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             )
             else -> throw java.lang.IllegalArgumentException("viewType is invalid")
         }
@@ -26,15 +20,11 @@ class TodoItemsAdapter(private val itemClickListener: OnItemClickListener) : Rec
 
     override fun getItemCount() = todoItemsList.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        when (holder) {
-            is TodoItemViewHolder -> {
-                val todoItem = todoItemsList[position]
-                holder.onBind(todoItem)
-                holder.itemView.setOnClickListener {
-                    itemClickListener.onItemClick(todoItem.id, false)
-                }
-            }
+    override fun onBindViewHolder(holder: TodoItemViewHolder, position: Int) {
+        val todoItem = todoItemsList[position]
+        holder.onBind(todoItem)
+        holder.itemView.setOnClickListener {
+            itemClickListener.onItemClick(todoItem.id, false)
         }
     }
 
