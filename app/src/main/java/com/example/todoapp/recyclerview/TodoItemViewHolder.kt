@@ -11,5 +11,9 @@ class TodoItemViewHolder(binding: TodoitemPreviewBinding) : RecyclerView.ViewHol
     fun onBind(todoItem: TodoItem) {
         checkBox.isChecked = todoItem.isDone
         todoText.text = todoItem.text
+
+        checkBox.setOnCheckedChangeListener { _, isChecked ->
+            todoItem.isDone = isChecked
+        }
     }
 }
