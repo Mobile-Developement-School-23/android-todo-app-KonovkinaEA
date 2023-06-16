@@ -51,7 +51,7 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             id = args.id
         )
 
-        binding.textOfTodoItem.addTextChangedListener { text -> buttonsState(text) }
+        binding.textOfTodoItem.addTextChangedListener { text -> saveButtonState(text) }
 
         binding.closeButton.setOnClickListener { backToTodoList() }
         binding.saveButton.setOnClickListener { onSaveClick() }
@@ -59,15 +59,13 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
         binding.textOfTodoItem.setText(todoItem.text)
         binding.importanceValue.text = todoItem.importance.getLocalizedName(requireContext())
-        buttonsState(binding.textOfTodoItem.text)
+        saveButtonState(binding.textOfTodoItem.text)
         showPopUpMenu()
         setupDeadlineSwitch()
     }
 
-    private fun buttonsState(text: Editable?) {
-        val hasText = !text.isNullOrBlank()
-        binding.saveButton.isEnabled = hasText
-        binding.deleteButton.isEnabled = hasText
+    private fun saveButtonState(text: Editable?) {
+        binding.saveButton.isEnabled = !text.isNullOrBlank()
     }
 
     private fun showPopUpMenu() {
@@ -128,6 +126,7 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
         )
+        datePickerDialog.setOnCancelListener { binding.switchDeadline.isChecked = false }
         datePickerDialog.show()
     }
 

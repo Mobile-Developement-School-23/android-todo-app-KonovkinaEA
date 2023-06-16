@@ -18,18 +18,15 @@
         <item name="back_secondary">@color/back_light_secondary</item>
         <item name="back_elevated">@color/back_light_elevated</item>
     </style>
-    <style name="CheckboxTheme">
+    <style name="TodoItemCheckboxTheme">
         <item name="colorControlNormal">@color/color_light_gray</item>
         <item name="colorControlActivated">@color/color_light_green</item>
-    </style>
-    <style name="SaveButtonTheme">
-        <item name="android:textColor">@drawable/save_button_color</item>
     </style>
     <style name="Overlay.MyFloatingActionButton" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
-    <style name="Title">
+    <style name="AddTodoItemTitleStyle">
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/label_light_primary</item>
     </style>

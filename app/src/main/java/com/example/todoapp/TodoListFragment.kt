@@ -6,41 +6,41 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.content.res.Resources
-import android.util.Log
 import android.util.TypedValue
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.todoapp.databinding.FragmentTodoListBinding
 import com.example.todoapp.recyclerview.PreviewOffsetTodoItemDecoration
 import com.example.todoapp.recyclerview.TodoItemsAdapter
 import com.example.todoapp.recyclerview.data.TodoItemsRepository
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlin.random.Random
 
 class TodoListFragment : Fragment(), TodoItemsAdapter.OnItemClickListener {
-    private lateinit var todoItemsRecyclerView: RecyclerView
+    private var _binding: FragmentTodoListBinding? = null
+    private val binding get() = _binding!!
     private val todoItemsRepository = TodoItemsRepository.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_todo_list, container, false)
+    ): View {
+        _binding = FragmentTodoListBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        todoItemsRecyclerView = view.findViewById(R.id.todo_items_list)
         val todoItemsAdapter = TodoItemsAdapter(this)
         val layoutManager = LinearLayoutManager(requireContext())
-        todoItemsRecyclerView.adapter = todoItemsAdapter
-        todoItemsRecyclerView.layoutManager = layoutManager
-        todoItemsRecyclerView.addItemDecoration(PreviewOffsetTodoItemDecoration(bottomOffset = 16f.toPx.toInt()))
-        todoItemsAdapter.todoItemsList = todoItemsRepository.getTodoItems()
+        binding.todoItemsList.adapter = todoItemsAdapter
+        binding.todoItemsList.layoutManager = layoutManager
+        binding.todoItemsList.addItemDecoration(PreviewOffsetTodoItemDecoration(bottomOffset = 16f.toPx.toInt()))
+        todoItemsAdapter.setData(todoItemsRepository.getTodoItems())
 
-        val floatingActionButton = view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
-        floatingActionButton.setOnClickListener { onItemClick(Random.nextInt(10000).toString(), true) }
+        binding.floatingActionButton.setOnClickListener {
+            onItemClick(Random.nextInt(10000).toString(), true)
+        }
     }
 
     override fun onItemClick(id: String, isNewItem: Boolean) {

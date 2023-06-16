@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
-        android:theme="@style/SaveButtonTheme"
+        android:textColor="@color/save_button_color"
         android:text="@string/save_button"
         app:layout_constraintBottom_toBottomOf="@+id/close_button"
         app:layout_constraintEnd_toEndOf="parent"
@@ -70,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/title_importance"
-            android:theme="@style/Title"/>
+            android:theme="@style/AddTodoItemTitleStyle"/>
 
         <TextView
             android:id="@+id/importance_value"
@@ -100,7 +100,7 @@
         android:text="@string/deadline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/separator"
-        android:theme="@style/Title"/>
+        android:theme="@style/AddTodoItemTitleStyle"/>
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switch_deadline"
