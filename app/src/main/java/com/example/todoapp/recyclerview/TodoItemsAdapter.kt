@@ -5,8 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.databinding.TodoitemPreviewBinding
-import com.example.todoapp.recyclerview.data.TodoItem
-import com.example.todoapp.recyclerview.domain.CustomDiffUtil
+import com.example.todoapp.data.item.TodoItem
 
 class TodoItemsAdapter(private val itemClickListener: OnItemClickListener) : RecyclerView.Adapter<TodoItemViewHolder>() {
     private var oldTodoItemsList = emptyList<TodoItem>()

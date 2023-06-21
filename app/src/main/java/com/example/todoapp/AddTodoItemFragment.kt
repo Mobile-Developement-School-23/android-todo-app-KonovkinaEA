@@ -13,8 +13,9 @@ import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.todoapp.databinding.FragmentAddTodoItemBinding
-import com.example.todoapp.recyclerview.data.TodoItem
-import com.example.todoapp.recyclerview.data.TodoItemsRepository
+import com.example.todoapp.data.item.TodoItem
+import com.example.todoapp.data.repository.HardCodedRepository
+import com.example.todoapp.data.item.Importance
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -24,11 +25,11 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private var _binding: FragmentAddTodoItemBinding? = null
     private val binding get() = _binding!!
     private val args by navArgs<AddTodoItemFragmentArgs>()
-    private val todoItemsRepository = TodoItemsRepository.getInstance()
+    private val hardCodedRepository = HardCodedRepository.getInstance()
     private lateinit var calendar: Calendar
 
     private lateinit var todoItem: TodoItem
-    private var importance = TodoItem.Importance.LOW
+    private var importance = Importance.LOW
     private var deadline: Date? = null
 
     override fun onCreateView(
@@ -47,7 +48,7 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        todoItem = todoItemsRepository.getTodoItem(args.id) ?: TodoItem(
+        todoItem = hardCodedRepository.getTodoItem(args.id) ?: TodoItem(
             id = args.id
         )
 
@@ -76,17 +77,17 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.menu_item_high -> {
-                        importance = TodoItem.Importance.URGENT
+                        importance = Importance.URGENT
                         setTextImportance()
                         true
                     }
                     R.id.menu_item_medium -> {
-                        importance = TodoItem.Importance.NORMAL
+                        importance = Importance.NORMAL
                         setTextImportance()
                         true
                     }
                     R.id.menu_item_low -> {
-                        importance = TodoItem.Importance.LOW
+                        importance = Importance.LOW
                         setTextImportance()
                         true
                     }
@@ -155,7 +156,7 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         todoItem.importance = importance
         todoItem.deadline = deadline
         if (args.isNewItem) {
-            todoItemsRepository.addTodoItem(todoItem)
+            hardCodedRepository.addTodoItem(todoItem)
         } else {
             todoItem.modificationDate = Calendar.getInstance().time
         }
@@ -163,7 +164,7 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     }
 
     private fun onDeleteClick() {
-        if (!args.isNewItem) todoItemsRepository.removeTodoItem(args.id)
+        if (!args.isNewItem) hardCodedRepository.removeTodoItem(args.id)
         backToTodoList()
     }
 }

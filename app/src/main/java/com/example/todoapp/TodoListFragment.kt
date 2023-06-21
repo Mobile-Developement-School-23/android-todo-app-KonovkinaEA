@@ -12,13 +12,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todoapp.databinding.FragmentTodoListBinding
 import com.example.todoapp.recyclerview.PreviewOffsetTodoItemDecoration
 import com.example.todoapp.recyclerview.TodoItemsAdapter
-import com.example.todoapp.recyclerview.data.TodoItemsRepository
+import com.example.todoapp.data.repository.HardCodedRepository
 import kotlin.random.Random
 
 class TodoListFragment : Fragment(), TodoItemsAdapter.OnItemClickListener {
     private var _binding: FragmentTodoListBinding? = null
     private val binding get() = _binding!!
-    private val todoItemsRepository = TodoItemsRepository.getInstance()
+    private val hardCodedRepository = HardCodedRepository.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +36,7 @@ class TodoListFragment : Fragment(), TodoItemsAdapter.OnItemClickListener {
         binding.todoItemsList.adapter = todoItemsAdapter
         binding.todoItemsList.layoutManager = layoutManager
         binding.todoItemsList.addItemDecoration(PreviewOffsetTodoItemDecoration(bottomOffset = 16f.toPx.toInt()))
-        todoItemsAdapter.setData(todoItemsRepository.getTodoItems())
+        todoItemsAdapter.setData(hardCodedRepository.getTodoItems())
 
         binding.floatingActionButton.setOnClickListener {
             onItemClick(Random.nextInt(10000).toString(), true)

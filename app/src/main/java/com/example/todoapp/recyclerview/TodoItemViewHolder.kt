@@ -2,7 +2,7 @@ package com.example.todoapp.recyclerview
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.databinding.TodoitemPreviewBinding
-import com.example.todoapp.recyclerview.data.TodoItem
+import com.example.todoapp.data.item.TodoItem
 
 class TodoItemViewHolder(binding: TodoitemPreviewBinding) : RecyclerView.ViewHolder(binding.root) {
     private val checkBox = binding.checkBox

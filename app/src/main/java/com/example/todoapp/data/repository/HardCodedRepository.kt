@@ -1,56 +1,59 @@
-package com.example.todoapp.recyclerview.data
+package com.example.todoapp.data.repository
 
+import com.example.todoapp.data.TodoItemsRepository
+import com.example.todoapp.data.item.Importance
+import com.example.todoapp.data.item.TodoItem
 import java.util.Date
 
-class TodoItemsRepository private constructor() {
+class HardCodedRepository private constructor(): TodoItemsRepository {
     private val todoItems: MutableList<TodoItem> = mutableListOf()
 
     init {
         todoItems.addAll(getHardcodedTodoItems())
     }
 
-    fun getTodoItems() = todoItems.toList()
+    override fun getTodoItems() = todoItems.toList()
 
-    fun getTodoItem(id: String) = todoItems.find { it.id == id }
+    override fun getTodoItem(id: String) = todoItems.firstOrNull { it.id == id }
 
-    fun addTodoItem(todoItem: TodoItem) {
+    override fun addTodoItem(todoItem: TodoItem) {
         todoItems.add(todoItem)
     }
 
-    fun removeTodoItem(id: String) {
+    override fun removeTodoItem(id: String) {
         todoItems.removeIf { it.id == id }
     }
 
     private fun getHardcodedTodoItems(): List<TodoItem> {
         return listOf(
             TodoItem(
-                "1", "Закончить проект", TodoItem.Importance.URGENT,
+                "1", "Закончить проект", Importance.URGENT,
                 null, false, Date(), null
             ),
             TodoItem(
-                "2", "Купить продукты", TodoItem.Importance.NORMAL,
+                "2", "Купить продукты", Importance.NORMAL,
                 null, false, Date(), null
             ),
-            TodoItem("3", "Подготовить презентацию", TodoItem.Importance.URGENT,
+            TodoItem("3", "Подготовить презентацию", Importance.URGENT,
                 Date(), false, Date(), null
             ),
             TodoItem(
-                "4", "Прочитать книгу", TodoItem.Importance.LOW,
+                "4", "Прочитать книгу", Importance.LOW,
                 Date(), false, Date(), Date()),
             TodoItem(
-                "5", "Сходить в спортзал", TodoItem.Importance.NORMAL,
+                "5", "Сходить в спортзал", Importance.NORMAL,
                 null, false, Date(), null
             ),
             TodoItem(
-                "6", "Записаться на курс программирования", TodoItem.Importance.URGENT,
+                "6", "Записаться на курс программирования", Importance.URGENT,
                 Date(), false, Date(), Date()
             ),
             TodoItem(
-                "7", "Организовать семейный ужин", TodoItem.Importance.NORMAL,
+                "7", "Организовать семейный ужин", Importance.NORMAL,
                 Date(), false, Date(), null
             ),
             TodoItem(
-                "8", "Приготовить подарок к дню рождения друга", TodoItem.Importance.LOW,
+                "8", "Приготовить подарок к дню рождения друга", Importance.LOW,
                 null, false, Date(), null
             ),
             TodoItem(
@@ -59,30 +62,30 @@ class TodoItemsRepository private constructor() {
                         "Подготовить презентацию, составить план выступления и подобрать иллюстрации." +
                         "Уделить особое внимание структуре и логической последовательности." +
                         "Проверить правильность использования терминов и грамматических конструкций.",
-                TodoItem.Importance.URGENT, Date(), false, Date(), null
+                Importance.URGENT, Date(), false, Date(), null
             ),
             TodoItem(
-                "10", "Прогуляться в парке", TodoItem.Importance.LOW,
+                "10", "Прогуляться в парке", Importance.LOW,
                 null, false, Date(), null
             ),
             TodoItem(
-                "11", "Завершить исследовательскую работу", TodoItem.Importance.URGENT,
+                "11", "Завершить исследовательскую работу", Importance.URGENT,
                 null, false, Date(), null
             ),
             TodoItem(
-                "12", "Оплатить счета", TodoItem.Importance.NORMAL,
+                "12", "Оплатить счета", Importance.NORMAL,
                 null, false, Date(), null
             ),
             TodoItem(
-                "13", "Разработать новый дизайн интерфейса", TodoItem.Importance.URGENT,
+                "13", "Разработать новый дизайн интерфейса", Importance.URGENT,
                 Date(), false, Date(), null
             ),
             TodoItem(
-                "14", "Посмотреть новый фильм", TodoItem.Importance.LOW,
+                "14", "Посмотреть новый фильм", Importance.LOW,
                 Date(), false, Date(), Date()
             ),
             TodoItem(
-                "15", "Подготовиться к собеседованию", TodoItem.Importance.NORMAL,
+                "15", "Подготовиться к собеседованию", Importance.NORMAL,
                 null, false, Date(), null
             )
         )
@@ -90,11 +93,11 @@ class TodoItemsRepository private constructor() {
 
     companion object {
         @Volatile
-        private var instance: TodoItemsRepository? = null
+        private var instance: HardCodedRepository? = null
 
-        fun getInstance(): TodoItemsRepository {
+        fun getInstance(): HardCodedRepository {
             return instance ?: synchronized(this) {
-                instance ?: TodoItemsRepository().also { instance = it }
+                instance ?: HardCodedRepository().also { instance = it }
             }
         }
     }
