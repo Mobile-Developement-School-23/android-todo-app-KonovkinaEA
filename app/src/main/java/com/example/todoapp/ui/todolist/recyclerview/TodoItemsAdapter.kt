@@ -1,4 +1,4 @@
-package com.example.todoapp.recyclerview
+package com.example.todoapp.ui.todolist.recyclerview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -25,7 +25,7 @@ class TodoItemsAdapter(private val itemClickListener: OnItemClickListener) : Rec
         val todoItem = oldTodoItemsList[position]
         holder.onBind(todoItem)
         holder.itemView.setOnClickListener {
-            itemClickListener.onItemClick(todoItem.id, false)
+            itemClickListener.onItemClick(todoItem.id)
         }
     }
 
@@ -37,7 +37,7 @@ class TodoItemsAdapter(private val itemClickListener: OnItemClickListener) : Rec
     }
 
     interface OnItemClickListener {
-        fun onItemClick(id: String, isNewItem: Boolean)
+        fun onItemClick(id: String)
     }
 
     companion object {

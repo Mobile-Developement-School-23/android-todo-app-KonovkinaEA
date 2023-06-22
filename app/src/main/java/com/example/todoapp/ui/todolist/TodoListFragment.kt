@@ -1,4 +1,4 @@
-package com.example.todoapp
+package com.example.todoapp.ui.todolist
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,18 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.content.res.Resources
 import android.util.TypedValue
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todoapp.databinding.FragmentTodoListBinding
-import com.example.todoapp.recyclerview.PreviewOffsetTodoItemDecoration
-import com.example.todoapp.recyclerview.TodoItemsAdapter
-import com.example.todoapp.data.repository.HardCodedRepository
-import kotlin.random.Random
+import com.example.todoapp.ui.todolist.recyclerview.PreviewOffsetTodoItemDecoration
+import com.example.todoapp.ui.todolist.recyclerview.TodoItemsAdapter
 
 class TodoListFragment : Fragment(), TodoItemsAdapter.OnItemClickListener {
     private var _binding: FragmentTodoListBinding? = null
     private val binding get() = _binding!!
-    private val hardCodedRepository = HardCodedRepository.getInstance()
+    private val viewModel: TodoListViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,15 +35,21 @@ class TodoListFragment : Fragment(), TodoItemsAdapter.OnItemClickListener {
         binding.todoItemsList.adapter = todoItemsAdapter
         binding.todoItemsList.layoutManager = layoutManager
         binding.todoItemsList.addItemDecoration(PreviewOffsetTodoItemDecoration(bottomOffset = 16f.toPx.toInt()))
-        todoItemsAdapter.setData(hardCodedRepository.getTodoItems())
+        todoItemsAdapter.setData(viewModel.getTodoItems())
 
         binding.floatingActionButton.setOnClickListener {
-            onItemClick(Random.nextInt(10000).toString(), true)
+            onItemClick(viewModel.generateRandomItemId())
         }
     }
 
-    override fun onItemClick(id: String, isNewItem: Boolean) {
-        val action = TodoListFragmentDirections.actionTodoListFragmentToAddTodoItemFragment2(id, isNewItem)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onItemClick(id: String) {
+        val action =
+            TodoListFragmentDirections.actionTodoListFragmentToAddTodoItemFragment2(id)
         findNavController().navigate(action)
     }
 }

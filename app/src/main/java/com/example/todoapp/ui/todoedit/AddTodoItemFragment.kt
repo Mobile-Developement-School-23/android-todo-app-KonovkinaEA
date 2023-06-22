@@ -1,4 +1,4 @@
-package com.example.todoapp
+package com.example.todoapp.ui.todoedit
 
 import android.app.DatePickerDialog
 import android.os.Bundle
@@ -10,27 +10,21 @@ import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.PopupMenu
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.todoapp.R
 import com.example.todoapp.databinding.FragmentAddTodoItemBinding
-import com.example.todoapp.data.item.TodoItem
-import com.example.todoapp.data.repository.HardCodedRepository
 import com.example.todoapp.data.item.Importance
-import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 
 class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private var _binding: FragmentAddTodoItemBinding? = null
     private val binding get() = _binding!!
     private val args by navArgs<AddTodoItemFragmentArgs>()
-    private val hardCodedRepository = HardCodedRepository.getInstance()
-    private lateinit var calendar: Calendar
+    private val viewModel: AddTodoItemViewModel by viewModels()
 
-    private lateinit var todoItem: TodoItem
-    private var importance = Importance.LOW
-    private var deadline: Date? = null
+    private lateinit var calendar: Calendar
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,17 +34,10 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         return binding.root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        todoItem = hardCodedRepository.getTodoItem(args.id) ?: TodoItem(
-            id = args.id
-        )
+        viewModel.findTodoItem(args.id)
 
         binding.textOfTodoItem.addTextChangedListener { text -> saveButtonState(text) }
 
@@ -58,11 +45,16 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         binding.saveButton.setOnClickListener { onSaveClick() }
         binding.deleteButton.setOnClickListener { onDeleteClick() }
 
-        binding.textOfTodoItem.setText(todoItem.text)
-        binding.importanceValue.text = todoItem.importance.getLocalizedName(requireContext())
+        binding.textOfTodoItem.setText(viewModel.getText())
+        binding.importanceValue.text = viewModel.getImportance().getLocalizedName(requireContext())
         saveButtonState(binding.textOfTodoItem.text)
         showPopUpMenu()
         setupDeadlineSwitch()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun saveButtonState(text: Editable?) {
@@ -75,38 +67,25 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             popupMenu.inflate(R.menu.importance_menu)
 
             popupMenu.setOnMenuItemClickListener { menuItem ->
-                when (menuItem.itemId) {
-                    R.id.menu_item_high -> {
-                        importance = Importance.URGENT
-                        setTextImportance()
-                        true
-                    }
-                    R.id.menu_item_medium -> {
-                        importance = Importance.NORMAL
-                        setTextImportance()
-                        true
-                    }
-                    R.id.menu_item_low -> {
-                        importance = Importance.LOW
-                        setTextImportance()
-                        true
-                    }
-                    else -> false
+                val importance = when (menuItem.itemId) {
+                    R.id.menu_item_high -> Importance.URGENT
+                    R.id.menu_item_medium -> Importance.NORMAL
+                    R.id.menu_item_low -> Importance.LOW
+                    else -> viewModel.getImportance()
                 }
+                binding.importanceValue.text = importance.getLocalizedName(requireContext())
+                viewModel.setImportance(importance)
+                true
             }
             popupMenu.show()
         }
     }
 
-    private fun setTextImportance() {
-        binding.importanceValue.text = importance.getLocalizedName(requireContext())
-    }
-
     private fun setupDeadlineSwitch() {
-        val deadlineDate = todoItem.deadline
+        val deadlineDate = viewModel.getDeadlineDate()
 
         if (deadlineDate != null) {
-            binding.deadlineDate.text = formatDate(deadlineDate)
+            binding.deadlineDate.text = viewModel.formatDate(deadlineDate)
             binding.switchDeadline.isChecked = true
         }
         binding.switchDeadline.setOnCheckedChangeListener { _, isChecked ->
@@ -133,38 +112,29 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
         calendar.set(p1, p2, p3)
-        deadline = calendar.time
-        binding.deadlineDate.text = formatDate(calendar.time)
+        val deadline = calendar.time
+        binding.deadlineDate.text = viewModel.formatDate(deadline)
+        viewModel.setDeadlineDate(deadline)
     }
 
     private fun clearDeadlineDate() {
         binding.switchDeadline.isChecked = false
-        deadline = null
         binding.deadlineDate.text = ""
-    }
-
-    private fun formatDate(date: Date): String {
-        return SimpleDateFormat("d MMMM yyyy", Locale.getDefault()).format(date)
-    }
-
-    private fun backToTodoList() {
-        findNavController().navigateUp()
+        viewModel.clearDeadlineDate()
     }
 
     private fun onSaveClick() {
-        todoItem.text = binding.textOfTodoItem.text.toString()
-        todoItem.importance = importance
-        todoItem.deadline = deadline
-        if (args.isNewItem) {
-            hardCodedRepository.addTodoItem(todoItem)
-        } else {
-            todoItem.modificationDate = Calendar.getInstance().time
-        }
+        viewModel.setText(binding.textOfTodoItem.text.toString())
+        viewModel.saveTodoItem()
         backToTodoList()
     }
 
     private fun onDeleteClick() {
-        if (!args.isNewItem) hardCodedRepository.removeTodoItem(args.id)
+        viewModel.removeTodoItem()
         backToTodoList()
+    }
+
+    private fun backToTodoList() {
+        findNavController().navigateUp()
     }
 }
