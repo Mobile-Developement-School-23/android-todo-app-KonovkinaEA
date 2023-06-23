@@ -8,13 +8,18 @@ import android.view.ViewGroup
 import android.content.res.Resources
 import android.util.TypedValue
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todoapp.databinding.FragmentTodoListBinding
+import com.example.todoapp.ui.todolist.actions.TodoListUiEvent
 import com.example.todoapp.ui.todolist.recyclerview.PreviewOffsetTodoItemDecoration
 import com.example.todoapp.ui.todolist.recyclerview.TodoItemsAdapter
+import com.example.todoapp.utils.generateRandomItemId
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-class TodoListFragment : Fragment(), TodoItemsAdapter.OnItemClickListener {
+class TodoListFragment : Fragment() {
     private var _binding: FragmentTodoListBinding? = null
     private val binding get() = _binding!!
     private val viewModel: TodoListViewModel by viewModels()
@@ -30,16 +35,20 @@ class TodoListFragment : Fragment(), TodoItemsAdapter.OnItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val todoItemsAdapter = TodoItemsAdapter(this)
-        val layoutManager = LinearLayoutManager(requireContext())
-        binding.todoItemsList.adapter = todoItemsAdapter
-        binding.todoItemsList.layoutManager = layoutManager
-        binding.todoItemsList.addItemDecoration(PreviewOffsetTodoItemDecoration(bottomOffset = 16f.toPx.toInt()))
-        todoItemsAdapter.setData(viewModel.getTodoItems())
+        setupUiEventsListener()
+        setupRecycler()
+        setupNavigationToNewItem()
 
-        binding.floatingActionButton.setOnClickListener {
-            onItemClick(viewModel.generateRandomItemId(), true)
-        }
+//        val todoItemsAdapter = TodoItemsAdapter(this)
+//        val layoutManager = LinearLayoutManager(requireContext())
+//        binding.todoItemsList.adapter = todoItemsAdapter
+//        binding.todoItemsList.layoutManager = layoutManager
+//        binding.todoItemsList.addItemDecoration(PreviewOffsetTodoItemDecoration(bottomOffset = 16f.toPx.toInt()))
+//        todoItemsAdapter.setData(viewModel.getTodoItems())
+//
+//        binding.floatingActionButton.setOnClickListener {
+//            onItemClick(viewModel.generateRandomItemId(), true)
+//        }
     }
 
     override fun onDestroyView() {
@@ -47,7 +56,49 @@ class TodoListFragment : Fragment(), TodoItemsAdapter.OnItemClickListener {
         _binding = null
     }
 
-    override fun onItemClick(id: String, isNewItem: Boolean) {
+    private fun setupUiEventsListener() {
+        lifecycleScope.launch {
+            viewModel.uiEvent.collectLatest {
+                when (it) {
+                    is TodoListUiEvent.NavigateToEditTodoItem -> {
+                        navigateToEditTodoItem(it.id)
+                    }
+                    is TodoListUiEvent.NavigateToNewTodoItem -> {
+                        navigateToNewTodoItem()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setupRecycler() {
+        val todoItemsAdapter = TodoItemsAdapter(viewModel::onUiAction)
+        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+
+        binding.todoItemsList.adapter = todoItemsAdapter
+        binding.todoItemsList.layoutManager = layoutManager
+        binding.todoItemsList.addItemDecoration(PreviewOffsetTodoItemDecoration(bottomOffset = 16f.toPx.toInt()))
+
+        lifecycleScope.launch {
+            viewModel.getTodoItems().collectLatest {
+                todoItemsAdapter.submitList(it)
+            }
+        }
+    }
+
+    private fun setupNavigationToNewItem() {
+        binding.floatingActionButton.setOnClickListener { navigateToNewTodoItem() }
+    }
+
+    private fun navigateToEditTodoItem(id: String) {
+        onItemClick(id, false)
+    }
+
+    private fun navigateToNewTodoItem() {
+        onItemClick(generateRandomItemId(), true)
+    }
+
+    private fun onItemClick(id: String, isNewItem: Boolean) {
         val action =
             TodoListFragmentDirections.actionTodoListFragmentToAddTodoItemFragment2(id, isNewItem)
         findNavController().navigate(action)

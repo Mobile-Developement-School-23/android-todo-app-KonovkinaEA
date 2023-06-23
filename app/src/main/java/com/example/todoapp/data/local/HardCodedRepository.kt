@@ -1,27 +1,54 @@
-package com.example.todoapp.data.repository
+package com.example.todoapp.data.local
 
 import com.example.todoapp.data.TodoItemsRepository
 import com.example.todoapp.data.item.Importance
 import com.example.todoapp.data.item.TodoItem
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import java.util.Date
 
 class HardCodedRepository private constructor(): TodoItemsRepository {
     private val todoItems: MutableList<TodoItem> = mutableListOf()
+    private var todoItemsFlow: MutableStateFlow<List<TodoItem>>
 
     init {
         todoItems.addAll(getHardcodedTodoItems())
+        todoItemsFlow = MutableStateFlow(todoItems.toList())
     }
 
-    override fun getTodoItems() = todoItems.toList()
+    override fun todoItems(): Flow<List<TodoItem>> =
+        todoItemsFlow.asStateFlow()
 
-    override fun getTodoItem(id: String) = todoItems.firstOrNull { it.id == id }
+    override suspend fun getTodoItem(id: String) = todoItems.firstOrNull { it.id == id }
 
-    override fun addTodoItem(todoItem: TodoItem) {
+    override suspend fun addTodoItem(todoItem: TodoItem) {
         todoItems.add(todoItem)
+        updateFlow()
     }
 
-    override fun removeTodoItem(id: String) {
+    override suspend fun updateTodoItem(todoItem: TodoItem) {
+        val index = todoItems.indexOfFirst { it.id == todoItem.id }
+        if (index == -1) return
+        todoItems[index] = todoItem
+        updateFlow()
+    }
+
+    override suspend fun removeTodoItem(id: String) {
         todoItems.removeIf { it.id == id }
+        updateFlow()
+    }
+
+    override suspend fun removeTodoItemAt(index: Int) {
+        todoItems.removeAt(index)
+        updateFlow()
+    }
+
+    private fun updateFlow() {
+        todoItemsFlow.update {
+            todoItems.toList()
+        }
     }
 
     private fun getHardcodedTodoItems(): List<TodoItem> {
