@@ -16,15 +16,15 @@ class AddTodoItemViewModel : ViewModel() {
     private var deadline: Date? = null
     private var isNewItem: Boolean = true
 
-    fun findTodoItem(itemId: String) {
-        val item = hardCodedRepository.getTodoItem(itemId)
-        if (item != null) {
-            todoItem = item
-            text = item.text
-            importance = item.importance
-            deadline = item.deadline
+    fun findTodoItem(args: AddTodoItemFragmentArgs) {
+        if (args.isNewItem) todoItem = TodoItem(id = args.id)
+        else {
+            todoItem = hardCodedRepository.getTodoItem(args.id)!!
+            text = todoItem.text
+            importance = todoItem.importance
+            deadline = todoItem.deadline
             isNewItem = false
-        } else todoItem = TodoItem(id = itemId)
+        }
     }
 
     fun getText() = text

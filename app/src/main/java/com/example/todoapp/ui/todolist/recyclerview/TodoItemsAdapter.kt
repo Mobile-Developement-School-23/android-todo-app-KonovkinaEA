@@ -25,7 +25,7 @@ class TodoItemsAdapter(private val itemClickListener: OnItemClickListener) : Rec
         val todoItem = oldTodoItemsList[position]
         holder.onBind(todoItem)
         holder.itemView.setOnClickListener {
-            itemClickListener.onItemClick(todoItem.id)
+            itemClickListener.onItemClick(todoItem.id, false)
         }
     }
 
@@ -37,7 +37,7 @@ class TodoItemsAdapter(private val itemClickListener: OnItemClickListener) : Rec
     }
 
     interface OnItemClickListener {
-        fun onItemClick(id: String)
+        fun onItemClick(id: String, isNewItem: Boolean)
     }
 
     companion object {

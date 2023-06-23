@@ -19,5 +19,9 @@
         <argument
             android:name="id"
             app:argType="string" />
+        <argument
+            android:name="isNewItem"
+            app:argType="boolean"
+            android:defaultValue="true" />
     </fragment>
 </navigation>

@@ -37,7 +37,7 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.findTodoItem(args.id)
+        viewModel.findTodoItem(args)
 
         binding.textOfTodoItem.addTextChangedListener { text -> saveButtonState(text) }
 

@@ -38,7 +38,7 @@ class TodoListFragment : Fragment(), TodoItemsAdapter.OnItemClickListener {
         todoItemsAdapter.setData(viewModel.getTodoItems())
 
         binding.floatingActionButton.setOnClickListener {
-            onItemClick(viewModel.generateRandomItemId())
+            onItemClick(viewModel.generateRandomItemId(), true)
         }
     }
 
@@ -47,9 +47,9 @@ class TodoListFragment : Fragment(), TodoItemsAdapter.OnItemClickListener {
         _binding = null
     }
 
-    override fun onItemClick(id: String) {
+    override fun onItemClick(id: String, isNewItem: Boolean) {
         val action =
-            TodoListFragmentDirections.actionTodoListFragmentToAddTodoItemFragment2(id)
+            TodoListFragmentDirections.actionTodoListFragmentToAddTodoItemFragment2(id, isNewItem)
         findNavController().navigate(action)
     }
 }
