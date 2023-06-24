@@ -81,7 +81,7 @@ class TodoListFragment : Fragment() {
 
         lifecycleScope.launch {
             viewModel.getTodoItems().collectLatest {
-                todoItemsAdapter.submitList(it)
+                todoItemsAdapter.setData(it)
             }
         }
     }
