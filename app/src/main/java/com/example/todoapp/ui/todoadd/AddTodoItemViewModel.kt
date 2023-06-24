@@ -12,9 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Locale
 
 class AddTodoItemViewModel : ViewModel() {
     private val hardCodedRepository = HardCodedRepository.getInstance()
@@ -51,14 +49,6 @@ class AddTodoItemViewModel : ViewModel() {
                     updateIsDeadlineSet(true)
                 }
             }
-//            if (args.isNewItem) oldTodoItem = TodoItem(id = args.id)
-//            else {
-//                oldTodoItem = hardCodedRepository.getTodoItem(args.id)!!
-//                text = oldTodoItem.text
-//                importance = oldTodoItem.importance
-//                deadline = oldTodoItem.deadline
-//                isNewItem = false
-//            }
         }
     }
 
@@ -78,44 +68,7 @@ class AddTodoItemViewModel : ViewModel() {
         _isDeadlineSet.update { isDeadlineSet }
     }
 
-//    fun getText() = text
-//
-//    fun setText(text: String) {
-//        oldText = text
-//    }
-//
-//    fun getImportance() = importance
-//
-//    fun setImportance(importance: Importance) {
-//        oldImportance = importance
-//    }
-//
-//    fun setDeadlineDate(deadline: Date) {
-//        oldDeadline = deadline
-//    }
-//
-//    fun getDeadlineDate() = deadline
-//
-//    fun clearDeadlineDate() {
-//        oldDeadline = null
-//    }
-
     fun saveTodoItem() {
-//        oldTodoItem.text = oldText
-//        oldTodoItem.importance = oldImportance
-//        oldTodoItem.deadline = oldDeadline
-//
-//        viewModelScope.launch {
-//            if (isNewItem) {
-//                hardCodedRepository.addTodoItem(oldTodoItem)
-//            } else {
-//                oldTodoItem.text = oldText
-//                oldTodoItem.importance = oldImportance
-//                oldTodoItem.deadline = oldDeadline
-//                oldTodoItem.modificationDate = Date()
-//                hardCodedRepository.updateTodoItem()
-//            }
-//        }
         val todoItem = if (isNewItem) {
             TodoItem(
                 id = id,

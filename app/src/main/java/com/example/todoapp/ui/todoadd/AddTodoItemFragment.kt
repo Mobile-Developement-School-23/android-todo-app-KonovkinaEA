@@ -58,9 +58,6 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             viewModel.saveTodoItem()
         }
         binding.deleteButton.setOnClickListener { viewModel.removeTodoItem() }
-
-//        binding.textOfTodoItem.setText(viewModel.getText())
-//        binding.importanceValue.text = viewModel.getImportance().getLocalizedName(requireContext())
     }
 
     override fun onDestroyView() {
@@ -114,7 +111,6 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                     R.id.menu_item_low -> Importance.LOW
                     else -> viewModel.importance.value
                 }
-//                binding.importanceValue.text = importance.getLocalizedName(requireContext())
                 viewModel.updateImportance(importance)
                 true
             }
@@ -144,17 +140,9 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
         calendar.set(p1, p2, p3)
-//        val deadline = calendar.time
         viewModel.updateDeadline(calendar.time)
         viewModel.updateIsDeadlineSet(true)
-//        binding.deadlineDate.text = formatDate(deadline)
     }
-
-//    private fun clearDeadlineDate() {
-//        binding.switchDeadline.isChecked = false
-//        binding.deadlineDate.text = ""
-//        viewModel.clearDeadlineDate()
-//    }
 
     private fun saveButtonState(text: Editable?) {
         binding.saveButton.isEnabled = !text.isNullOrBlank()

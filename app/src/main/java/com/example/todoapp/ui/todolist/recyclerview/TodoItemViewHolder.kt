@@ -16,9 +16,6 @@ class TodoItemViewHolder(binding: TodoitemPreviewBinding) : RecyclerView.ViewHol
         todoText.text = todoItem.text
 
         setupDiffCallback(onUiAction)
-//        checkBox.setOnCheckedChangeListener { _, isChecked ->
-//            todoItem.isDone = isChecked
-//        }
     }
 
     private fun setupDiffCallback(onUiAction: (TodoListUiAction) -> Unit) {

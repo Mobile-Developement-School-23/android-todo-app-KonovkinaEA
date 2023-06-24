@@ -37,18 +37,8 @@ class TodoListFragment : Fragment() {
 
         setupUiEventsListener()
         setupRecycler()
-        setupNavigationToNewItem()
 
-//        val todoItemsAdapter = TodoItemsAdapter(this)
-//        val layoutManager = LinearLayoutManager(requireContext())
-//        binding.todoItemsList.adapter = todoItemsAdapter
-//        binding.todoItemsList.layoutManager = layoutManager
-//        binding.todoItemsList.addItemDecoration(PreviewOffsetTodoItemDecoration(bottomOffset = 16f.toPx.toInt()))
-//        todoItemsAdapter.setData(viewModel.getTodoItems())
-//
-//        binding.floatingActionButton.setOnClickListener {
-//            onItemClick(viewModel.generateRandomItemId(), true)
-//        }
+        binding.floatingActionButton.setOnClickListener { navigateToNewTodoItem() }
     }
 
     override fun onDestroyView() {
@@ -84,10 +74,6 @@ class TodoListFragment : Fragment() {
                 todoItemsAdapter.setData(it)
             }
         }
-    }
-
-    private fun setupNavigationToNewItem() {
-        binding.floatingActionButton.setOnClickListener { navigateToNewTodoItem() }
     }
 
     private fun navigateToEditTodoItem(id: String) {

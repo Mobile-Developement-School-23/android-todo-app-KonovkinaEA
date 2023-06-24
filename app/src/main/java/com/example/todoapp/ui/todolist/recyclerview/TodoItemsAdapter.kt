@@ -3,7 +3,6 @@ package com.example.todoapp.ui.todolist.recyclerview
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.databinding.TodoitemPreviewBinding
 import com.example.todoapp.data.item.TodoItem
@@ -27,10 +26,6 @@ class TodoItemsAdapter(private val onUiAction: (TodoListUiAction) -> Unit
     override fun onBindViewHolder(holder: TodoItemViewHolder, position: Int) {
         val todoItem = oldTodoItemsList[position]
         holder.onBind(todoItem, onUiAction)
-//        holder.itemView.setOnClickListener {
-//            itemClickListener.onItemClick(todoItem.id, false)
-//        }
-//        holder.onBind(getItem(position), onUiAction)
     }
 
     fun setData(newTodoItemsList: List<TodoItem>) {
@@ -39,10 +34,6 @@ class TodoItemsAdapter(private val onUiAction: (TodoListUiAction) -> Unit
         oldTodoItemsList = newTodoItemsList
         diffResult.dispatchUpdatesTo(this)
     }
-
-//    interface OnItemClickListener {
-//        fun onItemClick(id: String, isNewItem: Boolean)
-//    }
 
     companion object {
         private const val TODO_ITEM_PREVIEW_TYPE = 0

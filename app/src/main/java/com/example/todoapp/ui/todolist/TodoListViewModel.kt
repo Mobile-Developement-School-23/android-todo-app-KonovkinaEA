@@ -9,9 +9,6 @@ import com.example.todoapp.ui.todolist.actions.TodoListUiEvent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 class TodoListViewModel : ViewModel() {
     private val hardCodedRepository = HardCodedRepository.getInstance()
