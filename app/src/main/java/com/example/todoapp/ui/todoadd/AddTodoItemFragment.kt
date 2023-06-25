@@ -47,7 +47,7 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         setUiEventsListener()
         setDataCollectors()
         showPopUpMenu()
-        setupDeadlinePickerAndSwitch()
+        setupDatePickerAndSwitch()
 
         binding.textOfTodoItem.addTextChangedListener { text -> saveButtonState(text) }
         saveButtonState(binding.textOfTodoItem.text)
@@ -106,8 +106,8 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 val importance = when (menuItem.itemId) {
-                    R.id.menu_item_high -> Importance.URGENT
-                    R.id.menu_item_medium -> Importance.NORMAL
+                    R.id.menu_item_high -> Importance.IMPORTANT
+                    R.id.menu_item_medium -> Importance.BASIC
                     R.id.menu_item_low -> Importance.LOW
                     else -> viewModel.importance.value
                 }
@@ -118,7 +118,7 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         }
     }
 
-    private fun setupDeadlinePickerAndSwitch() {
+    private fun setupDatePickerAndSwitch() {
         calendar = Calendar.getInstance()
         val datePickerDialog = DatePickerDialog(
             requireContext(),

@@ -8,8 +8,8 @@
     <string name="title_importance">Важность</string>
     <string name="deadline">Сделать до</string>
     <string name="trash">Удалить</string>
-    <string name="importance_low">Нет</string>
-    <string name="importance_normal">Низкий</string>
+    <string name="importance_low">Низкий</string>
+    <string name="importance_normal">Обычный</string>
     <string name="importance_urgent">Высокий</string>
     <string name="my_tasks">Мои дела</string>
 </resources>

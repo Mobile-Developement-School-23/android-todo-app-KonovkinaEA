@@ -9,12 +9,12 @@ enum class Importance {
             return context.getString(R.string.importance_low)
         }
     },
-    NORMAL {
+    BASIC {
         override fun getLocalizedName(context: Context): String {
             return context.getString(R.string.importance_normal)
         }
     },
-    URGENT {
+    IMPORTANT {
         override fun getLocalizedName(context: Context): String {
             return context.getString(R.string.importance_urgent)
         }

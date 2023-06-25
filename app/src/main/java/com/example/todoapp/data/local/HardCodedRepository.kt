@@ -54,29 +54,29 @@ class HardCodedRepository private constructor(): TodoItemsRepository {
     private fun getHardcodedTodoItems(): List<TodoItem> {
         return listOf(
             TodoItem(
-                "1", "Закончить проект", Importance.URGENT,
+                "1", "Закончить проект", Importance.IMPORTANT,
                 null, false, Date(), null
             ),
             TodoItem(
-                "2", "Купить продукты", Importance.NORMAL,
+                "2", "Купить продукты", Importance.BASIC,
                 null, false, Date(), null
             ),
-            TodoItem("3", "Подготовить презентацию", Importance.URGENT,
+            TodoItem("3", "Подготовить презентацию", Importance.IMPORTANT,
                 Date(), false, Date(), null
             ),
             TodoItem(
                 "4", "Прочитать книгу", Importance.LOW,
                 Date(), false, Date(), Date()),
             TodoItem(
-                "5", "Сходить в спортзал", Importance.NORMAL,
+                "5", "Сходить в спортзал", Importance.BASIC,
                 null, false, Date(), null
             ),
             TodoItem(
-                "6", "Записаться на курс программирования", Importance.URGENT,
+                "6", "Записаться на курс программирования", Importance.IMPORTANT,
                 Date(), false, Date(), Date()
             ),
             TodoItem(
-                "7", "Организовать семейный ужин", Importance.NORMAL,
+                "7", "Организовать семейный ужин", Importance.BASIC,
                 Date(), false, Date(), null
             ),
             TodoItem(
@@ -89,22 +89,22 @@ class HardCodedRepository private constructor(): TodoItemsRepository {
                         "Подготовить презентацию, составить план выступления и подобрать иллюстрации." +
                         "Уделить особое внимание структуре и логической последовательности." +
                         "Проверить правильность использования терминов и грамматических конструкций.",
-                Importance.URGENT, Date(), false, Date(), null
+                Importance.IMPORTANT, Date(), false, Date(), null
             ),
             TodoItem(
                 "10", "Прогуляться в парке", Importance.LOW,
                 null, false, Date(), null
             ),
             TodoItem(
-                "11", "Завершить исследовательскую работу", Importance.URGENT,
+                "11", "Завершить исследовательскую работу", Importance.IMPORTANT,
                 null, false, Date(), null
             ),
             TodoItem(
-                "12", "Оплатить счета", Importance.NORMAL,
+                "12", "Оплатить счета", Importance.BASIC,
                 null, false, Date(), null
             ),
             TodoItem(
-                "13", "Разработать новый дизайн интерфейса", Importance.URGENT,
+                "13", "Разработать новый дизайн интерфейса", Importance.IMPORTANT,
                 Date(), false, Date(), null
             ),
             TodoItem(
@@ -112,7 +112,7 @@ class HardCodedRepository private constructor(): TodoItemsRepository {
                 Date(), false, Date(), Date()
             ),
             TodoItem(
-                "15", "Подготовиться к собеседованию", Importance.NORMAL,
+                "15", "Подготовиться к собеседованию", Importance.BASIC,
                 null, false, Date(), null
             )
         )

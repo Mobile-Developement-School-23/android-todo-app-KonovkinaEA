@@ -9,7 +9,7 @@
     <string name="deadline">Deadline</string>
     <string name="trash">Delete</string>
     <string name="importance_low">Low</string>
-    <string name="importance_normal">Normal</string>
-    <string name="importance_urgent">Urgent</string>
+    <string name="importance_normal">Basic</string>
+    <string name="importance_urgent">Important</string>
     <string name="my_tasks">My tasks</string>
 </resources>
