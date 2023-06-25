@@ -2,9 +2,9 @@ package com.example.todoapp.ui.todoadd
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.todoapp.Dependencies
 import com.example.todoapp.data.item.Importance
 import com.example.todoapp.data.item.TodoItem
-import com.example.todoapp.data.local.HardCodedRepository
 import com.example.todoapp.ui.todoadd.actions.AddTodoItemUiEvent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import java.util.Date
 
 class AddTodoItemViewModel : ViewModel() {
-    private val hardCodedRepository = HardCodedRepository.getInstance()
+    private val todoItemsRepository = Dependencies.todoItemsRepository
 
     private var oldTodoItem: TodoItem? = null
     private lateinit var id: String
@@ -39,7 +39,7 @@ class AddTodoItemViewModel : ViewModel() {
     fun findTodoItem(args: AddTodoItemFragmentArgs) {
         viewModelScope.launch {
             id = args.id
-            hardCodedRepository.getTodoItem(id)?.let { todoItem ->
+            todoItemsRepository.getTodoItem(id)?.let { todoItem ->
                 oldTodoItem = todoItem
                 isNewItem = false
                 updateText(todoItem.text)
@@ -86,8 +86,8 @@ class AddTodoItemViewModel : ViewModel() {
         }
 
         viewModelScope.launch {
-            if (isNewItem) hardCodedRepository.addTodoItem(todoItem)
-            else hardCodedRepository.updateTodoItem(todoItem)
+            if (isNewItem) todoItemsRepository.addTodoItem(todoItem)
+            else todoItemsRepository.updateTodoItem(todoItem)
             _uiEvent.send(AddTodoItemUiEvent.NavigateUp)
         }
     }
@@ -95,7 +95,7 @@ class AddTodoItemViewModel : ViewModel() {
     fun removeTodoItem() {
         viewModelScope.launch {
             if (!isNewItem)
-                oldTodoItem?.let { hardCodedRepository.removeTodoItem(id) }
+                oldTodoItem?.let { todoItemsRepository.removeTodoItem(id) }
             _uiEvent.send(AddTodoItemUiEvent.NavigateUp)
         }
     }

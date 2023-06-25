@@ -2,8 +2,8 @@ package com.example.todoapp.ui.todolist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.todoapp.Dependencies
 import com.example.todoapp.data.item.TodoItem
-import com.example.todoapp.data.local.HardCodedRepository
 import com.example.todoapp.ui.todolist.actions.TodoListUiAction
 import com.example.todoapp.ui.todolist.actions.TodoListUiEvent
 import kotlinx.coroutines.channels.Channel
@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class TodoListViewModel : ViewModel() {
-    private val hardCodedRepository = HardCodedRepository.getInstance()
+    private val todoItemsRepository = Dependencies.todoItemsRepository
 
     private val _uiEvent = Channel<TodoListUiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
@@ -20,11 +20,11 @@ class TodoListViewModel : ViewModel() {
         when (action) {
             is TodoListUiAction.EditTodoItem -> editTodoItem(action.todoItem)
             is TodoListUiAction.UpdateTodoItem -> updateTodoItem(action.todoItem)
-            is TodoListUiAction.RemoveTodoItem -> removeTodoItemAt(action.index)
+            is TodoListUiAction.RemoveTodoItem -> removeTodoItem(action.todoItem)
         }
     }
 
-    fun getTodoItems() = hardCodedRepository.todoItems()
+    suspend fun getTodoItems() = todoItemsRepository.todoItems()
 
     private fun editTodoItem(todoItem: TodoItem) {
         viewModelScope.launch {
@@ -34,13 +34,13 @@ class TodoListViewModel : ViewModel() {
 
     private fun updateTodoItem(todoItem: TodoItem) {
         viewModelScope.launch {
-            hardCodedRepository.updateTodoItem(todoItem)
+            todoItemsRepository.updateTodoItem(todoItem)
         }
     }
 
-    private fun removeTodoItemAt(index: Int) {
+    private fun removeTodoItem(todoItem: TodoItem) {
         viewModelScope.launch {
-            hardCodedRepository.removeTodoItemAt(index)
+            todoItemsRepository.removeTodoItem(todoItem.id)
         }
     }
 }

@@ -3,11 +3,11 @@ package com.example.todoapp.db.database
 import androidx.room.ColumnInfo
 
 data class TodoItemInfoTuple(
-    val id: Int,
-    var text: String,
+    val id: Long,
     @ColumnInfo(name = "importance_name") var importance: String,
-    var deadline: Int,
+    var text: String,
+    var deadline: Long?,
     var done: Boolean,
-    val createdAt: Int,
-    var changedAt: Int
+    val createdAt: Long,
+    var changedAt: Long
 )

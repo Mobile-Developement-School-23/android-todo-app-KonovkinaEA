@@ -1,19 +1,19 @@
 package com.example.todoapp.db.database.entities
 
 data class Todo(
-    val id: Int,
-    var text: String,
+    val id: Long,
     var importanceId: Int,
-    var deadline: Int?,
+    var text: String,
+    var deadline: Long?,
     var done: Boolean,
-    val createdAt: Int,
-    var changedAt: Int
+    val createdAt: Long,
+    var changedAt: Long
 ) {
 
     fun toTodoDbEntity(): TodoDbEntity = TodoDbEntity(
-        id = 0,
-        text = text,
+        id = id,
         importanceId = importanceId,
+        text = text,
         deadline = deadline,
         done = done,
         createdAt = createdAt,

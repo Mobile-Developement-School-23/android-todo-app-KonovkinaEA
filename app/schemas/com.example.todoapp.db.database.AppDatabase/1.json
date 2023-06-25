@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "2bdc8cb7ca8875c87970e95e2b3ffcba",
+    "identityHash": "0b8646237cb6840c5e703e9dc53306a6",
     "entities": [
       {
         "tableName": "importance_levels",
@@ -32,11 +32,17 @@
       },
       {
         "tableName": "todo",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `text` TEXT NOT NULL, `importance_id` INTEGER NOT NULL, `deadline` INTEGER DEFAULT NULL, `done` INTEGER NOT NULL DEFAULT 0, `createdAt` INTEGER NOT NULL, `changedAt` INTEGER NOT NULL, FOREIGN KEY(`importance_id`) REFERENCES `importance_levels`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `importance_id` INTEGER NOT NULL, `text` TEXT NOT NULL, `deadline` INTEGER, `done` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, `changedAt` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`importance_id`) REFERENCES `importance_levels`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "importanceId",
+            "columnName": "importance_id",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -47,24 +53,16 @@
             "notNull": true
           },
           {
-            "fieldPath": "importanceId",
-            "columnName": "importance_id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
             "fieldPath": "deadline",
             "columnName": "deadline",
             "affinity": "INTEGER",
-            "notNull": false,
-            "defaultValue": "NULL"
+            "notNull": false
           },
           {
             "fieldPath": "done",
             "columnName": "done",
             "affinity": "INTEGER",
-            "notNull": true,
-            "defaultValue": "0"
+            "notNull": true
           },
           {
             "fieldPath": "createdAt",
@@ -80,7 +78,7 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": true,
+          "autoGenerate": false,
           "columnNames": [
             "id"
           ]
@@ -114,7 +112,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2bdc8cb7ca8875c87970e95e2b3ffcba')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0b8646237cb6840c5e703e9dc53306a6')"
     ]
   }
 }

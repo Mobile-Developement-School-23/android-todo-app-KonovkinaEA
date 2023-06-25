@@ -18,7 +18,7 @@ class HardCodedRepository private constructor(): TodoItemsRepository {
         todoItemsFlow = MutableStateFlow(todoItems.toList())
     }
 
-    override fun todoItems(): Flow<List<TodoItem>> =
+    override suspend fun todoItems(): Flow<List<TodoItem>> =
         todoItemsFlow.asStateFlow()
 
     override suspend fun getTodoItem(id: String) = todoItems.firstOrNull { it.id == id }
@@ -40,10 +40,10 @@ class HardCodedRepository private constructor(): TodoItemsRepository {
         updateFlow()
     }
 
-    override suspend fun removeTodoItemAt(index: Int) {
-        todoItems.removeAt(index)
-        updateFlow()
-    }
+//    override suspend fun removeTodoItemAt(index: Int) {
+//        todoItems.removeAt(index)
+//        updateFlow()
+//    }
 
     private fun updateFlow() {
         todoItemsFlow.update {
@@ -55,21 +55,21 @@ class HardCodedRepository private constructor(): TodoItemsRepository {
         return listOf(
             TodoItem(
                 "1", "Закончить проект", Importance.IMPORTANT,
-                null, false, Date(), null
+                null, false, Date(), Date()
             ),
             TodoItem(
                 "2", "Купить продукты", Importance.BASIC,
-                null, false, Date(), null
+                null, false, Date(), Date()
             ),
             TodoItem("3", "Подготовить презентацию", Importance.IMPORTANT,
-                Date(), false, Date(), null
+                Date(), false, Date(), Date()
             ),
             TodoItem(
                 "4", "Прочитать книгу", Importance.LOW,
                 Date(), false, Date(), Date()),
             TodoItem(
                 "5", "Сходить в спортзал", Importance.BASIC,
-                null, false, Date(), null
+                null, false, Date(), Date()
             ),
             TodoItem(
                 "6", "Записаться на курс программирования", Importance.IMPORTANT,
@@ -77,11 +77,11 @@ class HardCodedRepository private constructor(): TodoItemsRepository {
             ),
             TodoItem(
                 "7", "Организовать семейный ужин", Importance.BASIC,
-                Date(), false, Date(), null
+                Date(), false, Date(), Date()
             ),
             TodoItem(
                 "8", "Приготовить подарок к дню рождения друга", Importance.LOW,
-                null, false, Date(), null
+                null, false, Date(), Date()
             ),
             TodoItem(
                 "9",
@@ -89,23 +89,23 @@ class HardCodedRepository private constructor(): TodoItemsRepository {
                         "Подготовить презентацию, составить план выступления и подобрать иллюстрации." +
                         "Уделить особое внимание структуре и логической последовательности." +
                         "Проверить правильность использования терминов и грамматических конструкций.",
-                Importance.IMPORTANT, Date(), false, Date(), null
+                Importance.IMPORTANT, Date(), false, Date(), Date()
             ),
             TodoItem(
                 "10", "Прогуляться в парке", Importance.LOW,
-                null, false, Date(), null
+                null, false, Date(), Date()
             ),
             TodoItem(
                 "11", "Завершить исследовательскую работу", Importance.IMPORTANT,
-                null, false, Date(), null
+                null, false, Date(), Date()
             ),
             TodoItem(
                 "12", "Оплатить счета", Importance.BASIC,
-                null, false, Date(), null
+                null, false, Date(), Date()
             ),
             TodoItem(
                 "13", "Разработать новый дизайн интерфейса", Importance.IMPORTANT,
-                Date(), false, Date(), null
+                Date(), false, Date(), Date()
             ),
             TodoItem(
                 "14", "Посмотреть новый фильм", Importance.LOW,
@@ -113,7 +113,7 @@ class HardCodedRepository private constructor(): TodoItemsRepository {
             ),
             TodoItem(
                 "15", "Подготовиться к собеседованию", Importance.BASIC,
-                null, false, Date(), null
+                null, false, Date(), Date()
             )
         )
     }

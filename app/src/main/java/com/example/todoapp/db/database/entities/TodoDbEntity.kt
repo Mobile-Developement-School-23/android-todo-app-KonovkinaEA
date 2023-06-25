@@ -18,11 +18,11 @@ import androidx.room.PrimaryKey
     ]
 )
 data class TodoDbEntity(
-    @PrimaryKey(autoGenerate = true) val id: Int,
-    var text: String,
+    @PrimaryKey val id: Long,
     @ColumnInfo(name = "importance_id") var importanceId: Int,
-    @ColumnInfo(defaultValue = "NULL") var deadline: Int? = null,
-    @ColumnInfo(defaultValue = "0") var done: Boolean = false,
-    val createdAt: Int,
-    var changedAt: Int
+    var text: String,
+    /*@ColumnInfo(defaultValue = "NULL")*/ var deadline: Long?/* = null*/,
+    /*@ColumnInfo(defaultValue = "0")*/ var done: Boolean/* = false*/,
+    val createdAt: Long,
+    var changedAt: Long
 )

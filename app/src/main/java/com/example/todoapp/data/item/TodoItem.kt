@@ -1,7 +1,5 @@
 package com.example.todoapp.data.item
 
-import android.content.Context
-import com.example.todoapp.R
 import java.util.Date
 
 data class TodoItem(
@@ -11,5 +9,5 @@ data class TodoItem(
     var deadline: Date? = null,
     var isDone: Boolean = false,
     val creationDate: Date = Date(),
-    var modificationDate: Date? = null
+    var modificationDate: Date = Date()
 )

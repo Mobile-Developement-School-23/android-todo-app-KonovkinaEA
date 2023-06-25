@@ -7,5 +7,5 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "importance_levels")
 data class ImportanceLevelsDbEntity(
     @PrimaryKey val id: Int,
-    @ColumnInfo(name = "importance_name") var importanceName: String = "low",
+    @ColumnInfo(name = "importance_name") var importanceName: String
 )

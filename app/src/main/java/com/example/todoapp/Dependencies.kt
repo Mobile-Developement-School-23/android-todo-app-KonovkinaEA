@@ -2,6 +2,7 @@ package com.example.todoapp
 
 import android.content.Context
 import androidx.room.Room
+import com.example.todoapp.db.TodoItemsRepository
 import com.example.todoapp.db.database.AppDatabase
 
 object Dependencies {
@@ -16,4 +17,6 @@ object Dependencies {
             .createFromAsset("todo_database.db")
             .build()
     }
+
+    val todoItemsRepository: TodoItemsRepository by lazy { TodoItemsRepository(appDatabase.getTodoItemDao()) }
 }
