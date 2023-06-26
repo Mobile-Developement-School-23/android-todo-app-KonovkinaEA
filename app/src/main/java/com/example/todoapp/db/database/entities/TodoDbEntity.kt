@@ -21,8 +21,8 @@ data class TodoDbEntity(
     @PrimaryKey val id: Long,
     @ColumnInfo(name = "importance_id") var importanceId: Int,
     var text: String,
-    /*@ColumnInfo(defaultValue = "NULL")*/ var deadline: Long?/* = null*/,
-    /*@ColumnInfo(defaultValue = "0")*/ var done: Boolean/* = false*/,
+    var deadline: Long?,
+    var done: Boolean,
     val createdAt: Long,
     var changedAt: Long
 )
