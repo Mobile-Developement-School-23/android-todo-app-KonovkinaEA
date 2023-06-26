@@ -2,6 +2,7 @@ package com.example.todoapp.db
 
 import com.example.todoapp.data.TodoItemsRepository
 import com.example.todoapp.data.item.TodoItem
+import com.example.todoapp.db.database.RevisionDao
 import com.example.todoapp.db.database.TodoItemDao
 import com.example.todoapp.db.database.TodoItemInfoTuple
 import com.example.todoapp.db.database.entities.Todo
@@ -16,7 +17,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.withContext
 import java.util.Date
 
-class TodoItemsRepository(private val todoItemDao: TodoItemDao) : TodoItemsRepository {
+class TodoItemsRepository(
+    private val todoItemDao: TodoItemDao,
+    private val revisionDao: RevisionDao
+) : TodoItemsRepository {
 
     override suspend fun todoItems(): Flow<List<TodoItem>> =
         withContext(Dispatchers.IO) {
@@ -54,6 +58,16 @@ class TodoItemsRepository(private val todoItemDao: TodoItemDao) : TodoItemsRepos
         withContext(Dispatchers.IO) {
             val todoId = id.toLong()
             todoItemDao.deleteTodoDataById(todoId)
+        }
+
+    suspend fun getRevision(): Int =
+        withContext(Dispatchers.IO) {
+            return@withContext revisionDao.getCurrentRevision()
+        }
+
+    suspend fun updateRevision(newRevision: Int) =
+        withContext(Dispatchers.IO) {
+            revisionDao.updateRevision(newRevision)
         }
 
     private fun convertToTodoItem(todoItemInfoTuple: TodoItemInfoTuple): TodoItem {

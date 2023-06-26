@@ -18,5 +18,10 @@ object Dependencies {
             .build()
     }
 
-    val todoItemsRepository: TodoItemsRepository by lazy { TodoItemsRepository(appDatabase.getTodoItemDao()) }
+    val todoItemsRepository: TodoItemsRepository by lazy {
+        TodoItemsRepository(
+            appDatabase.getTodoItemDao(),
+            appDatabase.getRevisionDao()
+        )
+    }
 }
