@@ -45,9 +45,9 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         viewModel.findTodoItem(args)
 
         setUiEventsListener()
-        setDataCollectors()
         showPopUpMenu()
         setupDatePickerAndSwitch()
+        setDataCollectors()
 
         binding.textOfTodoItem.addTextChangedListener { text -> saveButtonState(text) }
         saveButtonState(binding.textOfTodoItem.text)
@@ -129,8 +129,8 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         )
         datePickerDialog.setOnCancelListener { binding.switchDeadline.isChecked = false }
 
-        binding.switchDeadline.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
+        binding.switchDeadline.setOnClickListener {
+            if (binding.switchDeadline.isChecked) {
                 datePickerDialog.show()
             } else {
                 viewModel.updateIsDeadlineSet(false)
