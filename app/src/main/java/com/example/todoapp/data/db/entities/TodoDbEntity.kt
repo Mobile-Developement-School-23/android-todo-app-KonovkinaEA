@@ -1,4 +1,4 @@
-package com.example.todoapp.data.db.database.entities
+package com.example.todoapp.data.db.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -18,7 +18,7 @@ import androidx.room.PrimaryKey
     ]
 )
 data class TodoDbEntity(
-    @PrimaryKey val id: Long,
+    @PrimaryKey val id: String,
     @ColumnInfo(name = "importance_id") var importanceId: Int,
     var text: String,
     var deadline: Long?,

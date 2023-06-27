@@ -1,4 +1,4 @@
-package com.example.todoapp.data.db.database
+package com.example.todoapp.data.db
 
 import androidx.room.Dao
 import androidx.room.Query

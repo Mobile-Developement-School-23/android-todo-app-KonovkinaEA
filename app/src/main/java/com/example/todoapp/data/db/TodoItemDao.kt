@@ -1,12 +1,11 @@
-package com.example.todoapp.data.db.database
+package com.example.todoapp.data.db
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import com.example.todoapp.data.db.database.entities.TodoDbEntity
-import kotlinx.coroutines.flow.Flow
+import com.example.todoapp.data.db.entities.TodoDbEntity
 
 @Dao
 interface TodoItemDao {
@@ -19,12 +18,12 @@ interface TodoItemDao {
     fun getAllTodoData(): List<TodoItemInfoTuple>
 
     @Query("DELETE FROM todo WHERE id = :todoId")
-    fun deleteTodoDataById(todoId: Long)
+    fun deleteTodoDataById(todoId: String)
 
     @Query("SELECT todo.id, importance_name, text, deadline, done, createdAt, changedAt FROM todo\n" +
             "INNER JOIN importance_levels ON todo.importance_id = importance_levels.id\n" +
             "WHERE todo.id = :todoId")
-    fun getTodoDataById(todoId: Long): TodoItemInfoTuple?
+    fun getTodoDataById(todoId: String): TodoItemInfoTuple?
 
     @Update(entity = TodoDbEntity::class)
     fun updateTodoData(todo: TodoDbEntity)

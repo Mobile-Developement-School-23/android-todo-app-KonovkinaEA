@@ -1,4 +1,4 @@
-package com.example.todoapp.data.db.database.entities
+package com.example.todoapp.data.db.entities
 
 import androidx.room.Entity
 import androidx.room.Index

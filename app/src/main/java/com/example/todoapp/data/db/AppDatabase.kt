@@ -1,13 +1,13 @@
-package com.example.todoapp.data.db.database
+package com.example.todoapp.data.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.todoapp.data.db.database.entities.ImportanceLevelsDbEntity
-import com.example.todoapp.data.db.database.entities.RevisionDbEntity
-import com.example.todoapp.data.db.database.entities.TodoDbEntity
+import com.example.todoapp.data.db.entities.ImportanceLevelsDbEntity
+import com.example.todoapp.data.db.entities.RevisionDbEntity
+import com.example.todoapp.data.db.entities.TodoDbEntity
 
 @Database(
-    version = 2,
+    version = 3,
     entities = [
         ImportanceLevelsDbEntity::class,
         TodoDbEntity::class,

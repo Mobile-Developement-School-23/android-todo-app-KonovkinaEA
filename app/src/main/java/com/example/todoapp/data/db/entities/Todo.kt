@@ -1,7 +1,7 @@
-package com.example.todoapp.data.db.database.entities
+package com.example.todoapp.data.db.entities
 
 data class Todo(
-    val id: Long,
+    val id: String,
     var importanceId: Int,
     var text: String,
     var deadline: Long?,

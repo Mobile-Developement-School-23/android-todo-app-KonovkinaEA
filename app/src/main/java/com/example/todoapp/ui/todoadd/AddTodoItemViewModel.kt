@@ -14,10 +14,9 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Date
-import kotlin.properties.Delegates
 
 class AddTodoItemViewModel : ViewModel() {
-    private val todoItemsRepository = Dependencies.todoItemsDbRepository
+    private val todoItemsRepository = Dependencies.repository
 
     private var oldTodoItem: TodoItem? = null
     private lateinit var id: String
