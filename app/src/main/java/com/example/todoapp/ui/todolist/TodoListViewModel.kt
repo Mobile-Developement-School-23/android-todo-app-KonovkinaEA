@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class TodoListViewModel : ViewModel() {
-    private val todoItemsRepository = Dependencies.todoItemsRepository
+    private val todoItemsRepository = Dependencies.todoItemsDbRepository
 
     private val _uiEvent = Channel<TodoListUiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()

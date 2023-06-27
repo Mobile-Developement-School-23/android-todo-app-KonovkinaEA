@@ -3,6 +3,7 @@ package com.example.todoapp.data.local
 import com.example.todoapp.data.TodoItemsRepository
 import com.example.todoapp.data.item.Importance
 import com.example.todoapp.data.item.TodoItem
+import com.example.todoapp.utils.dateToUnix
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -55,66 +56,67 @@ class HardCodedRepository private constructor(): TodoItemsRepository {
         return listOf(
             TodoItem(
                 "1", "Закончить проект", Importance.IMPORTANT,
-                null, false, Date(), Date()
+                null, false, dateToUnix(Date()), dateToUnix(Date())
             ),
             TodoItem(
                 "2", "Купить продукты", Importance.BASIC,
-                null, false, Date(), Date()
+                null, false, dateToUnix(Date()), dateToUnix(Date())
             ),
             TodoItem("3", "Подготовить презентацию", Importance.IMPORTANT,
-                Date(), false, Date(), Date()
+                dateToUnix(Date()), false, dateToUnix(Date()), dateToUnix(Date())
             ),
             TodoItem(
                 "4", "Прочитать книгу", Importance.LOW,
-                Date(), false, Date(), Date()),
+                dateToUnix(Date()), false, dateToUnix(Date()), dateToUnix(Date())),
             TodoItem(
                 "5", "Сходить в спортзал", Importance.BASIC,
-                null, false, Date(), Date()
-            ),
-            TodoItem(
-                "6", "Записаться на курс программирования", Importance.IMPORTANT,
-                Date(), false, Date(), Date()
-            ),
-            TodoItem(
-                "7", "Организовать семейный ужин", Importance.BASIC,
-                Date(), false, Date(), Date()
-            ),
-            TodoItem(
-                "8", "Приготовить подарок к дню рождения друга", Importance.LOW,
-                null, false, Date(), Date()
-            ),
-            TodoItem(
-                "9",
-                "Проверить и отредактировать доклад для конференции по программированию." +
-                        "Подготовить презентацию, составить план выступления и подобрать иллюстрации." +
-                        "Уделить особое внимание структуре и логической последовательности." +
-                        "Проверить правильность использования терминов и грамматических конструкций.",
-                Importance.IMPORTANT, Date(), false, Date(), Date()
-            ),
-            TodoItem(
-                "10", "Прогуляться в парке", Importance.LOW,
-                null, false, Date(), Date()
-            ),
-            TodoItem(
-                "11", "Завершить исследовательскую работу", Importance.IMPORTANT,
-                null, false, Date(), Date()
-            ),
-            TodoItem(
-                "12", "Оплатить счета", Importance.BASIC,
-                null, false, Date(), Date()
-            ),
-            TodoItem(
-                "13", "Разработать новый дизайн интерфейса", Importance.IMPORTANT,
-                Date(), false, Date(), Date()
-            ),
-            TodoItem(
-                "14", "Посмотреть новый фильм", Importance.LOW,
-                Date(), false, Date(), Date()
-            ),
-            TodoItem(
-                "15", "Подготовиться к собеседованию", Importance.BASIC,
-                null, false, Date(), Date()
+                null, false, dateToUnix(Date()), dateToUnix(Date())
             )
+//            ,
+//            TodoItem(
+//                6, "Записаться на курс программирования", Importance.IMPORTANT,
+//                dateToUnix(Date()), false, dateToUnix(Date()), dateToUnix(Date())
+//            ),
+//            TodoItem(
+//                7, "Организовать семейный ужин", Importance.BASIC,
+//                dateToUnix(Date()), false, dateToUnix(Date()), dateToUnix(Date())
+//            ),
+//            TodoItem(
+//                8, "Приготовить подарок к дню рождения друга", Importance.LOW,
+//                null, false, dateToUnix(Date()), dateToUnix(Date())
+//            ),
+//            TodoItem(
+//                9,
+//                "Проверить и отредактировать доклад для конференции по программированию." +
+//                        "Подготовить презентацию, составить план выступления и подобрать иллюстрации." +
+//                        "Уделить особое внимание структуре и логической последовательности." +
+//                        "Проверить правильность использования терминов и грамматических конструкций.",
+//                Importance.IMPORTANT, dateToUnix(Date()), false, dateToUnix(Date()), dateToUnix(Date())
+//            ),
+//            TodoItem(
+//                10, "Прогуляться в парке", Importance.LOW,
+//                null, false, dateToUnix(Date()), dateToUnix(Date())
+//            ),
+//            TodoItem(
+//                11, "Завершить исследовательскую работу", Importance.IMPORTANT,
+//                null, false, dateToUnix(Date()),dateToUnix(Date())
+//            ),
+//            TodoItem(
+//                12, "Оплатить счета", Importance.BASIC,
+//                null, false, dateToUnix(Date()), dateToUnix(Date())
+//            ),
+//            TodoItem(
+//                13, "Разработать новый дизайн интерфейса", Importance.IMPORTANT,
+//                dateToUnix(Date()), false, dateToUnix(Date()), dateToUnix(Date())
+//            ),
+//            TodoItem(
+//                14, "Посмотреть новый фильм", Importance.LOW,
+//                dateToUnix(Date()), false, dateToUnix(Date()), dateToUnix(Date())
+//            ),
+//            TodoItem(
+//                15, "Подготовиться к собеседованию", Importance.BASIC,
+//                null, false, dateToUnix(Date()), dateToUnix(Date())
+//            )
         )
     }
 

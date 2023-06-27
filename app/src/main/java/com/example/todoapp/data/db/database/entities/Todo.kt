@@ -1,4 +1,4 @@
-package com.example.todoapp.db.database.entities
+package com.example.todoapp.data.db.database.entities
 
 data class Todo(
     val id: Long,

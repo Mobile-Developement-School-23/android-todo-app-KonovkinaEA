@@ -1,6 +1,11 @@
 package com.example.todoapp.utils
 
+import com.example.todoapp.data.api.model.TodoItemServer
 import com.example.todoapp.data.item.Importance
+import com.example.todoapp.data.item.TodoItem
+import com.example.todoapp.data.db.database.TodoItemInfoTuple
+import com.example.todoapp.data.db.database.entities.Todo
+import com.example.todoapp.data.db.database.entities.TodoDbEntity
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -8,8 +13,8 @@ import java.util.Locale
 fun generateRandomItemId(): String =
     SimpleDateFormat("yyyyMMddHHmmssSSS", Locale.getDefault()).format(Date())
 
-fun formatDate(date: Date): String =
-    SimpleDateFormat("d MMMM yyyy", Locale.getDefault()).format(date)
+fun formatDate(date: Long): String =
+    SimpleDateFormat("d MMMM yyyy", Locale.getDefault()).format(Date(date * 1000L))
 
 fun stringToImportance(importance: String): Importance {
     return when (importance) {
@@ -19,9 +24,15 @@ fun stringToImportance(importance: String): Importance {
     }
 }
 
-fun unixToDate(date: Long?) = if (date != null) Date(date * 1000L) else null
+fun importanceToString(importance: Importance): String {
+    return when (importance) {
+        Importance.IMPORTANT -> "important"
+        Importance.BASIC -> "basic"
+        else -> "low"
+    }
+}
 
-fun dateToUnix(date: Date?) = if (date != null) date.time / 1000 else null
+fun dateToUnix(date: Date) = date.time / 1000
 
 fun getImportanceId(importance: Importance): Int {
     return when (importance) {
@@ -29,4 +40,28 @@ fun getImportanceId(importance: Importance): Int {
         Importance.BASIC -> 2
         else -> 1
     }
+}
+
+fun convertToTodo(todoItemServer: TodoItemServer): Todo {
+    return Todo(
+        id = todoItemServer.id!!.toLong(),
+        text = todoItemServer.text!!,
+        importanceId = getImportanceId(stringToImportance(todoItemServer.importance!!)),
+        deadline = todoItemServer.deadline,
+        done = todoItemServer.done!!,
+        createdAt = todoItemServer.created_at!!,
+        changedAt = todoItemServer.changed_at!!
+    )
+}
+
+fun createTodo(todoItem: TodoItem): Todo {
+    return Todo(
+        id = todoItem.id.toLong(),
+        text = todoItem.text,
+        importanceId = getImportanceId(todoItem.importance),
+        deadline = todoItem.deadline,
+        done = todoItem.isDone,
+        createdAt = todoItem.creationDate,
+        changedAt = todoItem.modificationDate
+    )
 }

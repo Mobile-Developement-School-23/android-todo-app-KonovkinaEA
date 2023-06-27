@@ -18,6 +18,7 @@ import com.example.todoapp.R
 import com.example.todoapp.databinding.FragmentAddTodoItemBinding
 import com.example.todoapp.data.item.Importance
 import com.example.todoapp.ui.todoadd.actions.AddTodoItemUiEvent
+import com.example.todoapp.utils.dateToUnix
 import com.example.todoapp.utils.formatDate
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -140,7 +141,7 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
         calendar.set(p1, p2, p3)
-        viewModel.updateDeadline(calendar.time)
+        viewModel.updateDeadline(dateToUnix(calendar.time))
         viewModel.updateIsDeadlineSet(true)
     }
 
