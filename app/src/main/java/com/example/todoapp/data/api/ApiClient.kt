@@ -1,14 +1,9 @@
 package com.example.todoapp.data.api
 
-import com.example.todoapp.data.api.model.TodoListServer
-import com.google.gson.GsonBuilder
-import com.google.gson.InstanceCreator
 import retrofit2.Retrofit
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Call
 import retrofit2.converter.gson.GsonConverterFactory
-import java.lang.reflect.Type
 import java.util.concurrent.TimeUnit
 
 object ApiClient {

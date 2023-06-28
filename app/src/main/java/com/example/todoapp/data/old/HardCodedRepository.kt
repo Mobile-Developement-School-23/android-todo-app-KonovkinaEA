@@ -1,4 +1,4 @@
-package com.example.todoapp.data.local
+package com.example.todoapp.data.old
 
 import com.example.todoapp.data.TodoItemsRepository
 import com.example.todoapp.data.item.Importance

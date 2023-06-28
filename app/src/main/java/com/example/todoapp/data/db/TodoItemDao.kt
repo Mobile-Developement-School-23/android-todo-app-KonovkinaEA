@@ -38,7 +38,4 @@ interface TodoItemDao {
 
     @Query("DELETE FROM todo")
     fun deleteAllTodoItems()
-
-//    @Insert(entity = TodoDbEntity::class)
-//    fun insertTodoItems(todoItems: List<TodoDbEntity>)
 }
