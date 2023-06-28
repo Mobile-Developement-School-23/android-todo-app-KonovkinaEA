@@ -26,6 +26,7 @@ class Repository(
     private val todoItemsFlow: MutableStateFlow<List<TodoItem>> = MutableStateFlow(mutableListOf())
 
     val errorLoadLiveData = MutableLiveData<Boolean>()
+    val errorItemLiveData = MutableLiveData<Boolean>()
 
     suspend fun setTodoItems(firstLoad: Boolean) {
         withContext(Dispatchers.IO) {
@@ -135,6 +136,8 @@ class Repository(
             val dataFromServer = response.body() as ItemResponse
 
             revisionDao.updateRevision(dataFromServer.revision)
+        } else {
+            errorItemLiveData.postValue(true)
         }
     }
 

@@ -17,7 +17,8 @@ class TodoListViewModel : ViewModel() {
     private val _uiEvent = Channel<TodoListUiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
-    val errorLiveData: LiveData<Boolean> = todoItemsRepository.errorLoadLiveData
+    val errorLoadLiveData: LiveData<Boolean> = todoItemsRepository.errorLoadLiveData
+    val errorItemLiveData: LiveData<Boolean> = todoItemsRepository.errorItemLiveData
 
     init {
         loadData(true)

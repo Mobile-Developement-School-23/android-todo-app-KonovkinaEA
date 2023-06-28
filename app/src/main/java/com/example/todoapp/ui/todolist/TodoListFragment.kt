@@ -53,11 +53,18 @@ class TodoListFragment : Fragment() {
     }
 
     private fun setupErrorHandler() {
-        viewModel.errorLiveData.observe(viewLifecycleOwner) {
-            if (snackbar == null) {
-                snackbar = Snackbar.make(binding.root, R.string.load_error, Snackbar.LENGTH_INDEFINITE)
-                snackbar?.show()
-            }
+        viewModel.errorLoadLiveData.observe(viewLifecycleOwner) {
+            setupSnackbar(R.string.load_error)
+        }
+        viewModel.errorItemLiveData.observe(viewLifecycleOwner) {
+            setupSnackbar(R.string.item_error)
+        }
+    }
+
+    private fun setupSnackbar(message: Int) {
+        if (snackbar == null) {
+            snackbar = Snackbar.make(binding.root, message, Snackbar.LENGTH_INDEFINITE)
+            snackbar?.show()
         }
     }
 
