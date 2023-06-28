@@ -13,9 +13,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class Repository(
     private val todoItemDao: TodoItemDao,
@@ -29,11 +26,11 @@ class Repository(
 
     val errorLiveData = MutableLiveData<String>()
 
-    suspend fun setTodoItems() {
+    suspend fun setTodoItems(firstLoad: Boolean) {
         withContext(Dispatchers.IO) {
             val dataWasUpdated = updateDataFromServer()
 
-            if (!dataWasUpdated) {
+            if (!dataWasUpdated && firstLoad) {
                 val todoItemDaoList = todoItemDao.getAllTodoData()
 
                 todoItems.clear()

@@ -12,4 +12,6 @@
     <string name="importance_normal">Basic</string>
     <string name="importance_urgent">Important</string>
     <string name="my_tasks">My tasks</string>
+    <string name="load_error">Data loading error, data is not up to date!</string>
+    <string name="reload">Reload</string>
 </resources>
