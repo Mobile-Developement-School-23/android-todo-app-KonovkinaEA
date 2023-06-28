@@ -31,12 +31,14 @@ interface TodoItemDao {
     @Transaction
     fun replaceAllTodoItems(todoItems: List<TodoDbEntity>) {
         deleteAllTodoItems()
-        insertTodoItems(todoItems)
+        todoItems.forEach {
+            insertNewTodoItemData(it)
+        }
     }
 
     @Query("DELETE FROM todo")
     fun deleteAllTodoItems()
 
-    @Insert(entity = TodoDbEntity::class)
-    fun insertTodoItems(todoItems: List<TodoDbEntity>)
+//    @Insert(entity = TodoDbEntity::class)
+//    fun insertTodoItems(todoItems: List<TodoDbEntity>)
 }

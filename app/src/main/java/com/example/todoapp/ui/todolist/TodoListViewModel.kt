@@ -1,5 +1,6 @@
 package com.example.todoapp.ui.todolist
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.todoapp.Dependencies
@@ -15,6 +16,8 @@ class TodoListViewModel : ViewModel() {
 
     private val _uiEvent = Channel<TodoListUiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
+
+    val errorLiveData: LiveData<String> = todoItemsRepository.errorLiveData
 
     init {
         viewModelScope.launch {

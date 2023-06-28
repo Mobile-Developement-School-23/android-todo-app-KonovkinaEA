@@ -20,7 +20,8 @@ object Dependencies {
 
     val repository: Repository by lazy {
         Repository(
-            appDatabase.getTodoItemDao()
+            appDatabase.getTodoItemDao(),
+            appDatabase.getRevisionDao()
         )
     }
 }

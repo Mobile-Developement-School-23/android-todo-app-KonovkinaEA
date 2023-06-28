@@ -1,5 +1,7 @@
 package com.example.todoapp.data.api.model
 
+import com.example.todoapp.data.item.TodoItem
+import com.example.todoapp.utils.stringToImportance
 import com.google.gson.annotations.SerializedName
 
 data class TodoItemServer(
@@ -12,4 +14,17 @@ data class TodoItemServer(
     @SerializedName("created_at") val created_at: Long? = null,
     @SerializedName("changed_at") val changed_at: Long? = null,
     @SerializedName("last_updated_by") val last_updated_by: String? = null
-)
+) {
+
+    fun toTodoItem(): TodoItem {
+        return TodoItem(
+            id = id!!,
+            text = text!!,
+            importance = stringToImportance(importance!!),
+            deadline = deadline,
+            isDone = done!!,
+            creationDate = created_at!!,
+            modificationDate = changed_at!!
+        )
+    }
+}

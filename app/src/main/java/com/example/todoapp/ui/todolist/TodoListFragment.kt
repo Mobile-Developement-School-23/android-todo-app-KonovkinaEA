@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.content.res.Resources
 import android.util.TypedValue
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -18,7 +19,6 @@ import com.example.todoapp.ui.todolist.recyclerview.TodoItemsAdapter
 import com.example.todoapp.utils.generateRandomItemId
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.util.Date
 
 class TodoListFragment : Fragment() {
     private var _binding: FragmentTodoListBinding? = null
@@ -38,6 +38,7 @@ class TodoListFragment : Fragment() {
 
         setupUiEventsListener()
         setupRecycler()
+        setupErrorHandler()
 
         binding.floatingActionButton.setOnClickListener { navigateToNewTodoItem() }
     }
@@ -45,6 +46,16 @@ class TodoListFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun setupErrorHandler() {
+        viewModel.errorLiveData.observe(viewLifecycleOwner) {
+            val text = it
+            val duration = Toast.LENGTH_SHORT
+
+            val toast = Toast.makeText(requireContext(), text, duration)
+            toast.show()
+        }
     }
 
     private fun setupUiEventsListener() {

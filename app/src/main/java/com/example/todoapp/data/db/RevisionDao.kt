@@ -7,8 +7,8 @@ import androidx.room.Query
 interface RevisionDao {
 
     @Query("SELECT revision.revision FROM revision WHERE revision.id = 1")
-    fun getCurrentRevision(): Int
+    fun getCurrentRevision(): Long
 
     @Query("UPDATE revision SET revision = :newRevision WHERE revision.id = 1")
-    fun updateRevision(newRevision: Int)
+    fun updateRevision(newRevision: Long)
 }
