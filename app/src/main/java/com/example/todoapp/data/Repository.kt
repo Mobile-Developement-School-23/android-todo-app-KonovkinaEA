@@ -89,7 +89,7 @@ class Repository(
             if (response.isSuccessful) {
                 val dataFromServer = response.body() as TodoListResponse
                 val todoItemsFromServer =
-                    dataFromServer.todoItems?.map { it.toTodoItem() }?.toMutableList() ?: listOf()
+                    dataFromServer.list?.map { it.toTodoItem() }?.toMutableList() ?: listOf()
 
                 val revisionFromServer = dataFromServer.revision
                 if (revisionFromServer > revisionDao.getCurrentRevision()) {

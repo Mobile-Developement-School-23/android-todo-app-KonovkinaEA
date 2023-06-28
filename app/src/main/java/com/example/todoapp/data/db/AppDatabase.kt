@@ -7,7 +7,7 @@ import com.example.todoapp.data.db.entities.RevisionDbEntity
 import com.example.todoapp.data.db.entities.TodoDbEntity
 
 @Database(
-    version = 3,
+    version = 4,
     entities = [
         ImportanceLevelsDbEntity::class,
         TodoDbEntity::class,

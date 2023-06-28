@@ -42,6 +42,7 @@ class TodoListFragment : Fragment() {
         setupUiEventsListener()
         setupRecycler()
         setupErrorHandler()
+        setupPullRefresh()
 
         binding.floatingActionButton.setOnClickListener { navigateToNewTodoItem() }
     }
@@ -55,12 +56,16 @@ class TodoListFragment : Fragment() {
         viewModel.errorLiveData.observe(viewLifecycleOwner) {
             if (snackbar == null) {
                 snackbar = Snackbar.make(binding.root, R.string.load_error, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(R.string.reload) {
-                        snackbar = null
-                        viewModel.loadData(false)
-                    }
                 snackbar?.show()
             }
+        }
+    }
+
+    private fun setupPullRefresh() {
+        binding.swipeToRefresh.setOnRefreshListener {
+            snackbar = null
+            viewModel.loadData(false)
+            binding.swipeToRefresh.isRefreshing = false
         }
     }
 
