@@ -1,5 +1,6 @@
 package com.example.todoapp.utils
 
+import com.example.todoapp.data.api.model.TodoItemServer
 import com.example.todoapp.data.item.Importance
 import com.example.todoapp.data.item.TodoItem
 import com.example.todoapp.data.db.entities.Todo
@@ -21,6 +22,14 @@ fun stringToImportance(importance: String): Importance {
     }
 }
 
+fun importanceToString(importance: Importance): String {
+    return when (importance) {
+        Importance.IMPORTANT -> "important"
+        Importance.BASIC -> "basic"
+        else -> "low"
+    }
+}
+
 fun dateToUnix(date: Date) = date.time / 1000
 
 fun getImportanceId(importance: Importance): Int {
@@ -29,6 +38,19 @@ fun getImportanceId(importance: Importance): Int {
         Importance.BASIC -> 2
         else -> 1
     }
+}
+
+fun toTodoItemServer(todoItem: TodoItem): TodoItemServer {
+    return TodoItemServer(
+        id = todoItem.id,
+        text = todoItem.text,
+        importance = importanceToString(todoItem.importance),
+        deadline = todoItem.deadline,
+        done = todoItem.isDone,
+        created_at = todoItem.creationDate,
+        changed_at = todoItem.modificationDate,
+        last_updated_by = "cf1"
+    )
 }
 
 fun createTodo(todoItem: TodoItem): Todo {

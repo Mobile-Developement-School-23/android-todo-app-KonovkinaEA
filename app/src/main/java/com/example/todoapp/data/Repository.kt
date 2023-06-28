@@ -2,11 +2,14 @@ package com.example.todoapp.data
 
 import androidx.lifecycle.MutableLiveData
 import com.example.todoapp.data.api.Common
+import com.example.todoapp.data.api.model.ItemContainer
+import com.example.todoapp.data.api.model.PostContainer
 import com.example.todoapp.data.api.model.TodoListServer
 import com.example.todoapp.data.db.RevisionDao
 import com.example.todoapp.data.item.TodoItem
 import com.example.todoapp.data.db.TodoItemDao
 import com.example.todoapp.utils.createTodo
+import com.example.todoapp.utils.toTodoItemServer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +24,6 @@ class Repository(
     private val todoItems: MutableList<TodoItem> = mutableListOf()
     private val todoItemsFlow: MutableStateFlow<List<TodoItem>> = MutableStateFlow(mutableListOf())
 
-    private lateinit var todoItemsFromServer: List<TodoItem>
     private var revisionFromServer: Long = -1
 
     val errorLiveData = MutableLiveData<String>()
@@ -46,7 +48,10 @@ class Repository(
 
     override suspend fun addTodoItem(todoItem: TodoItem) =
         withContext(Dispatchers.IO) {
+            addTodoItemToServer(todoItem)
+
             val newTodo = createTodo(todoItem)
+
             todoItemDao.insertNewTodoItemData(newTodo.toTodoDbEntity())
             todoItems.add(todoItem)
             updateFlow()
@@ -80,6 +85,7 @@ class Repository(
 
             if (response.isSuccessful) {
                 val dataFromServer = response.body() as TodoListServer
+                var todoItemsFromServer: List<TodoItem> = listOf()
 
                 if (dataFromServer.todoItems != null) {
                     todoItemsFromServer = dataFromServer.todoItems.map {
@@ -102,6 +108,18 @@ class Repository(
 
             return@withContext dataWasUpdated
         }
+
+    private suspend fun addTodoItemToServer(todoItem: TodoItem) {
+        val todoItemServer = toTodoItemServer(todoItem)
+        val response = Common.apiService.addTodoItem(revisionDao.getCurrentRevision().toString(), ItemContainer(todoItemServer))
+
+        if (response.isSuccessful) {
+            val dataFromServer = response.body() as PostContainer
+
+            revisionFromServer = dataFromServer.revision!!
+            revisionDao.updateRevision(revisionFromServer)
+        }
+    }
 
     private fun updateDatabase() {
         val todoDbList = todoItems.map { createTodo(it).toTodoDbEntity() }
