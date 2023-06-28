@@ -1,6 +1,6 @@
 package com.example.todoapp.data.api.model
 
-data class PostContainer(
+data class ItemResponse(
     val element: TodoItemServer,
-    val revision: Long? = null
+    val revision: Long
 )
