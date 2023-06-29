@@ -28,11 +28,11 @@ class Repository(
     val errorLoadLiveData = MutableLiveData<Boolean>()
     val errorItemLiveData = MutableLiveData<Boolean>()
 
-    suspend fun setTodoItems(firstLoad: Boolean) {
+    suspend fun setTodoItems() {
         withContext(Dispatchers.IO) {
             val dataWasUpdated = updateDataFromServer()
 
-            if (!dataWasUpdated && firstLoad) {
+            if (!dataWasUpdated) {
                 val todoItemDaoList = todoItemDao.getAllTodoData()
 
                 todoItems.clear()
@@ -40,6 +40,10 @@ class Repository(
                 updateFlow()
             }
         }
+    }
+
+    suspend fun reloadData() {
+        updateDataFromServer()
     }
 
     override suspend fun todoItems(): Flow<List<TodoItem>> = todoItemsFlow.asStateFlow()

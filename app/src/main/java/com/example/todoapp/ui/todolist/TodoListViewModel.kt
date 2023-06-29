@@ -21,7 +21,7 @@ class TodoListViewModel : ViewModel() {
     val errorItemLiveData: LiveData<Boolean> = todoItemsRepository.errorItemLiveData
 
     init {
-        loadData(true)
+        loadData()
     }
 
     fun onUiAction(action: TodoListUiAction) {
@@ -34,9 +34,15 @@ class TodoListViewModel : ViewModel() {
 
     suspend fun getTodoItems() = todoItemsRepository.todoItems()
 
-    fun loadData(firstLoad: Boolean) {
+    fun reloadData() {
         viewModelScope.launch {
-            todoItemsRepository.setTodoItems(firstLoad)
+            todoItemsRepository.reloadData()
+        }
+    }
+
+    private fun loadData() {
+        viewModelScope.launch {
+            todoItemsRepository.setTodoItems()
         }
     }
 

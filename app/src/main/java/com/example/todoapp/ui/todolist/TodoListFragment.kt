@@ -71,7 +71,7 @@ class TodoListFragment : Fragment() {
     private fun setupPullRefresh() {
         binding.swipeToRefresh.setOnRefreshListener {
             snackbar = null
-            viewModel.loadData(false)
+            viewModel.reloadData()
             binding.swipeToRefresh.isRefreshing = false
         }
     }

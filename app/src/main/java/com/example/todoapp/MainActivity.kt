@@ -12,6 +12,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_main)
-        WorkManagerScheduler.refreshPeriodicWork(this)
+//        WorkManagerScheduler.refreshPeriodicWork(this)
+//        WorkManagerScheduler.patchData(this)
+        WorkManagerScheduler.setWorkers(this)
     }
 }
