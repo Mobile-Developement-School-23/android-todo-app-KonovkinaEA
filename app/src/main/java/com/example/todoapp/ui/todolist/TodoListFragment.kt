@@ -56,26 +56,29 @@ class TodoListFragment : Fragment() {
         viewModel.errorListLiveData.observe(viewLifecycleOwner) {
             if (it) {
                 setupSnackbar(R.string.load_error)
+            } else {
+                dismissSnackbar()
             }
         }
         viewModel.errorItemLiveData.observe(viewLifecycleOwner) {
             if (it) {
                 setupSnackbar(R.string.item_error)
+            } else {
+                dismissSnackbar()
             }
         }
     }
 
     private fun setupSnackbar(message: Int) {
         if (snackbar == null) {
-            snackbar = Snackbar.make(binding.root, message, Snackbar.LENGTH_INDEFINITE)
+            snackbar = Snackbar.make(requireView(), message, Snackbar.LENGTH_INDEFINITE)
             snackbar?.show()
         }
     }
 
     private fun setupPullRefresh() {
         binding.swipeToRefresh.setOnRefreshListener {
-            snackbar?.dismiss()
-            snackbar = null
+            dismissSnackbar()
             viewModel.reloadData()
             binding.swipeToRefresh.isRefreshing = false
         }
@@ -111,6 +114,11 @@ class TodoListFragment : Fragment() {
         }
     }
 
+    private fun dismissSnackbar() {
+        snackbar?.dismiss()
+        snackbar = null
+    }
+
     private fun navigateToEditTodoItem(id: String) {
         onItemClick(id, false)
     }
@@ -120,6 +128,7 @@ class TodoListFragment : Fragment() {
     }
 
     private fun onItemClick(id: String, isNewItem: Boolean) {
+        dismissSnackbar()
         val action =
             TodoListFragmentDirections.actionTodoListFragmentToAddTodoItemFragment2(id, isNewItem)
         findNavController().navigate(action)

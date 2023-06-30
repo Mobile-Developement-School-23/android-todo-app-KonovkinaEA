@@ -1,7 +1,7 @@
 package com.example.todoapp
 
 import android.app.Application
-import com.example.todoapp.data.api.workmanager.WorkManagerScheduler
+import com.example.todoapp.data.api.workmanager.WorkManager
 
 class TodoApp : Application() {
 
@@ -9,6 +9,6 @@ class TodoApp : Application() {
         super.onCreate()
 
         Dependencies.init(applicationContext)
-        WorkManagerScheduler.setWorkers(applicationContext)
+        WorkManager.setWorkers(applicationContext)
     }
 }
