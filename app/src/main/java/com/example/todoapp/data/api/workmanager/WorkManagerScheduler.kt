@@ -3,6 +3,7 @@ package com.example.todoapp.data.api.workmanager
 import android.content.Context
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
 import androidx.work.PeriodicWorkRequest
@@ -10,12 +11,20 @@ import androidx.work.WorkManager
 import java.util.concurrent.TimeUnit
 
 object WorkManagerScheduler {
+    private lateinit var workManager: WorkManager
+
     fun setWorkers(context: Context) {
-        refreshPeriodicWork(context)
-        patchData(context)
+        workManager = WorkManager.getInstance(context)
+
+        refreshPeriodicWork()
+        loadDataFromServer()
     }
 
-    private fun refreshPeriodicWork(context: Context) {
+    fun reload() {
+        loadDataFromServer()
+    }
+
+    private fun refreshPeriodicWork() {
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
@@ -24,8 +33,7 @@ object WorkManagerScheduler {
             .setConstraints(constraints)
             .build()
 
-        WorkManager
-            .getInstance(context)
+        workManager
             .enqueueUniquePeriodicWork(
                 "refreshWorker",
                 ExistingPeriodicWorkPolicy.KEEP,
@@ -33,16 +41,20 @@ object WorkManagerScheduler {
             )
     }
 
-    private fun patchData(context: Context) {
+    private fun loadDataFromServer() {
         val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
             .build()
 
-        val request = OneTimeWorkRequest.Builder(NetworkPatchWorker::class.java)
+        val request = OneTimeWorkRequest.Builder(NetworkWorker::class.java)
             .setConstraints(constraints)
             .build()
 
-        WorkManager.getInstance(context)
-            .enqueue(request)
+        workManager
+            .enqueueUniqueWork(
+                "loadWorker",
+                ExistingWorkPolicy.KEEP,
+                request
+            )
     }
 }

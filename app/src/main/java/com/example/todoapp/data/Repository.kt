@@ -4,7 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import com.example.todoapp.data.api.Common
 import com.example.todoapp.data.api.model.ItemContainer
 import com.example.todoapp.data.api.model.ItemResponse
+import com.example.todoapp.data.api.model.TodoListContainer
 import com.example.todoapp.data.api.model.TodoListResponse
+import com.example.todoapp.data.api.workmanager.WorkManagerScheduler
 import com.example.todoapp.data.db.RevisionDao
 import com.example.todoapp.data.item.TodoItem
 import com.example.todoapp.data.db.TodoItemDao
@@ -25,25 +27,63 @@ class Repository(
     private val todoItems: MutableList<TodoItem> = mutableListOf()
     private val todoItemsFlow: MutableStateFlow<List<TodoItem>> = MutableStateFlow(mutableListOf())
 
-    val errorLoadLiveData = MutableLiveData<Boolean>()
+    val errorListLiveData = MutableLiveData<Boolean>()
     val errorItemLiveData = MutableLiveData<Boolean>()
 
-    suspend fun setTodoItems() {
+    suspend fun loadDataFromServer() =
         withContext(Dispatchers.IO) {
-            val dataWasUpdated = updateDataFromServer()
+            val response = Common.apiService.getAllTodoData()
 
-            if (!dataWasUpdated) {
-                val todoItemDaoList = todoItemDao.getAllTodoData()
-
-                todoItems.clear()
-                todoItems.addAll(todoItemDaoList.map { it.toTodoItem() })
-                updateFlow()
+            if (response.isSuccessful) {
+                val dataFromServer = response.body() as TodoListResponse
+                if (dataFromServer.revision > revisionDao.getCurrentRevision()) {
+                    updateDataDB(dataFromServer)
+                } else {
+                    updateDataOnServer()
+                }
+            } else {
+                errorListLiveData.postValue(true)
             }
+        }
+
+    suspend fun loadDataFromDB() =
+        withContext(Dispatchers.IO) {
+            updateTodoItems(todoItemDao.getAllTodoData().map { it.toTodoItem() })
+            errorListLiveData.postValue(true)
+        }
+
+    private suspend fun updateDataOnServer() {
+        updateTodoItems(todoItemDao.getAllTodoData().map { it.toTodoItem() })
+
+        val todoListServer = TodoListContainer(todoItems.map { toTodoItemServer(it) })
+        val response = Common.apiService.patchList(revisionDao.getCurrentRevision().toString(), todoListServer)
+
+        if (response.isSuccessful) {
+            val dataFromServer = response.body() as TodoListResponse
+            revisionDao.updateRevision(dataFromServer.revision)
+        } else {
+            errorListLiveData.postValue(true)
         }
     }
 
-    suspend fun reloadData() {
-        updateDataFromServer()
+    private suspend fun updateDataDB(dataFromServer: TodoListResponse) =
+        withContext(Dispatchers.IO) {
+            val todoItemsFromServer =
+                dataFromServer.list?.map { it.toTodoItem() }?.toMutableList() ?: listOf()
+
+            revisionDao.updateRevision(dataFromServer.revision)
+            updateTodoItems(todoItemsFromServer)
+            updateDatabase()
+        }
+
+    private fun updateTodoItems(newList: List<TodoItem>) {
+        todoItems.clear()
+        todoItems.addAll(newList)
+        updateFlow()
+    }
+
+    fun reloadData() {
+        WorkManagerScheduler.reload()
     }
 
     override suspend fun todoItems(): Flow<List<TodoItem>> = todoItemsFlow.asStateFlow()
@@ -84,32 +124,6 @@ class Repository(
                 todoItems.removeAt(index)
                 updateFlow()
             }
-        }
-
-    private suspend fun updateDataFromServer(): Boolean =
-        withContext(Dispatchers.IO) {
-            var dataWasUpdated = false
-            val response = Common.apiService.getAllTodoData()
-
-            if (response.isSuccessful) {
-                val dataFromServer = response.body() as TodoListResponse
-                val todoItemsFromServer =
-                    dataFromServer.list?.map { it.toTodoItem() }?.toMutableList() ?: listOf()
-
-                val revisionFromServer = dataFromServer.revision
-                if (revisionFromServer > revisionDao.getCurrentRevision()) {
-                    dataWasUpdated = true
-                    revisionDao.updateRevision(revisionFromServer)
-                    todoItems.clear()
-                    todoItems.addAll(todoItemsFromServer)
-                    updateFlow()
-                    updateDatabase()
-                }
-            } else {
-                errorLoadLiveData.postValue(true)
-            }
-
-            return@withContext dataWasUpdated
         }
 
     private suspend fun addTodoItemToServer(todoItem: TodoItem) {

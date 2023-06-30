@@ -53,11 +53,15 @@ class TodoListFragment : Fragment() {
     }
 
     private fun setupErrorHandler() {
-        viewModel.errorLoadLiveData.observe(viewLifecycleOwner) {
-            setupSnackbar(R.string.load_error)
+        viewModel.errorListLiveData.observe(viewLifecycleOwner) {
+            if (it) {
+                setupSnackbar(R.string.load_error)
+            }
         }
         viewModel.errorItemLiveData.observe(viewLifecycleOwner) {
-            setupSnackbar(R.string.item_error)
+            if (it) {
+                setupSnackbar(R.string.item_error)
+            }
         }
     }
 
@@ -70,6 +74,7 @@ class TodoListFragment : Fragment() {
 
     private fun setupPullRefresh() {
         binding.swipeToRefresh.setOnRefreshListener {
+            snackbar?.dismiss()
             snackbar = null
             viewModel.reloadData()
             binding.swipeToRefresh.isRefreshing = false
