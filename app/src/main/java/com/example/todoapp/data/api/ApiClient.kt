@@ -25,6 +25,7 @@ object ApiClient {
         return OkHttpClient.Builder()
             .addInterceptor(makeLoggingInterceptor())
             .addInterceptor(AuthInterceptor())
+            .addInterceptor(RetryInterceptor())
             .connectTimeout(120, TimeUnit.SECONDS)
             .readTimeout(120, TimeUnit.SECONDS)
             .writeTimeout(90, TimeUnit.SECONDS)

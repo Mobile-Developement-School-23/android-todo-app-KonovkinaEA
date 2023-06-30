@@ -43,6 +43,7 @@ class Repository(
                 }
                 errorListLiveData.postValue(false)
             } else {
+                loadDataFromDB()
                 errorListLiveData.postValue(true)
             }
         }
