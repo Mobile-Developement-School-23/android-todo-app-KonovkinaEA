@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.todoapp.Dependencies
 import com.example.todoapp.R
 import com.example.todoapp.databinding.FragmentTodoListBinding
 import com.example.todoapp.ui.todolist.actions.TodoListUiEvent
@@ -24,7 +25,7 @@ import kotlinx.coroutines.launch
 class TodoListFragment : Fragment() {
     private var _binding: FragmentTodoListBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: TodoListViewModel by viewModels()
+    private val viewModel: TodoListViewModel by viewModels { Dependencies.viewModelFactory }
 
     private var snackbar : Snackbar? = null
 

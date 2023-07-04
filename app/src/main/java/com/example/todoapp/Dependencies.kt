@@ -1,9 +1,11 @@
 package com.example.todoapp
 
 import android.content.Context
+import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import com.example.todoapp.data.Repository
 import com.example.todoapp.data.db.AppDatabase
+import com.example.todoapp.ui.ViewModelFactory
 
 object Dependencies {
     private lateinit var applicationContext: Context
@@ -23,5 +25,9 @@ object Dependencies {
             appDatabase.getTodoItemDao(),
             appDatabase.getRevisionDao()
         )
+    }
+
+    val viewModelFactory: ViewModelProvider.Factory by lazy {
+        ViewModelFactory(repository)
     }
 }

@@ -3,7 +3,7 @@ package com.example.todoapp.ui.todolist
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.todoapp.Dependencies
+import com.example.todoapp.data.Repository
 import com.example.todoapp.data.item.TodoItem
 import com.example.todoapp.ui.todolist.actions.TodoListUiAction
 import com.example.todoapp.ui.todolist.actions.TodoListUiEvent
@@ -11,14 +11,16 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
-class TodoListViewModel : ViewModel() {
-    private val todoItemsRepository = Dependencies.repository
+class TodoListViewModel(
+    private val repository: Repository
+) : ViewModel() {
+//    private val repository = Dependencies.repository
 
     private val _uiEvent = Channel<TodoListUiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
-    val errorListLiveData: LiveData<Boolean> = todoItemsRepository.errorListLiveData
-    val errorItemLiveData: LiveData<Boolean> = todoItemsRepository.errorItemLiveData
+    val errorListLiveData: LiveData<Boolean> = repository.errorListLiveData
+    val errorItemLiveData: LiveData<Boolean> = repository.errorItemLiveData
 
     fun onUiAction(action: TodoListUiAction) {
         when (action) {
@@ -28,11 +30,11 @@ class TodoListViewModel : ViewModel() {
         }
     }
 
-    suspend fun getTodoItems() = todoItemsRepository.todoItems()
+    suspend fun getTodoItems() = repository.todoItems()
 
     fun reloadData() {
         viewModelScope.launch {
-            todoItemsRepository.reloadData()
+            repository.reloadData()
         }
     }
 
@@ -44,13 +46,13 @@ class TodoListViewModel : ViewModel() {
 
     private fun updateTodoItem(todoItem: TodoItem) {
         viewModelScope.launch {
-            todoItemsRepository.updateTodoItem(todoItem)
+            repository.updateTodoItem(todoItem)
         }
     }
 
     private fun removeTodoItem(todoItem: TodoItem) {
         viewModelScope.launch {
-            todoItemsRepository.removeTodoItem(todoItem.id)
+            repository.removeTodoItem(todoItem.id)
         }
     }
 }
