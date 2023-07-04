@@ -1,6 +1,8 @@
 package com.example.todoapp.di
 
 import android.content.Context
+import com.example.todoapp.TodoApp
+import com.example.todoapp.data.api.workmanager.DataUpdatesWorker
 import com.example.todoapp.data.api.workmanager.NetworkAvailableWorker
 import com.example.todoapp.data.api.workmanager.NetworkUnavailableWorker
 import com.example.todoapp.di.module.DataModule
@@ -19,8 +21,12 @@ interface AppComponent {
         fun create(@BindsInstance context: Context): AppComponent
     }
 
-    fun inject(fragment: TodoListFragment)
-    fun inject(fragment: AddTodoItemFragment)
+    fun fragmentComponent(): FragmentComponent
+
+    fun inject(todoApp: TodoApp)
+//    fun inject(fragment: TodoListFragment)
+//    fun inject(fragment: AddTodoItemFragment)
+    fun inject(worker: DataUpdatesWorker)
     fun inject(worker: NetworkAvailableWorker)
     fun inject(worker: NetworkUnavailableWorker)
 }

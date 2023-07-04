@@ -10,6 +10,7 @@ import com.example.todoapp.data.api.workmanager.WorkManager
 import com.example.todoapp.data.db.RevisionDao
 import com.example.todoapp.data.item.TodoItem
 import com.example.todoapp.data.db.TodoItemDao
+import com.example.todoapp.di.scope.AppScope
 import com.example.todoapp.utils.createTodo
 import com.example.todoapp.utils.toTodoItemServer
 import kotlinx.coroutines.Dispatchers
@@ -21,9 +22,11 @@ import kotlinx.coroutines.withContext
 import retrofit2.Response
 import javax.inject.Inject
 
+@AppScope
 class Repository @Inject constructor(
     private val todoItemDao: TodoItemDao,
-    private val revisionDao: RevisionDao
+    private val revisionDao: RevisionDao,
+    private val workManager: WorkManager
 ) : TodoItemsRepository {
     private val todoItems: MutableList<TodoItem> = mutableListOf()
     private val todoItemsFlow: MutableStateFlow<List<TodoItem>> = MutableStateFlow(mutableListOf())
@@ -56,7 +59,7 @@ class Repository @Inject constructor(
         }
 
     override fun reloadData() {
-        WorkManager.reloadData()
+        workManager.reloadData()
     }
 
     override fun errorListLiveData() = errorListLiveData
@@ -131,7 +134,7 @@ class Repository @Inject constructor(
 
     private suspend fun addTodoItemToServer(todoItem: TodoItem) =
         withContext(Dispatchers.IO) {
-            if (WorkManager.isNetworkAvailable()) {
+            if (workManager.isNetworkAvailable()) {
                 val todoItemServer = toTodoItemServer(todoItem)
                 val response = Common.apiService.addTodoItem(revisionDao.getCurrentRevision().toString(), ItemContainer(todoItemServer))
 
@@ -141,7 +144,7 @@ class Repository @Inject constructor(
 
     private suspend fun removeTodoItemFromServer(id: String) =
         withContext(Dispatchers.IO) {
-            if (WorkManager.isNetworkAvailable()) {
+            if (workManager.isNetworkAvailable()) {
                 val response = Common.apiService.deleteTodoItem(revisionDao.getCurrentRevision().toString(), id)
                 updateRevision(response)
             }
@@ -149,7 +152,7 @@ class Repository @Inject constructor(
 
     private suspend fun updateTodoItemOnServer(todoItem: TodoItem) =
         withContext(Dispatchers.IO) {
-            if (WorkManager.isNetworkAvailable()) {
+            if (workManager.isNetworkAvailable()) {
                 val todoItemServer = toTodoItemServer(todoItem)
                 val response = Common.apiService.updateTodoItem(
                     revisionDao.getCurrentRevision().toString(),

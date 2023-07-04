@@ -1,6 +1,5 @@
 package com.example.todoapp.data.api.workmanager
 
-import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import androidx.work.Constraints
@@ -10,17 +9,18 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
+import com.example.todoapp.di.scope.AppScope
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-object WorkManager {
-    private lateinit var workManager: WorkManager
-    private lateinit var connectivityManager: ConnectivityManager
+@AppScope
+class WorkManager @Inject constructor(
+    private val workManager: WorkManager,
+    private val connectivityManager: ConnectivityManager
+) {
 
-    fun setWorkers(context: Context) {
-        workManager = WorkManager.getInstance(context)
-        connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-//        refreshPeriodicWork()
+    fun setWorkers() {
+        refreshPeriodicWork()
         loadDataWork()
     }
 
@@ -40,22 +40,22 @@ object WorkManager {
         return networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
     }
 
-//    private fun refreshPeriodicWork() {
-//        val constraints = Constraints.Builder()
-//            .setRequiredNetworkType(NetworkType.CONNECTED)
-//            .build()
-//
-//        val request = PeriodicWorkRequest.Builder(DataUpdatesWorker::class.java, 8, TimeUnit.HOURS)
-//            .setConstraints(constraints)
-//            .build()
-//
-//        workManager
-//            .enqueueUniquePeriodicWork(
-//                "refreshWorker",
-//                ExistingPeriodicWorkPolicy.KEEP,
-//                request
-//            )
-//    }
+    private fun refreshPeriodicWork() {
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        val request = PeriodicWorkRequest.Builder(DataUpdatesWorker::class.java, 8, TimeUnit.HOURS)
+            .setConstraints(constraints)
+            .build()
+
+        workManager
+            .enqueueUniquePeriodicWork(
+                "refreshWorker",
+                ExistingPeriodicWorkPolicy.KEEP,
+                request
+            )
+    }
 
     private fun loadDataFromServer() {
         val constraints = Constraints.Builder()

@@ -38,7 +38,10 @@ class TodoListFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (requireActivity().application as TodoApp).appComponent.inject(this)
+        (requireActivity().application as TodoApp)
+            .appComponent
+            .fragmentComponent()
+            .inject(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
