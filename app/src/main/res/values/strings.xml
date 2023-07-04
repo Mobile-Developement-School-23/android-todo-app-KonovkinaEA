@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ToDoApp</string>
     <string name="fab_description">Button for adding a new todo item</string>
-    <string name="close_add_edit_todo_item_button">Button to close the todo item creation/editing window</string>
+    <string name="close_button">Button to close the todo item creation/editing window</string>
     <string name="save_button">SAVE</string>
     <string name="descr_edit_text">Text input field for a new todo item</string>
     <string name="hint_edit_text">What needs to be done…</string>
@@ -9,6 +9,10 @@
     <string name="deadline">Deadline</string>
     <string name="trash">Delete</string>
     <string name="importance_low">Low</string>
-    <string name="importance_normal">Normal</string>
-    <string name="importance_urgent">Urgent</string>
+    <string name="importance_normal">Basic</string>
+    <string name="importance_urgent">Important</string>
+    <string name="my_tasks">My tasks</string>
+    <string name="load_error">Data loading error, data is not up to date!</string>
+    <string name="reload">Reload</string>
+    <string name="item_error">An error occurred while modifying the data</string>
 </resources>

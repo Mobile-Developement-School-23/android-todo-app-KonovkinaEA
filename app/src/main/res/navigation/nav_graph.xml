@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/todoListFragment"
-        android:name="com.example.todoapp.TodoListFragment"
+        android:name="com.example.todoapp.ui.todolist.TodoListFragment"
         android:label="TodoListFragment" >
         <action
             android:id="@+id/action_todoListFragment_to_addTodoItemFragment2"
@@ -14,7 +14,7 @@
     </fragment>
     <fragment
         android:id="@+id/addTodoItemFragment"
-        android:name="com.example.todoapp.AddTodoItemFragment"
+        android:name="com.example.todoapp.ui.todoadd.AddTodoItemFragment"
         android:label="AddTodoItemFragment" >
         <argument
             android:name="id"
@@ -22,6 +22,6 @@
         <argument
             android:name="isNewItem"
             app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="true" />
     </fragment>
 </navigation>
