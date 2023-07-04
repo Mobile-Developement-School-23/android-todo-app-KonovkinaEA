@@ -1,5 +1,6 @@
 package com.example.todoapp.ui.todolist
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,12 +9,14 @@ import android.view.ViewGroup
 import android.content.res.Resources
 import android.util.TypedValue
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todoapp.R
 import com.example.todoapp.TodoApp
 import com.example.todoapp.databinding.FragmentTodoListBinding
+import com.example.todoapp.ui.ViewModelFactory
 import com.example.todoapp.ui.todolist.actions.TodoListUiEvent
 import com.example.todoapp.ui.todolist.recyclerview.PreviewOffsetTodoItemDecoration
 import com.example.todoapp.ui.todolist.recyclerview.TodoItemsAdapter
@@ -21,13 +24,30 @@ import com.example.todoapp.utils.generateRandomItemId
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class TodoListFragment : Fragment() {
     private var _binding: FragmentTodoListBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: TodoListViewModel by viewModels { (requireActivity().application as TodoApp).viewModelFactory }
+//    private val viewModel: TodoListViewModel by viewModels { (requireActivity().application as TodoApp).viewModelFactory }
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    private lateinit var viewModel: TodoListViewModel
 
     private var snackbar : Snackbar? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity().application as TodoApp).appComponent.inject(this)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(
+            this,
+            viewModelFactory
+        )[TodoListViewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

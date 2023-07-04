@@ -6,8 +6,9 @@ import com.example.todoapp.data.Repository
 import com.example.todoapp.data.TodoItemsRepository
 import com.example.todoapp.ui.todoadd.AddTodoItemViewModel
 import com.example.todoapp.ui.todolist.TodoListViewModel
+import javax.inject.Inject
 
-class ViewModelFactory constructor(
+class ViewModelFactory @Inject constructor(
     private val repository: TodoItemsRepository
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

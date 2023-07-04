@@ -13,19 +13,19 @@ import javax.inject.Inject
 class TodoApp : Application() {
     lateinit var appComponent: AppComponent
 
-    @Inject
-    lateinit var repository: TodoItemsRepository
+//    @Inject
+//    lateinit var repository: TodoItemsRepository
 
-    val viewModelFactory: ViewModelProvider.Factory by lazy {
-        ViewModelFactory(repository)
-    }
+//    val viewModelFactory: ViewModelProvider.Factory by lazy {
+//        ViewModelFactory(repository)
+//    }
 
     override fun onCreate() {
         super.onCreate()
 
         Dependencies.init(this)
         appComponent = DaggerAppComponent.factory().create(applicationContext)
-        appComponent.inject(this)
+//        appComponent.inject(this)
         WorkManager.setWorkers(applicationContext)
     }
 }

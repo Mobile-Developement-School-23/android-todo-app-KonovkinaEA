@@ -1,6 +1,7 @@
 package com.example.todoapp.ui.todoadd
 
 import android.app.DatePickerDialog
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import androidx.fragment.app.Fragment
@@ -11,6 +12,7 @@ import android.widget.DatePicker
 import android.widget.PopupMenu
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -18,20 +20,39 @@ import com.example.todoapp.R
 import com.example.todoapp.TodoApp
 import com.example.todoapp.databinding.FragmentAddTodoItemBinding
 import com.example.todoapp.data.item.Importance
+import com.example.todoapp.ui.ViewModelFactory
 import com.example.todoapp.ui.todoadd.actions.AddTodoItemUiEvent
+import com.example.todoapp.ui.todolist.TodoListViewModel
 import com.example.todoapp.utils.dateToUnix
 import com.example.todoapp.utils.formatDate
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.Calendar
+import javax.inject.Inject
 
 class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private var _binding: FragmentAddTodoItemBinding? = null
     private val binding get() = _binding!!
     private val args by navArgs<AddTodoItemFragmentArgs>()
-    private val viewModel: AddTodoItemViewModel by viewModels { (requireActivity().application as TodoApp).viewModelFactory }
+//    private val viewModel: AddTodoItemViewModel by viewModels { (requireActivity().application as TodoApp).viewModelFactory }
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    private lateinit var viewModel: AddTodoItemViewModel
 
     private lateinit var calendar: Calendar
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity().application as TodoApp).appComponent.inject(this)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(
+            this,
+            viewModelFactory
+        )[AddTodoItemViewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
