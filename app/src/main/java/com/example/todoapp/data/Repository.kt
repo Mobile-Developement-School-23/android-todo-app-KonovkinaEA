@@ -19,16 +19,17 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
 import retrofit2.Response
+import javax.inject.Inject
 
-class Repository(
+class Repository @Inject constructor(
     private val todoItemDao: TodoItemDao,
     private val revisionDao: RevisionDao
 ) : TodoItemsRepository {
     private val todoItems: MutableList<TodoItem> = mutableListOf()
     private val todoItemsFlow: MutableStateFlow<List<TodoItem>> = MutableStateFlow(mutableListOf())
 
-    val errorListLiveData = MutableLiveData<Boolean>()
-    val errorItemLiveData = MutableLiveData<Boolean>()
+    private val errorListLiveData = MutableLiveData<Boolean>()
+    private val errorItemLiveData = MutableLiveData<Boolean>()
 
     override suspend fun loadDataFromServer() =
         withContext(Dispatchers.IO) {
@@ -57,6 +58,10 @@ class Repository(
     override fun reloadData() {
         WorkManager.reloadData()
     }
+
+    override fun errorListLiveData() = errorListLiveData
+
+    override fun errorItemLiveData() = errorItemLiveData
 
     override suspend fun todoItems(): Flow<List<TodoItem>> = todoItemsFlow.asStateFlow()
 

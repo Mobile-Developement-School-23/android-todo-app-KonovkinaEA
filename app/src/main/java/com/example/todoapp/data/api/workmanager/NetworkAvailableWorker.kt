@@ -3,11 +3,15 @@ package com.example.todoapp.data.api.workmanager
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.example.todoapp.Dependencies
+import com.example.todoapp.data.Repository
+import com.example.todoapp.data.TodoItemsRepository
+import javax.inject.Inject
 
 class NetworkAvailableWorker(appContext: Context, workerParams: WorkerParameters)
     : CoroutineWorker(appContext, workerParams) {
-    private val repository = Dependencies.repository
+
+    @Inject
+    lateinit var repository: TodoItemsRepository
 
     override suspend fun doWork(): Result {
         repository.loadDataFromServer()

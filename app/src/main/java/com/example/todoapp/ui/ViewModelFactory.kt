@@ -3,11 +3,12 @@ package com.example.todoapp.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.todoapp.data.Repository
+import com.example.todoapp.data.TodoItemsRepository
 import com.example.todoapp.ui.todoadd.AddTodoItemViewModel
 import com.example.todoapp.ui.todolist.TodoListViewModel
 
 class ViewModelFactory constructor(
-    private val repository: Repository
+    private val repository: TodoItemsRepository
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {

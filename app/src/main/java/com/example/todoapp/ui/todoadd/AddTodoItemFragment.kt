@@ -14,8 +14,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.todoapp.Dependencies
 import com.example.todoapp.R
+import com.example.todoapp.TodoApp
 import com.example.todoapp.databinding.FragmentAddTodoItemBinding
 import com.example.todoapp.data.item.Importance
 import com.example.todoapp.ui.todoadd.actions.AddTodoItemUiEvent
@@ -29,7 +29,7 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private var _binding: FragmentAddTodoItemBinding? = null
     private val binding get() = _binding!!
     private val args by navArgs<AddTodoItemFragmentArgs>()
-    private val viewModel: AddTodoItemViewModel by viewModels { Dependencies.viewModelFactory }
+    private val viewModel: AddTodoItemViewModel by viewModels { (requireActivity().application as TodoApp).viewModelFactory }
 
     private lateinit var calendar: Calendar
 

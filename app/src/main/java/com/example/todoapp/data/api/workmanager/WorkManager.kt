@@ -20,7 +20,7 @@ object WorkManager {
         workManager = WorkManager.getInstance(context)
         connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-        refreshPeriodicWork()
+//        refreshPeriodicWork()
         loadDataWork()
     }
 
@@ -40,22 +40,22 @@ object WorkManager {
         return networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
     }
 
-    private fun refreshPeriodicWork() {
-        val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED)
-            .build()
-
-        val request = PeriodicWorkRequest.Builder(DataUpdatesWorker::class.java, 8, TimeUnit.HOURS)
-            .setConstraints(constraints)
-            .build()
-
-        workManager
-            .enqueueUniquePeriodicWork(
-                "refreshWorker",
-                ExistingPeriodicWorkPolicy.KEEP,
-                request
-            )
-    }
+//    private fun refreshPeriodicWork() {
+//        val constraints = Constraints.Builder()
+//            .setRequiredNetworkType(NetworkType.CONNECTED)
+//            .build()
+//
+//        val request = PeriodicWorkRequest.Builder(DataUpdatesWorker::class.java, 8, TimeUnit.HOURS)
+//            .setConstraints(constraints)
+//            .build()
+//
+//        workManager
+//            .enqueueUniquePeriodicWork(
+//                "refreshWorker",
+//                ExistingPeriodicWorkPolicy.KEEP,
+//                request
+//            )
+//    }
 
     private fun loadDataFromServer() {
         val constraints = Constraints.Builder()

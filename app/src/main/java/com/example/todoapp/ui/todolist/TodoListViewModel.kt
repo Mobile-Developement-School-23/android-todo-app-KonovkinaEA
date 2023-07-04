@@ -3,7 +3,7 @@ package com.example.todoapp.ui.todolist
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.todoapp.data.Repository
+import com.example.todoapp.data.TodoItemsRepository
 import com.example.todoapp.data.item.TodoItem
 import com.example.todoapp.ui.todolist.actions.TodoListUiAction
 import com.example.todoapp.ui.todolist.actions.TodoListUiEvent
@@ -12,15 +12,15 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class TodoListViewModel(
-    private val repository: Repository
+    private val repository: TodoItemsRepository
 ) : ViewModel() {
 //    private val repository = Dependencies.repository
 
     private val _uiEvent = Channel<TodoListUiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
-    val errorListLiveData: LiveData<Boolean> = repository.errorListLiveData
-    val errorItemLiveData: LiveData<Boolean> = repository.errorItemLiveData
+    val errorListLiveData: LiveData<Boolean> = repository.errorListLiveData()
+    val errorItemLiveData: LiveData<Boolean> = repository.errorItemLiveData()
 
     fun onUiAction(action: TodoListUiAction) {
         when (action) {

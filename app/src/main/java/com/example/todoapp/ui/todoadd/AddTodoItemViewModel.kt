@@ -2,7 +2,7 @@ package com.example.todoapp.ui.todoadd
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.todoapp.data.Repository
+import com.example.todoapp.data.TodoItemsRepository
 import com.example.todoapp.data.item.Importance
 import com.example.todoapp.data.item.TodoItem
 import com.example.todoapp.ui.todoadd.actions.AddTodoItemUiEvent
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import java.util.Date
 
 class AddTodoItemViewModel(
-    private val repository: Repository
+    private val repository: TodoItemsRepository
 ) : ViewModel() {
 //    private val repository = Dependencies.repository
 

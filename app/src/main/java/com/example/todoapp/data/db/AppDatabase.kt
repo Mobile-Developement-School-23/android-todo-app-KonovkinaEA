@@ -22,19 +22,19 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun getRevisionDao(): RevisionDao
 
-    companion object {
-        private var database: AppDatabase? = null
-
-        fun getDatabaseInstance(context: Context): AppDatabase {
-            return if (database == null) {
-                synchronized(this) {
-                    Room.databaseBuilder(context, AppDatabase::class.java, "database.db")
-                        .createFromAsset("todo_database.db")
-                        .build()
-                }
-            } else {
-                database!!
-            }
-        }
-    }
+//    companion object {
+//        private var database: AppDatabase? = null
+//
+//        fun getDatabaseInstance(context: Context): AppDatabase {
+//            return if (database == null) {
+//                synchronized(this) {
+//                    Room.databaseBuilder(context, AppDatabase::class.java, "database.db")
+//                        .createFromAsset("todo_database.db")
+//                        .build()
+//                }
+//            } else {
+//                database!!
+//            }
+//        }
+//    }
 }
