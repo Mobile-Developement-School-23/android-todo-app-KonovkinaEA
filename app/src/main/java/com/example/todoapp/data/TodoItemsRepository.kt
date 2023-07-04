@@ -9,4 +9,7 @@ interface TodoItemsRepository {
     suspend fun addTodoItem(todoItem: TodoItem)
     suspend fun updateTodoItem(todoItem: TodoItem)
     suspend fun removeTodoItem(id: String)
+    suspend fun loadDataFromServer()
+    suspend fun loadDataFromDB()
+    fun reloadData()
 }

@@ -30,7 +30,7 @@ class Repository(
     val errorListLiveData = MutableLiveData<Boolean>()
     val errorItemLiveData = MutableLiveData<Boolean>()
 
-    suspend fun loadDataFromServer() =
+    override suspend fun loadDataFromServer() =
         withContext(Dispatchers.IO) {
             val response = Common.apiService.getAllTodoData()
 
@@ -48,13 +48,13 @@ class Repository(
             }
         }
 
-    suspend fun loadDataFromDB() =
+    override suspend fun loadDataFromDB() =
         withContext(Dispatchers.IO) {
             updateTodoItems(todoItemDao.getAllTodoData().map { it.toTodoItem() })
             errorListLiveData.postValue(true)
         }
 
-    fun reloadData() {
+    override fun reloadData() {
         WorkManager.reloadData()
     }
 
