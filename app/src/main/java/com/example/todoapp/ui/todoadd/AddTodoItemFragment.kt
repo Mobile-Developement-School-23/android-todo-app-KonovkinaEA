@@ -12,6 +12,8 @@ import android.widget.DatePicker
 import android.widget.PopupMenu
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -70,7 +72,7 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         binding.textOfTodoItem.addTextChangedListener { text -> saveButtonState(text) }
         saveButtonState(binding.textOfTodoItem.text)
 
-        binding.closeButton.setOnClickListener { backToTodoList() }
+        binding.closeButton.setOnClickListener { findNavController().navigateUp() }
         binding.saveButton.setOnClickListener {
             viewModel.updateText(binding.textOfTodoItem.text.toString())
             viewModel.saveTodoItem()
@@ -84,33 +86,43 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     }
 
     private fun setUiEventsListener() {
-        lifecycleScope.launch {
-            viewModel.uiEvent.collectLatest {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.uiEvent
+                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+                .collectLatest {
                 when (it) {
-                    AddTodoItemUiEvent.NavigateUp -> backToTodoList()
+                    AddTodoItemUiEvent.NavigateUp -> findNavController().navigateUp()
                 }
             }
         }
     }
 
     private fun setDataCollectors() {
-        lifecycleScope.launch {
-            viewModel.text.collect {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.text
+                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+                .collect {
                 binding.textOfTodoItem.setText(it)
             }
         }
-        lifecycleScope.launch {
-            viewModel.importance.collect {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.importance
+                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+                .collect {
                 binding.importanceValue.text = it.getLocalizedName(requireContext())
             }
         }
-        lifecycleScope.launch {
-            viewModel.deadline.collect {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.deadline
+                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+                .collect {
                 binding.deadlineDate.text = formatDate(it)
             }
         }
-        lifecycleScope.launch {
-            viewModel.isDeadlineSet.collect {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.isDeadlineSet
+                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+                .collect {
                 binding.switchDeadline.isChecked = it
                 binding.deadlineDate.text = if (it) formatDate(viewModel.deadline.value) else ""
             }
@@ -164,9 +176,5 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private fun saveButtonState(text: Editable?) {
         binding.saveButton.isEnabled = !text.isNullOrBlank()
-    }
-
-    private fun backToTodoList() {
-        findNavController().navigateUp()
     }
 }
