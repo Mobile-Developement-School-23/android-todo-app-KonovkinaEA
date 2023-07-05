@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todoapp.R
 import com.example.todoapp.TodoApp
 import com.example.todoapp.databinding.FragmentTodoListBinding
+import com.example.todoapp.di.scope.FragmentScope
 import com.example.todoapp.ui.ViewModelFactory
 import com.example.todoapp.ui.todolist.actions.TodoListUiEvent
 import com.example.todoapp.ui.todolist.recyclerview.PreviewOffsetTodoItemDecoration
@@ -25,7 +26,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class TodoListFragment : Fragment() {
+@FragmentScope
+class TodoListFragment @Inject constructor() : Fragment() {
     private var _binding: FragmentTodoListBinding? = null
     private val binding get() = _binding!!
 
@@ -39,7 +41,7 @@ class TodoListFragment : Fragment() {
         super.onAttach(context)
         (requireActivity().application as TodoApp)
             .appComponent
-            .fragmentComponent()
+            .todoListFragmentComponent()
             .inject(this)
     }
 
@@ -76,14 +78,14 @@ class TodoListFragment : Fragment() {
     }
 
     private fun setupErrorHandler() {
-        viewModel.errorListLiveData.observe(viewLifecycleOwner) {
+        viewModel.errorListLiveData().observe(viewLifecycleOwner) {
             if (it) {
                 setupSnackbar(R.string.load_error)
             } else {
                 dismissSnackbar()
             }
         }
-        viewModel.errorItemLiveData.observe(viewLifecycleOwner) {
+        viewModel.errorItemLiveData().observe(viewLifecycleOwner) {
             if (it) {
                 setupSnackbar(R.string.item_error)
             } else {

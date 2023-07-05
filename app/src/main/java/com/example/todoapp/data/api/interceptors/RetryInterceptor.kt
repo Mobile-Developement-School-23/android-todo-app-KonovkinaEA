@@ -1,9 +1,11 @@
 package com.example.todoapp.data.api.interceptors
 
 import android.util.Log
+import com.example.todoapp.di.scope.AppScope
 import okhttp3.Interceptor
 import okhttp3.Response
 
+@AppScope
 class RetryInterceptor : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {

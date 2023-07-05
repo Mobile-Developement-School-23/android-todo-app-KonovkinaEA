@@ -19,6 +19,7 @@ import com.example.todoapp.R
 import com.example.todoapp.TodoApp
 import com.example.todoapp.databinding.FragmentAddTodoItemBinding
 import com.example.todoapp.data.item.Importance
+import com.example.todoapp.di.scope.FragmentScope
 import com.example.todoapp.ui.ViewModelFactory
 import com.example.todoapp.ui.todoadd.actions.AddTodoItemUiEvent
 import com.example.todoapp.utils.dateToUnix
@@ -28,7 +29,8 @@ import kotlinx.coroutines.launch
 import java.util.Calendar
 import javax.inject.Inject
 
-class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
+@FragmentScope
+class AddTodoItemFragment @Inject constructor() : Fragment(), DatePickerDialog.OnDateSetListener {
     private var _binding: FragmentAddTodoItemBinding? = null
     private val binding get() = _binding!!
     private val args by navArgs<AddTodoItemFragmentArgs>()
@@ -43,7 +45,7 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         super.onAttach(context)
         (requireActivity().application as TodoApp)
             .appComponent
-            .fragmentComponent()
+            .addTodoItemFragmentComponent()
             .inject(this)
     }
 

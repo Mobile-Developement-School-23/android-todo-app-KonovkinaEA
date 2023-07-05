@@ -14,13 +14,8 @@ import kotlinx.coroutines.launch
 class TodoListViewModel(
     private val repository: TodoItemsRepository
 ) : ViewModel() {
-//    private val repository = Dependencies.repository
-
     private val _uiEvent = Channel<TodoListUiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
-
-    val errorListLiveData: LiveData<Boolean> = repository.errorListLiveData()
-    val errorItemLiveData: LiveData<Boolean> = repository.errorItemLiveData()
 
     fun onUiAction(action: TodoListUiAction) {
         when (action) {
@@ -31,6 +26,10 @@ class TodoListViewModel(
     }
 
     suspend fun getTodoItems() = repository.todoItems()
+
+    fun errorListLiveData(): LiveData<Boolean> = repository.errorListLiveData()
+
+    fun errorItemLiveData(): LiveData<Boolean> = repository.errorItemLiveData()
 
     fun reloadData() {
         viewModelScope.launch {

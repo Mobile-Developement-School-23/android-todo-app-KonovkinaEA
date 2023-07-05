@@ -18,8 +18,6 @@ import java.util.Date
 class AddTodoItemViewModel(
     private val repository: TodoItemsRepository
 ) : ViewModel() {
-//    private val repository = Dependencies.repository
-
     private var oldTodoItem: TodoItem? = null
     private lateinit var id: String
     private var isNewItem: Boolean = true

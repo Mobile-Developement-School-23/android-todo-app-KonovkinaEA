@@ -5,13 +5,19 @@ import com.example.todoapp.TodoApp
 import com.example.todoapp.data.api.workmanager.DataUpdatesWorker
 import com.example.todoapp.data.api.workmanager.NetworkAvailableWorker
 import com.example.todoapp.data.api.workmanager.NetworkUnavailableWorker
+import com.example.todoapp.di.module.ApiServiceModule
 import com.example.todoapp.di.module.DataModule
+import com.example.todoapp.di.module.WorkerModule
 import com.example.todoapp.di.scope.AppScope
 import dagger.BindsInstance
 import dagger.Component
 
 @AppScope
-@Component(modules = [DataModule::class])
+@Component(modules = [
+    DataModule::class,
+    WorkerModule::class,
+    ApiServiceModule::class
+])
 interface AppComponent {
 
     @Component.Factory
@@ -19,7 +25,8 @@ interface AppComponent {
         fun create(@BindsInstance context: Context): AppComponent
     }
 
-    fun fragmentComponent(): FragmentComponent
+    fun todoListFragmentComponent(): TodoListFragmentComponent
+    fun addTodoItemFragmentComponent(): AddTodoItemComponent
 
     fun inject(todoApp: TodoApp)
     fun inject(worker: DataUpdatesWorker)

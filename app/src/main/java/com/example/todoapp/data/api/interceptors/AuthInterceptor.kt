@@ -1,8 +1,10 @@
 package com.example.todoapp.data.api.interceptors
 
+import com.example.todoapp.di.scope.AppScope
 import okhttp3.Interceptor
 import okhttp3.Response
 
+@AppScope
 class AuthInterceptor : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {

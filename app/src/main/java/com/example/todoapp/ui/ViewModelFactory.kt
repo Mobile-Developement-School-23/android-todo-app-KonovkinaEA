@@ -2,12 +2,13 @@ package com.example.todoapp.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.todoapp.data.Repository
 import com.example.todoapp.data.TodoItemsRepository
+import com.example.todoapp.di.scope.FragmentScope
 import com.example.todoapp.ui.todoadd.AddTodoItemViewModel
 import com.example.todoapp.ui.todolist.TodoListViewModel
 import javax.inject.Inject
 
+@FragmentScope
 class ViewModelFactory @Inject constructor(
     private val repository: TodoItemsRepository
 ) : ViewModelProvider.Factory {
