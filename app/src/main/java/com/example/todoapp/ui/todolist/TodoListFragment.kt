@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.content.res.Resources
 import android.util.TypedValue
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -29,7 +28,7 @@ import javax.inject.Inject
 class TodoListFragment : Fragment() {
     private var _binding: FragmentTodoListBinding? = null
     private val binding get() = _binding!!
-//    private val viewModel: TodoListViewModel by viewModels { (requireActivity().application as TodoApp).viewModelFactory }
+
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private lateinit var viewModel: TodoListViewModel

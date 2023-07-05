@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.PopupMenu
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -22,7 +21,6 @@ import com.example.todoapp.databinding.FragmentAddTodoItemBinding
 import com.example.todoapp.data.item.Importance
 import com.example.todoapp.ui.ViewModelFactory
 import com.example.todoapp.ui.todoadd.actions.AddTodoItemUiEvent
-import com.example.todoapp.ui.todolist.TodoListViewModel
 import com.example.todoapp.utils.dateToUnix
 import com.example.todoapp.utils.formatDate
 import kotlinx.coroutines.flow.collectLatest
@@ -34,7 +32,7 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private var _binding: FragmentAddTodoItemBinding? = null
     private val binding get() = _binding!!
     private val args by navArgs<AddTodoItemFragmentArgs>()
-//    private val viewModel: AddTodoItemViewModel by viewModels { (requireActivity().application as TodoApp).viewModelFactory }
+
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private lateinit var viewModel: AddTodoItemViewModel
