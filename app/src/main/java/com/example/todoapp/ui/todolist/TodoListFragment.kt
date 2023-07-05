@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.content.res.Resources
 import android.util.TypedValue
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,8 +37,8 @@ class TodoListFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelFactory
     private val viewModel: TodoListViewModel by viewModels { viewModelFactory }
 
-    @Inject
-    lateinit var todoItemsAdapter: TodoItemsAdapter
+//    @Inject
+//    lateinit var todoItemsAdapter: TodoItemsAdapter
 
     private var snackbar : Snackbar? = null
 
@@ -59,7 +61,9 @@ class TodoListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupUiEventsListener()
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            setupUiEventsListener()
+        }
         setupRecycler()
         setupErrorHandler()
         setupPullRefresh()
@@ -105,28 +109,34 @@ class TodoListFragment : Fragment() {
     }
 
     private fun setupUiEventsListener() {
-        lifecycleScope.launch {
-            viewModel.uiEvent.collectLatest {
-                when (it) {
-                    is TodoListUiEvent.NavigateToEditTodoItem -> {
-                        navigateToEditTodoItem(it.id)
-                    }
-                    is TodoListUiEvent.NavigateToNewTodoItem -> {
-                        navigateToNewTodoItem()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.uiEvent
+                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+                .collectLatest {
+                    when (it) {
+                        is TodoListUiEvent.NavigateToEditTodoItem -> {
+                            navigateToEditTodoItem(it.id)
+                        }
+                        is TodoListUiEvent.NavigateToNewTodoItem -> {
+                            navigateToNewTodoItem()
+                        }
                     }
                 }
-            }
         }
     }
 
     private fun setupRecycler() {
+        val todoItemsAdapter = TodoItemsAdapter(viewModel::onUiAction)
+        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+
         binding.todoItemsList.adapter = todoItemsAdapter
-        binding.todoItemsList.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.todoItemsList.layoutManager = layoutManager
         binding.todoItemsList.addItemDecoration(PreviewOffsetTodoItemDecoration(bottomOffset = 16f.toPx.toInt()))
 
-        lifecycleScope.launch {
-            viewModel.getTodoItems().collectLatest {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.getTodoItems()
+                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+                .collectLatest {
                 todoItemsAdapter.setData(it)
             }
         }
