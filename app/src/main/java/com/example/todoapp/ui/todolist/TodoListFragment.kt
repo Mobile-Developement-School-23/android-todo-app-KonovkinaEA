@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.content.res.Resources
 import android.util.TypedValue
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,13 +27,16 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @FragmentScope
-class TodoListFragment @Inject constructor() : Fragment() {
+class TodoListFragment : Fragment() {
     private var _binding: FragmentTodoListBinding? = null
     private val binding get() = _binding!!
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-    private lateinit var viewModel: TodoListViewModel
+    private val viewModel: TodoListViewModel by viewModels { viewModelFactory }
+
+    @Inject
+    lateinit var todoItemsAdapter: TodoItemsAdapter
 
     private var snackbar : Snackbar? = null
 
@@ -43,14 +46,6 @@ class TodoListFragment @Inject constructor() : Fragment() {
             .appComponent
             .todoListFragmentComponent()
             .inject(this)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(
-            this,
-            viewModelFactory
-        )[TodoListViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -125,11 +120,9 @@ class TodoListFragment @Inject constructor() : Fragment() {
     }
 
     private fun setupRecycler() {
-        val todoItemsAdapter = TodoItemsAdapter(viewModel::onUiAction)
-        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-
         binding.todoItemsList.adapter = todoItemsAdapter
-        binding.todoItemsList.layoutManager = layoutManager
+        binding.todoItemsList.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.todoItemsList.addItemDecoration(PreviewOffsetTodoItemDecoration(bottomOffset = 16f.toPx.toInt()))
 
         lifecycleScope.launch {

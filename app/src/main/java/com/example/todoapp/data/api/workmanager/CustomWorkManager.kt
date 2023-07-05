@@ -11,10 +11,9 @@ import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import com.example.todoapp.di.scope.AppScope
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 @AppScope
-class WorkManager @Inject constructor(
+class CustomWorkManager(
     private val workManager: WorkManager,
     private val connectivityManager: ConnectivityManager
 ) {

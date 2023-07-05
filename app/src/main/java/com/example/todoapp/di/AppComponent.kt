@@ -25,7 +25,7 @@ interface AppComponent {
         fun create(@BindsInstance context: Context): AppComponent
     }
 
-    fun todoListFragmentComponent(): TodoListFragmentComponent
+    fun todoListFragmentComponent(): TodoListComponent
     fun addTodoItemFragmentComponent(): AddTodoItemComponent
 
     fun inject(todoApp: TodoApp)

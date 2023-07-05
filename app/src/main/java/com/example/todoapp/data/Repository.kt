@@ -6,7 +6,7 @@ import com.example.todoapp.data.api.model.ItemContainer
 import com.example.todoapp.data.api.model.ItemResponse
 import com.example.todoapp.data.api.model.TodoListContainer
 import com.example.todoapp.data.api.model.TodoListResponse
-import com.example.todoapp.data.api.workmanager.WorkManager
+import com.example.todoapp.data.api.workmanager.CustomWorkManager
 import com.example.todoapp.data.db.RevisionDao
 import com.example.todoapp.data.item.TodoItem
 import com.example.todoapp.data.db.TodoItemDao
@@ -26,7 +26,7 @@ import javax.inject.Inject
 class Repository @Inject constructor(
     private val todoItemDao: TodoItemDao,
     private val revisionDao: RevisionDao,
-    private val workManager: WorkManager,
+    private val workManager: CustomWorkManager,
     private val apiService: ApiService
 ) : TodoItemsRepository {
     private val todoItems: MutableList<TodoItem> = mutableListOf()

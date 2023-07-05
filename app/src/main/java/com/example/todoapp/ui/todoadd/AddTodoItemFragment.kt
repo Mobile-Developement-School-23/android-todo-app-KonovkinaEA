@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.PopupMenu
 import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -30,14 +30,14 @@ import java.util.Calendar
 import javax.inject.Inject
 
 @FragmentScope
-class AddTodoItemFragment @Inject constructor() : Fragment(), DatePickerDialog.OnDateSetListener {
+class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private var _binding: FragmentAddTodoItemBinding? = null
     private val binding get() = _binding!!
     private val args by navArgs<AddTodoItemFragmentArgs>()
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-    private lateinit var viewModel: AddTodoItemViewModel
+    private val viewModel: AddTodoItemViewModel by viewModels { viewModelFactory }
 
     private lateinit var calendar: Calendar
 
@@ -47,14 +47,6 @@ class AddTodoItemFragment @Inject constructor() : Fragment(), DatePickerDialog.O
             .appComponent
             .addTodoItemFragmentComponent()
             .inject(this)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(
-            this,
-            viewModelFactory
-        )[AddTodoItemViewModel::class.java]
     }
 
     override fun onCreateView(
