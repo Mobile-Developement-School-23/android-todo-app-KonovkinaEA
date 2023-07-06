@@ -37,9 +37,6 @@ class TodoListFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelFactory
     private val viewModel: TodoListViewModel by viewModels { viewModelFactory }
 
-//    @Inject
-//    lateinit var todoItemsAdapter: TodoItemsAdapter
-
     private var snackbar : Snackbar? = null
 
     override fun onAttach(context: Context) {
@@ -66,9 +63,13 @@ class TodoListFragment : Fragment() {
         }
         setupRecycler()
         setupErrorHandler()
-        setupPullRefresh()
 
-        binding.floatingActionButton.setOnClickListener { navigateToNewTodoItem() }
+        binding.swipeToRefresh.setOnRefreshListener {
+            dismissSnackbar()
+            viewModel.reloadData()
+            binding.swipeToRefresh.isRefreshing = false
+        }
+        binding.floatingActionButton.setOnClickListener { onItemClick(generateRandomItemId(), true) }
     }
 
     override fun onDestroyView() {
@@ -100,14 +101,6 @@ class TodoListFragment : Fragment() {
         }
     }
 
-    private fun setupPullRefresh() {
-        binding.swipeToRefresh.setOnRefreshListener {
-            dismissSnackbar()
-            viewModel.reloadData()
-            binding.swipeToRefresh.isRefreshing = false
-        }
-    }
-
     private fun setupUiEventsListener() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiEvent
@@ -115,10 +108,10 @@ class TodoListFragment : Fragment() {
                 .collectLatest {
                     when (it) {
                         is TodoListUiEvent.NavigateToEditTodoItem -> {
-                            navigateToEditTodoItem(it.id)
+                            onItemClick(it.id, false)
                         }
                         is TodoListUiEvent.NavigateToNewTodoItem -> {
-                            navigateToNewTodoItem()
+                            onItemClick(generateRandomItemId(), true)
                         }
                     }
                 }
@@ -145,14 +138,6 @@ class TodoListFragment : Fragment() {
     private fun dismissSnackbar() {
         snackbar?.dismiss()
         snackbar = null
-    }
-
-    private fun navigateToEditTodoItem(id: String) {
-        onItemClick(id, false)
-    }
-
-    private fun navigateToNewTodoItem() {
-        onItemClick(generateRandomItemId(), true)
     }
 
     private fun onItemClick(id: String, isNewItem: Boolean) {

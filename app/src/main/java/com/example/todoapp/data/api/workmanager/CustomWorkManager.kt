@@ -10,6 +10,7 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import com.example.todoapp.di.scope.AppScope
+import com.example.todoapp.utils.REPEAT_LOAD_INTERVAL
 import java.util.concurrent.TimeUnit
 
 @AppScope
@@ -44,7 +45,7 @@ class CustomWorkManager(
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
 
-        val request = PeriodicWorkRequest.Builder(DataUpdatesWorker::class.java, 8, TimeUnit.HOURS)
+        val request = PeriodicWorkRequest.Builder(DataUpdatesWorker::class.java, REPEAT_LOAD_INTERVAL, TimeUnit.HOURS)
             .setConstraints(constraints)
             .build()
 

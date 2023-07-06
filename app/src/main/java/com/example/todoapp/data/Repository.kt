@@ -73,7 +73,13 @@ class Repository @Inject constructor(
 
     override suspend fun addTodoItem(todoItem: TodoItem) =
         withContext(Dispatchers.IO) {
-            addTodoItemToServer(todoItem)
+            if (workManager.isNetworkAvailable()) {
+                val todoItemServer = toTodoItemServer(todoItem)
+                val response = apiService.addTodoItem(
+                    revisionDao.getCurrentRevision().toString(), ItemContainer(todoItemServer)
+                )
+                updateRevision(response)
+            }
 
             val newTodo = createTodo(todoItem)
 
@@ -86,7 +92,15 @@ class Repository @Inject constructor(
         withContext(Dispatchers.IO) {
             val index = todoItems.indexOfFirst { it.id == todoItem.id }
             if (index != -1) {
-                updateTodoItemOnServer(todoItem)
+                if (workManager.isNetworkAvailable()) {
+                    val todoItemServer = toTodoItemServer(todoItem)
+                    val response = apiService.updateTodoItem(
+                        revisionDao.getCurrentRevision().toString(),
+                        todoItem.id,
+                        ItemContainer(todoItemServer)
+                    )
+                    updateRevision(response)
+                }
 
                 val updatedTodo = createTodo(todoItem)
                 todoItemDao.updateTodoData(updatedTodo.toTodoDbEntity())
@@ -99,7 +113,12 @@ class Repository @Inject constructor(
         withContext(Dispatchers.IO) {
             val index = todoItems.indexOfFirst { it.id == id }
             if (index != -1) {
-                removeTodoItemFromServer(todoItems[index].id)
+                if (workManager.isNetworkAvailable()) {
+                    val response = apiService.deleteTodoItem(
+                        revisionDao.getCurrentRevision().toString(), todoItems[index].id
+                    )
+                    updateRevision(response)
+                }
 
                 todoItemDao.deleteTodoDataById(id)
                 todoItems.removeAt(index)
@@ -130,39 +149,9 @@ class Repository @Inject constructor(
 
             revisionDao.updateRevision(dataFromServer.revision)
             updateTodoItems(todoItemsFromServer)
-            updateDatabase()
-        }
 
-    private suspend fun addTodoItemToServer(todoItem: TodoItem) =
-        withContext(Dispatchers.IO) {
-            if (workManager.isNetworkAvailable()) {
-                val todoItemServer = toTodoItemServer(todoItem)
-                val response = apiService.addTodoItem(revisionDao.getCurrentRevision().toString(), ItemContainer(todoItemServer))
-
-                updateRevision(response)
-            }
-        }
-
-    private suspend fun removeTodoItemFromServer(id: String) =
-        withContext(Dispatchers.IO) {
-            if (workManager.isNetworkAvailable()) {
-                val response = apiService.deleteTodoItem(revisionDao.getCurrentRevision().toString(), id)
-                updateRevision(response)
-            }
-        }
-
-    private suspend fun updateTodoItemOnServer(todoItem: TodoItem) =
-        withContext(Dispatchers.IO) {
-            if (workManager.isNetworkAvailable()) {
-                val todoItemServer = toTodoItemServer(todoItem)
-                val response = apiService.updateTodoItem(
-                    revisionDao.getCurrentRevision().toString(),
-                    todoItem.id,
-                    ItemContainer(todoItemServer)
-                )
-
-                updateRevision(response)
-            }
+            val todoDbList = todoItems.map { createTodo(it).toTodoDbEntity() }
+            todoItemDao.replaceAllTodoItems(todoDbList)
         }
 
     private suspend fun updateRevision(response: Response<ItemResponse>) =
@@ -173,12 +162,6 @@ class Repository @Inject constructor(
             } else {
                 errorItemLiveData.postValue(true)
             }
-        }
-
-    private suspend fun updateDatabase() =
-        withContext(Dispatchers.IO) {
-            val todoDbList = todoItems.map { createTodo(it).toTodoDbEntity() }
-            todoItemDao.replaceAllTodoItems(todoDbList)
         }
 
     private fun updateTodoItems(newList: List<TodoItem>) {

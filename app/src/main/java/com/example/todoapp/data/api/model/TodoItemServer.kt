@@ -11,9 +11,9 @@ data class TodoItemServer(
     @SerializedName("deadline") val deadline: Long? = null,
     @SerializedName("done") val done: Boolean? = null,
     @SerializedName("color") val color: String? = null,
-    @SerializedName("created_at") val created_at: Long? = null,
-    @SerializedName("changed_at") val changed_at: Long? = null,
-    @SerializedName("last_updated_by") val last_updated_by: String? = null
+    @SerializedName("created_at") val createdAt: Long? = null,
+    @SerializedName("changed_at") val changedAt: Long? = null,
+    @SerializedName("last_updated_by") val lastUpdatedBy: String? = null
 ) {
 
     fun toTodoItem(): TodoItem {
@@ -23,8 +23,8 @@ data class TodoItemServer(
             importance = stringToImportance(importance!!),
             deadline = deadline,
             isDone = done!!,
-            creationDate = created_at!!,
-            modificationDate = changed_at!!
+            creationDate = createdAt!!,
+            modificationDate = changedAt!!
         )
     }
 }

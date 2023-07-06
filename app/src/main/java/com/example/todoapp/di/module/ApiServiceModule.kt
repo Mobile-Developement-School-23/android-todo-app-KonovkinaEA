@@ -3,7 +3,11 @@ package com.example.todoapp.di.module
 import com.example.todoapp.data.api.ApiService
 import com.example.todoapp.data.api.interceptors.AuthInterceptor
 import com.example.todoapp.data.api.interceptors.RetryInterceptor
+import com.example.todoapp.di.qualifier.TokenQualifier
 import com.example.todoapp.di.scope.AppScope
+import com.example.todoapp.utils.CONNECT_TIMEOUT
+import com.example.todoapp.utils.READ_TIMEOUT
+import com.example.todoapp.utils.WRITE_TIMEOUT
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -46,9 +50,9 @@ interface ApiServiceModule {
                 .addInterceptor(loggingInterceptor)
                 .addInterceptor(authInterceptor)
                 .addInterceptor(retryInterceptor)
-                .connectTimeout(120, TimeUnit.SECONDS)
-                .readTimeout(120, TimeUnit.SECONDS)
-                .writeTimeout(90, TimeUnit.SECONDS)
+                .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
+                .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
+                .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
                 .build()
         }
 
@@ -60,8 +64,8 @@ interface ApiServiceModule {
 
         @AppScope
         @Provides
-        fun provideAuthInterceptor(): AuthInterceptor {
-            return AuthInterceptor()
+        fun provideAuthInterceptor(@TokenQualifier token: String): AuthInterceptor {
+            return AuthInterceptor(token)
         }
 
         @AppScope
@@ -70,6 +74,13 @@ interface ApiServiceModule {
             val logging = HttpLoggingInterceptor()
             logging.level = HttpLoggingInterceptor.Level.BODY
             return logging
+        }
+
+        @AppScope
+        @TokenQualifier
+        @Provides
+        fun provideToken(): String {
+            return "Bearer prulaurasin"
         }
     }
 }

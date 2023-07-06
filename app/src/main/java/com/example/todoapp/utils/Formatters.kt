@@ -12,7 +12,7 @@ fun generateRandomItemId(): String =
     SimpleDateFormat("yyyyMMddHHmmssSSS", Locale.getDefault()).format(Date())
 
 fun formatDate(date: Long): String =
-    SimpleDateFormat("d MMMM yyyy", Locale.getDefault()).format(Date(date * 1000L))
+    SimpleDateFormat("d MMMM yyyy", Locale.getDefault()).format(Date(date * MS_IN_S))
 
 fun stringToImportance(importance: String): Importance {
     return when (importance) {
@@ -30,13 +30,13 @@ fun importanceToString(importance: Importance): String {
     }
 }
 
-fun dateToUnix(date: Date) = date.time / 1000
+fun dateToUnix(date: Date) = date.time / MS_IN_S
 
 fun getImportanceId(importance: Importance): Int {
     return when (importance) {
-        Importance.IMPORTANT -> 3
-        Importance.BASIC -> 2
-        else -> 1
+        Importance.IMPORTANT -> IMPORTANCE_IMPORTANT_ID
+        Importance.BASIC -> IMPORTANCE_BASIC_ID
+        else -> IMPORTANCE_LOW_ID
     }
 }
 
@@ -47,9 +47,9 @@ fun toTodoItemServer(todoItem: TodoItem): TodoItemServer {
         importance = importanceToString(todoItem.importance),
         deadline = todoItem.deadline,
         done = todoItem.isDone,
-        created_at = todoItem.creationDate,
-        changed_at = todoItem.modificationDate,
-        last_updated_by = "cf1"
+        createdAt = todoItem.creationDate,
+        changedAt = todoItem.modificationDate,
+        lastUpdatedBy = "cf1"
     )
 }
 

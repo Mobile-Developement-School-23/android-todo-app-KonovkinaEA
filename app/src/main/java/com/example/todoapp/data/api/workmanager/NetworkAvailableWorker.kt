@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.todoapp.TodoApp
-import com.example.todoapp.data.Repository
 import com.example.todoapp.data.TodoItemsRepository
 import javax.inject.Inject
 
