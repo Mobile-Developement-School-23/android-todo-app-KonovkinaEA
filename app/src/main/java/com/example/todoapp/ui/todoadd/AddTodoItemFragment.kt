@@ -61,10 +61,13 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
         viewModel.findTodoItem(args)
 
-        setUiEventsListener()
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            setUiEventsListener()
+            setDataCollectors()
+        }
+
         showPopUpMenu()
         setupDatePickerAndSwitch()
-        setDataCollectors()
 
         binding.textOfTodoItem.addTextChangedListener { text -> saveButtonState(text) }
         saveButtonState(binding.textOfTodoItem.text)
