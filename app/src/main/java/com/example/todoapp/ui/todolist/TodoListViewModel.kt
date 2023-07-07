@@ -5,12 +5,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.todoapp.data.TodoItemsRepository
 import com.example.todoapp.data.item.TodoItem
+import com.example.todoapp.di.scope.FragmentScope
 import com.example.todoapp.ui.todolist.actions.TodoListUiAction
 import com.example.todoapp.ui.todolist.actions.TodoListUiEvent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
+@FragmentScope
 class TodoListViewModel(
     private val repository: TodoItemsRepository
 ) : ViewModel() {
