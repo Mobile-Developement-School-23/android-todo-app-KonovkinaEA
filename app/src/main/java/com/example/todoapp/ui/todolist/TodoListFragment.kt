@@ -6,9 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.content.res.Resources
-import android.util.TypedValue
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -18,7 +15,6 @@ import com.example.todoapp.R
 import com.example.todoapp.TodoApp
 import com.example.todoapp.databinding.FragmentTodoListBinding
 import com.example.todoapp.di.scope.FragmentScope
-import com.example.todoapp.ui.ViewModelFactory
 import com.example.todoapp.ui.todolist.actions.TodoListUiEvent
 import com.example.todoapp.ui.todolist.recyclerview.PreviewOffsetTodoItemDecoration
 import com.example.todoapp.ui.todolist.recyclerview.TodoItemsAdapter
@@ -34,9 +30,10 @@ class TodoListFragment : Fragment() {
     private val binding get() = _binding!!
 
     @Inject
-    lateinit var viewModelFactory: ViewModelFactory
-    private val viewModel: TodoListViewModel by viewModels { viewModelFactory }
+    lateinit var viewModel: TodoListViewModel
 
+    @Inject
+    lateinit var todoItemDecoration: PreviewOffsetTodoItemDecoration
     private var snackbar : Snackbar? = null
 
     override fun onAttach(context: Context) {
@@ -124,7 +121,7 @@ class TodoListFragment : Fragment() {
 
         binding.todoItemsList.adapter = todoItemsAdapter
         binding.todoItemsList.layoutManager = layoutManager
-        binding.todoItemsList.addItemDecoration(PreviewOffsetTodoItemDecoration(bottomOffset = 16f.toPx.toInt()))
+        binding.todoItemsList.addItemDecoration(todoItemDecoration)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.getTodoItems()
@@ -147,10 +144,3 @@ class TodoListFragment : Fragment() {
         findNavController().navigate(action)
     }
 }
-
-val Number.toPx
-    get() = TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP,
-        this.toFloat(),
-        Resources.getSystem().displayMetrics
-    )

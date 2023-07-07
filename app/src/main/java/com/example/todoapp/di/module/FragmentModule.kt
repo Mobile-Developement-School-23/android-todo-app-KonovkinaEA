@@ -1,10 +1,12 @@
 package com.example.todoapp.di.module
 
-import com.example.todoapp.data.Repository
+import com.example.todoapp.data.TodoItemsRepository
 import com.example.todoapp.di.scope.FragmentScope
-import com.example.todoapp.ui.ViewModelFactory
+import com.example.todoapp.ui.todoadd.AddTodoItemViewModel
 import com.example.todoapp.ui.todolist.TodoListViewModel
+import com.example.todoapp.ui.todolist.recyclerview.PreviewOffsetTodoItemDecoration
 import com.example.todoapp.ui.todolist.recyclerview.TodoItemsAdapter
+import com.example.todoapp.utils.toPx
 import dagger.Module
 import dagger.Provides
 
@@ -13,8 +15,19 @@ interface FragmentModule {
     companion object {
         @FragmentScope
         @Provides
-        fun provideFactory(repository: Repository): ViewModelFactory {
-            return ViewModelFactory(repository)
+        fun provideTodoListViewModel(repository: TodoItemsRepository): TodoListViewModel {
+            return TodoListViewModel(repository)
+        }
+
+        @FragmentScope
+        @Provides
+        fun provideAddTodoItemViewModel(repository: TodoItemsRepository): AddTodoItemViewModel {
+            return AddTodoItemViewModel(repository)
+        }
+        @FragmentScope
+        @Provides
+        fun providePreviewOffsetDecoration(): PreviewOffsetTodoItemDecoration {
+            return PreviewOffsetTodoItemDecoration(bottomOffset = 16f.toPx.toInt())
         }
 
         @FragmentScope

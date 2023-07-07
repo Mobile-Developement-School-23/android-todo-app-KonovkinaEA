@@ -1,5 +1,7 @@
 package com.example.todoapp.utils
 
+import android.content.res.Resources
+import android.util.TypedValue
 import com.example.todoapp.data.api.model.TodoItemServer
 import com.example.todoapp.data.item.Importance
 import com.example.todoapp.data.item.TodoItem
@@ -64,3 +66,10 @@ fun createTodo(todoItem: TodoItem): Todo {
         changedAt = todoItem.modificationDate
     )
 }
+
+val Number.toPx
+    get() = TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
+        this.toFloat(),
+        Resources.getSystem().displayMetrics
+    )

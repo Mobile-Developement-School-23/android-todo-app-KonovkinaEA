@@ -14,9 +14,8 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Date
-import javax.inject.Inject
 
-class AddTodoItemViewModel @Inject constructor(
+class AddTodoItemViewModel(
     private val repository: TodoItemsRepository
 ) : ViewModel() {
     private var oldTodoItem: TodoItem? = null
