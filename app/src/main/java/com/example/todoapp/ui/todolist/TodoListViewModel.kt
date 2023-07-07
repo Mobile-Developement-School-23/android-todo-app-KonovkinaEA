@@ -10,9 +10,8 @@ import com.example.todoapp.ui.todolist.actions.TodoListUiEvent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class TodoListViewModel @Inject constructor(
+class TodoListViewModel(
     private val repository: TodoItemsRepository
 ) : ViewModel() {
     private val _uiEvent = Channel<TodoListUiEvent>()
