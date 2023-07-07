@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.todoapp.data.TodoItemsRepository
 import com.example.todoapp.data.item.Importance
 import com.example.todoapp.data.item.TodoItem
+import com.example.todoapp.di.scope.FragmentScope
 import com.example.todoapp.ui.todoadd.actions.AddTodoItemUiEvent
 import com.example.todoapp.utils.dateToUnix
 import kotlinx.coroutines.channels.Channel
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Date
 
+@FragmentScope
 class AddTodoItemViewModel(
     private val repository: TodoItemsRepository
 ) : ViewModel() {

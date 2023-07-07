@@ -31,9 +31,11 @@ class TodoListFragment : Fragment() {
 
     @Inject
     lateinit var viewModel: TodoListViewModel
-
+    @Inject
+    lateinit var todoItemsAdapter: TodoItemsAdapter
     @Inject
     lateinit var todoItemDecoration: PreviewOffsetTodoItemDecoration
+
     private var snackbar : Snackbar? = null
 
     override fun onAttach(context: Context) {
@@ -116,7 +118,6 @@ class TodoListFragment : Fragment() {
     }
 
     private fun setupRecycler() {
-        val todoItemsAdapter = TodoItemsAdapter(viewModel::onUiAction)
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         binding.todoItemsList.adapter = todoItemsAdapter
