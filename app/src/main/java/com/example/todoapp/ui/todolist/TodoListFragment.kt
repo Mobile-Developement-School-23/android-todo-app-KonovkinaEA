@@ -59,9 +59,9 @@ class TodoListFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             setupUiEventsListener()
+            setupRecycler()
+            setupErrorHandler()
         }
-        setupRecycler()
-        setupErrorHandler()
 
         binding.swipeToRefresh.setOnRefreshListener {
             dismissSnackbar()
@@ -118,10 +118,9 @@ class TodoListFragment : Fragment() {
     }
 
     private fun setupRecycler() {
-        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-
         binding.todoItemsList.adapter = todoItemsAdapter
-        binding.todoItemsList.layoutManager = layoutManager
+        binding.todoItemsList.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.todoItemsList.addItemDecoration(todoItemDecoration)
 
         viewLifecycleOwner.lifecycleScope.launch {

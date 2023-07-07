@@ -3,7 +3,7 @@ package com.example.todoapp.di.module
 import com.example.todoapp.data.api.ApiService
 import com.example.todoapp.data.api.interceptors.AuthInterceptor
 import com.example.todoapp.data.api.interceptors.RetryInterceptor
-import com.example.todoapp.di.qualifier.TokenQualifier
+import com.example.todoapp.di.qualifier.ApiQualifier
 import com.example.todoapp.di.scope.AppScope
 import com.example.todoapp.utils.CONNECT_TIMEOUT
 import com.example.todoapp.utils.READ_TIMEOUT
@@ -64,7 +64,7 @@ interface ApiServiceModule {
 
         @AppScope
         @Provides
-        fun provideAuthInterceptor(@TokenQualifier token: String): AuthInterceptor {
+        fun provideAuthInterceptor(@ApiQualifier token: String): AuthInterceptor {
             return AuthInterceptor(token)
         }
 
@@ -77,7 +77,7 @@ interface ApiServiceModule {
         }
 
         @AppScope
-        @TokenQualifier
+        @ApiQualifier
         @Provides
         fun provideToken(): String {
             return "Bearer prulaurasin"
