@@ -10,7 +10,7 @@
     <string name="trash">Удалить</string>
     <string name="importance_low">Низкий</string>
     <string name="importance_normal">Обычный</string>
-    <string name="importance_urgent">Высокий</string>
+    <string name="importance_urgent">!! Высокий</string>
     <string name="my_tasks">Мои дела</string>
     <string name="load_error">Ошибка загрузки данных, данные не актуальны!</string>
     <string name="reload">Перезагрузить</string>
