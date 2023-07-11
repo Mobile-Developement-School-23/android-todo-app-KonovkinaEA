@@ -26,7 +26,7 @@ import com.example.todoapp.ui.theme.Red
 import com.example.todoapp.ui.todoadd.actions.AddTodoItemUiAction
 
 @Composable
-fun AddTodoItemImportanceTitle(
+fun AddTodoItemImportance(
     importance: Importance,
     uiAction: (AddTodoItemUiAction) -> Unit
 ) {
@@ -102,8 +102,8 @@ fun AddTodoItemDropdownMenu(
 
 @Preview
 @Composable
-fun previewAddTodoItemImportance() {
-    AddTodoItemImportanceTitle(
+fun PreviewAddTodoItemImportance() {
+    AddTodoItemImportance(
         importance = Importance.IMPORTANT,
         uiAction = {}
     )

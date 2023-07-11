@@ -92,6 +92,7 @@ class AddTodoItemFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 .collectLatest {
                 when (it) {
                     AddTodoItemUiEvent.NavigateUp -> findNavController().navigateUp()
+                    else -> {}
                 }
             }
         }

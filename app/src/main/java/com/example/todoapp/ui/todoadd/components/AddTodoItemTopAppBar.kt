@@ -67,7 +67,7 @@ fun AddTodoItemTopAppBar(
 
 @Preview
 @Composable
-fun AddTodoItemTopAppBarPreview() {
+fun PreviewAddTodoItemTopAppBar() {
     AddTodoItemTopAppBar(
         text = "Text",
         uiAction = {}

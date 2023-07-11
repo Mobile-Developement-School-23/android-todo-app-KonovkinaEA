@@ -57,7 +57,7 @@ fun AddTodoItemTextField(
 
 @Preview
 @Composable
-fun previewAddTodoItemTextField() {
+fun PreviewAddTodoItemTextField() {
     AddTodoItemTextField(
         text = "",
         uiAction = {}
