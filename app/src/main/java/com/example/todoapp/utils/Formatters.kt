@@ -14,7 +14,7 @@ fun generateRandomItemId(): String =
     SimpleDateFormat("yyyyMMddHHmmssSSS", Locale.getDefault()).format(Date())
 
 fun formatDate(date: Long): String =
-    SimpleDateFormat("d MMMM yyyy", Locale.getDefault()).format(Date(date * MS_IN_S))
+    SimpleDateFormat("d MMMM yyyy", Locale.getDefault()).format(unixToDate(date))
 
 fun stringToImportance(importance: String): Importance {
     return when (importance) {
@@ -33,6 +33,8 @@ fun importanceToString(importance: Importance): String {
 }
 
 fun dateToUnix(date: Date) = date.time / MS_IN_S
+
+fun unixToDate(date: Long) = Date(date * MS_IN_S)
 
 fun getImportanceId(importance: Importance): Int {
     return when (importance) {
