@@ -2,9 +2,10 @@ package com.example.todoapp.ui.todoadd
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.todoapp.Dependencies
+import com.example.todoapp.data.TodoItemsRepository
 import com.example.todoapp.data.item.Importance
 import com.example.todoapp.data.item.TodoItem
+import com.example.todoapp.di.scope.FragmentScope
 import com.example.todoapp.ui.todoadd.actions.AddTodoItemUiEvent
 import com.example.todoapp.utils.dateToUnix
 import kotlinx.coroutines.channels.Channel
@@ -15,9 +16,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Date
 
-class AddTodoItemViewModel : ViewModel() {
-    private val todoItemsRepository = Dependencies.repository
-
+@FragmentScope
+class AddTodoItemViewModel(
+    private val repository: TodoItemsRepository
+) : ViewModel() {
     private var oldTodoItem: TodoItem? = null
     private lateinit var id: String
     private var isNewItem: Boolean = true
@@ -40,7 +42,7 @@ class AddTodoItemViewModel : ViewModel() {
     fun findTodoItem(args: AddTodoItemFragmentArgs) {
         viewModelScope.launch {
             id = args.id
-            todoItemsRepository.getTodoItem(id)?.let { todoItem ->
+            repository.getTodoItem(id)?.let { todoItem ->
                 oldTodoItem = todoItem
                 isNewItem = false
                 updateText(todoItem.text)
@@ -87,8 +89,8 @@ class AddTodoItemViewModel : ViewModel() {
         }
 
         viewModelScope.launch {
-            if (isNewItem) todoItemsRepository.addTodoItem(todoItem)
-            else todoItemsRepository.updateTodoItem(todoItem)
+            if (isNewItem) repository.addTodoItem(todoItem)
+            else repository.updateTodoItem(todoItem)
             _uiEvent.send(AddTodoItemUiEvent.NavigateUp)
         }
     }
@@ -96,7 +98,7 @@ class AddTodoItemViewModel : ViewModel() {
     fun removeTodoItem() {
         viewModelScope.launch {
             if (!isNewItem)
-                oldTodoItem?.let { todoItemsRepository.removeTodoItem(id) }
+                oldTodoItem?.let { repository.removeTodoItem(id) }
             _uiEvent.send(AddTodoItemUiEvent.NavigateUp)
         }
     }
