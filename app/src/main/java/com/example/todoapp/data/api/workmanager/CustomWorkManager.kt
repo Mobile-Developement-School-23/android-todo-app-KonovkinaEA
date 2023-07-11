@@ -1,6 +1,5 @@
 package com.example.todoapp.data.api.workmanager
 
-import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import androidx.work.Constraints
@@ -10,16 +9,17 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
+import com.example.todoapp.di.scope.AppScope
+import com.example.todoapp.utils.REPEAT_LOAD_INTERVAL
 import java.util.concurrent.TimeUnit
 
-object WorkManager {
-    private lateinit var workManager: WorkManager
-    private lateinit var connectivityManager: ConnectivityManager
+@AppScope
+class CustomWorkManager(
+    private val workManager: WorkManager,
+    private val connectivityManager: ConnectivityManager
+) {
 
-    fun setWorkers(context: Context) {
-        workManager = WorkManager.getInstance(context)
-        connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
+    fun setWorkers() {
         refreshPeriodicWork()
         loadDataWork()
     }
@@ -45,7 +45,7 @@ object WorkManager {
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
 
-        val request = PeriodicWorkRequest.Builder(DataUpdatesWorker::class.java, 8, TimeUnit.HOURS)
+        val request = PeriodicWorkRequest.Builder(DataUpdatesWorker::class.java, REPEAT_LOAD_INTERVAL, TimeUnit.HOURS)
             .setConstraints(constraints)
             .build()
 

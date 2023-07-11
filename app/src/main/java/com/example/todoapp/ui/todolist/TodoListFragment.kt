@@ -1,18 +1,20 @@
 package com.example.todoapp.ui.todolist
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.content.res.Resources
-import android.util.TypedValue
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todoapp.R
+import com.example.todoapp.TodoApp
 import com.example.todoapp.databinding.FragmentTodoListBinding
+import com.example.todoapp.di.scope.FragmentScope
 import com.example.todoapp.ui.todolist.actions.TodoListUiEvent
 import com.example.todoapp.ui.todolist.recyclerview.PreviewOffsetTodoItemDecoration
 import com.example.todoapp.ui.todolist.recyclerview.TodoItemsAdapter
@@ -20,13 +22,29 @@ import com.example.todoapp.utils.generateRandomItemId
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@FragmentScope
 class TodoListFragment : Fragment() {
     private var _binding: FragmentTodoListBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: TodoListViewModel by viewModels()
+
+    @Inject
+    lateinit var viewModel: TodoListViewModel
+    @Inject
+    lateinit var todoItemsAdapter: TodoItemsAdapter
+    @Inject
+    lateinit var todoItemDecoration: PreviewOffsetTodoItemDecoration
 
     private var snackbar : Snackbar? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity().application as TodoApp)
+            .appComponent
+            .todoListFragmentComponent()
+            .inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,12 +57,18 @@ class TodoListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupUiEventsListener()
-        setupRecycler()
-        setupErrorHandler()
-        setupPullRefresh()
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            setupUiEventsListener()
+            setupRecycler()
+            setupErrorHandler()
+        }
 
-        binding.floatingActionButton.setOnClickListener { navigateToNewTodoItem() }
+        binding.swipeToRefresh.setOnRefreshListener {
+            dismissSnackbar()
+            viewModel.reloadData()
+            binding.swipeToRefresh.isRefreshing = false
+        }
+        binding.floatingActionButton.setOnClickListener { onItemClick(generateRandomItemId(), true) }
     }
 
     override fun onDestroyView() {
@@ -53,14 +77,14 @@ class TodoListFragment : Fragment() {
     }
 
     private fun setupErrorHandler() {
-        viewModel.errorListLiveData.observe(viewLifecycleOwner) {
+        viewModel.errorListLiveData().observe(viewLifecycleOwner) {
             if (it) {
                 setupSnackbar(R.string.load_error)
             } else {
                 dismissSnackbar()
             }
         }
-        viewModel.errorItemLiveData.observe(viewLifecycleOwner) {
+        viewModel.errorItemLiveData().observe(viewLifecycleOwner) {
             if (it) {
                 setupSnackbar(R.string.item_error)
             } else {
@@ -76,39 +100,33 @@ class TodoListFragment : Fragment() {
         }
     }
 
-    private fun setupPullRefresh() {
-        binding.swipeToRefresh.setOnRefreshListener {
-            dismissSnackbar()
-            viewModel.reloadData()
-            binding.swipeToRefresh.isRefreshing = false
-        }
-    }
-
     private fun setupUiEventsListener() {
-        lifecycleScope.launch {
-            viewModel.uiEvent.collectLatest {
-                when (it) {
-                    is TodoListUiEvent.NavigateToEditTodoItem -> {
-                        navigateToEditTodoItem(it.id)
-                    }
-                    is TodoListUiEvent.NavigateToNewTodoItem -> {
-                        navigateToNewTodoItem()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.uiEvent
+                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+                .collectLatest {
+                    when (it) {
+                        is TodoListUiEvent.NavigateToEditTodoItem -> {
+                            onItemClick(it.id, false)
+                        }
+                        is TodoListUiEvent.NavigateToNewTodoItem -> {
+                            onItemClick(generateRandomItemId(), true)
+                        }
                     }
                 }
-            }
         }
     }
 
     private fun setupRecycler() {
-        val todoItemsAdapter = TodoItemsAdapter(viewModel::onUiAction)
-        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-
         binding.todoItemsList.adapter = todoItemsAdapter
-        binding.todoItemsList.layoutManager = layoutManager
-        binding.todoItemsList.addItemDecoration(PreviewOffsetTodoItemDecoration(bottomOffset = 16f.toPx.toInt()))
+        binding.todoItemsList.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.todoItemsList.addItemDecoration(todoItemDecoration)
 
-        lifecycleScope.launch {
-            viewModel.getTodoItems().collectLatest {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.getTodoItems()
+                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+                .collectLatest {
                 todoItemsAdapter.setData(it)
             }
         }
@@ -119,14 +137,6 @@ class TodoListFragment : Fragment() {
         snackbar = null
     }
 
-    private fun navigateToEditTodoItem(id: String) {
-        onItemClick(id, false)
-    }
-
-    private fun navigateToNewTodoItem() {
-        onItemClick(generateRandomItemId(), true)
-    }
-
     private fun onItemClick(id: String, isNewItem: Boolean) {
         dismissSnackbar()
         val action =
@@ -134,10 +144,3 @@ class TodoListFragment : Fragment() {
         findNavController().navigate(action)
     }
 }
-
-val Number.toPx
-    get() = TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP,
-        this.toFloat(),
-        Resources.getSystem().displayMetrics
-    )
