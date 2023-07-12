@@ -13,6 +13,7 @@ import com.example.todoapp.ui.settings.actions.SettingsUiEvent
 import com.example.todoapp.ui.settings.components.SettingsTheme
 import com.example.todoapp.ui.settings.components.SettingsTopAppBar
 import com.example.todoapp.ui.settings.components.SettingsUiActionHandler
+import com.example.todoapp.ui.settings.model.SettingsState
 import com.example.todoapp.ui.settings.model.ThemeMode
 import com.example.todoapp.ui.theme.ExtendedTheme
 import com.example.todoapp.ui.theme.ThemeModePreview
@@ -23,7 +24,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 
 @Composable
 fun SettingsScreen(
-    themeMode: ThemeMode,
+    uiState: SettingsState,
     uiEvent: Flow<SettingsUiEvent>,
     uiAction: (SettingsUiAction) -> Unit,
     onNavigateUp: () -> Unit
@@ -44,7 +45,7 @@ fun SettingsScreen(
         ) {
             item {
                 SettingsTheme(
-                    themeMode = themeMode,
+                    themeMode = uiState.themeMode,
                     uiAction = uiAction
                 )
             }
@@ -57,11 +58,12 @@ fun SettingsScreen(
 fun PreviewSettingsScreen(
     @PreviewParameter(ThemeModePreview::class) darkTheme: Boolean
 ) {
-    val uiEvent = Channel<SettingsUiEvent>().receiveAsFlow()
-
     TodoAppTheme(darkTheme = darkTheme) {
+        val state = SettingsState(themeMode = if (darkTheme) ThemeMode.DARK else ThemeMode.LIGHT)
+        val uiEvent = Channel<SettingsUiEvent>().receiveAsFlow()
+
         SettingsScreen(
-            themeMode = if (darkTheme) ThemeMode.DARK else ThemeMode.LIGHT,
+            uiState = state,
             uiEvent = uiEvent,
             uiAction = {},
             onNavigateUp = {}

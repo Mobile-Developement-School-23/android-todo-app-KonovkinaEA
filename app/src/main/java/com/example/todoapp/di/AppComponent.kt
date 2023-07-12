@@ -27,6 +27,7 @@ interface AppComponent {
 
     fun todoListFragmentComponent(): TodoListComponent
     fun addTodoItemFragmentComponent(): AddTodoItemComponent
+    fun settingsFragmentComponent(): SettingsComponent
 
     fun inject(todoApp: TodoApp)
     fun inject(worker: DataUpdatesWorker)

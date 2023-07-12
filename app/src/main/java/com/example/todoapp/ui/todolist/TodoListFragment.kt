@@ -69,6 +69,7 @@ class TodoListFragment : Fragment() {
             binding.swipeToRefresh.isRefreshing = false
         }
         binding.floatingActionButton.setOnClickListener { onItemClick(generateRandomItemId(), true) }
+        binding.settingsButton.setOnClickListener { onSettingsClick() }
     }
 
     override fun onDestroyView() {
@@ -112,6 +113,9 @@ class TodoListFragment : Fragment() {
                         is TodoListUiEvent.NavigateToNewTodoItem -> {
                             onItemClick(generateRandomItemId(), true)
                         }
+                        is TodoListUiEvent.NavigateToSettings -> {
+                            onSettingsClick()
+                        }
                     }
                 }
         }
@@ -141,6 +145,13 @@ class TodoListFragment : Fragment() {
         dismissSnackbar()
         val action =
             TodoListFragmentDirections.actionTodoListFragmentToAddTodoItemFragment2(id, isNewItem)
+        findNavController().navigate(action)
+    }
+
+    private fun onSettingsClick() {
+        dismissSnackbar()
+        val action =
+            TodoListFragmentDirections.actionTodoListFragmentToSettingsFragment()
         findNavController().navigate(action)
     }
 }

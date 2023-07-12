@@ -33,6 +33,25 @@ class AddTodoItemViewModel(
     private val _uiState = MutableStateFlow(AddTodoItemState())
     val uiState = _uiState.asStateFlow()
 
+    fun init(args: AddTodoItemFragmentArgs) {
+        viewModelScope.launch {
+            id = args.id
+            repository.getTodoItem(id)?.let { todoItem ->
+                oldTodoItem = todoItem
+                isNewItem = false
+
+                _uiState.update { uiState.value.copy(
+                    text = todoItem.text,
+                    importance = todoItem.importance,
+                    deadline = if (todoItem.deadline != null)
+                        unixToDate(todoItem.deadline!!) else uiState.value.deadline,
+                    isDeadlineSet = todoItem.deadline != null,
+                    isNewItem = false
+                ) }
+            }
+        }
+    }
+
     fun onUiAction(action: AddTodoItemUiAction) {
         when(action) {
             AddTodoItemUiAction.SaveTask -> saveTodoItem()
@@ -51,25 +70,6 @@ class AddTodoItemViewModel(
             }
             is AddTodoItemUiAction.UpdateDeadline -> _uiState.update {
                 uiState.value.copy(deadline = unixToDate(action.deadline))
-            }
-        }
-    }
-
-    fun findTodoItem(args: AddTodoItemFragmentArgs) {
-        viewModelScope.launch {
-            id = args.id
-            repository.getTodoItem(id)?.let { todoItem ->
-                oldTodoItem = todoItem
-                isNewItem = false
-
-                _uiState.update { uiState.value.copy(
-                    text = todoItem.text,
-                    importance = todoItem.importance,
-                    deadline = if (todoItem.deadline != null)
-                        unixToDate(todoItem.deadline!!) else uiState.value.deadline,
-                    isDeadlineSet = todoItem.deadline != null,
-                    isNewItem = false
-                ) }
             }
         }
     }
