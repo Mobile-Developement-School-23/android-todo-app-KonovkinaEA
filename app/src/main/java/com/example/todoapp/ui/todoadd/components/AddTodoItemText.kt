@@ -14,9 +14,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.example.todoapp.R
 import com.example.todoapp.ui.theme.ExtendedTheme
+import com.example.todoapp.ui.theme.TodoAppTheme
+import com.example.todoapp.ui.todoadd.ThemeModePreview
 import com.example.todoapp.ui.todoadd.actions.AddTodoItemUiAction
 
 @Composable
@@ -26,7 +29,7 @@ fun AddTodoItemTextField(
 ) {
     BasicTextField(
         value = text,
-        onValueChange = { uiAction(AddTodoItemUiAction.DescriptionChange(it)) },
+        onValueChange = { uiAction(AddTodoItemUiAction.UpdateText(it)) },
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 15.dp, vertical = 15.dp)
@@ -57,9 +60,13 @@ fun AddTodoItemTextField(
 
 @Preview
 @Composable
-fun PreviewAddTodoItemTextField() {
-    AddTodoItemTextField(
-        text = "",
-        uiAction = {}
-    )
+fun PreviewAddTodoItemTextField(
+    @PreviewParameter(ThemeModePreview::class) darkTheme: Boolean
+) {
+    TodoAppTheme(darkTheme = darkTheme) {
+        AddTodoItemTextField(
+            text = "",
+            uiAction = {}
+        )
+    }
 }

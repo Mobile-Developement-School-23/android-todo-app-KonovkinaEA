@@ -13,8 +13,11 @@ import java.util.Locale
 fun generateRandomItemId(): String =
     SimpleDateFormat("yyyyMMddHHmmssSSS", Locale.getDefault()).format(Date())
 
-fun formatDate(date: Long): String =
+fun formatLongToDatePattern(date: Long): String =
     SimpleDateFormat("d MMMM yyyy", Locale.getDefault()).format(unixToDate(date))
+
+fun formatDateToDatePattern(date: Date): String =
+    SimpleDateFormat("d MMMM yyyy", Locale.getDefault()).format(date)
 
 fun stringToImportance(importance: String): Importance {
     return when (importance) {

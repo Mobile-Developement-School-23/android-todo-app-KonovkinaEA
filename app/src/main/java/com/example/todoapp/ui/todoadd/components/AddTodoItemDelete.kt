@@ -1,7 +1,6 @@
 package com.example.todoapp.ui.todoadd.components
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -16,10 +15,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.example.todoapp.R
 import com.example.todoapp.ui.theme.ExtendedTheme
 import com.example.todoapp.ui.theme.Red
+import com.example.todoapp.ui.theme.TodoAppTheme
+import com.example.todoapp.ui.todoadd.ThemeModePreview
 import com.example.todoapp.ui.todoadd.actions.AddTodoItemUiAction
 
 @Composable
@@ -29,7 +31,7 @@ fun AddTodoItemDelete(
 ) {
     val deleteButtonColor by animateColorAsState(
         targetValue = if (enabled) Red else ExtendedTheme.colors.labelDisable,
-        label = "button color animation"
+        label = "delete_button_color_animation"
     )
 
     TextButton(
@@ -56,9 +58,13 @@ fun AddTodoItemDelete(
 
 @Preview
 @Composable
-fun PreviewAddTodoItemDelete() {
-    AddTodoItemDelete(
-        enabled = true,
-        uiAction = {}
-    )
+fun PreviewAddTodoItemDelete(
+    @PreviewParameter(ThemeModePreview::class) darkTheme: Boolean
+) {
+    TodoAppTheme(darkTheme = darkTheme) {
+        AddTodoItemDelete(
+            enabled = false,
+            uiAction = {}
+        )
+    }
 }

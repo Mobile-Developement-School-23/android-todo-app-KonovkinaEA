@@ -1,4 +1,4 @@
-package com.example.todoapp.ui.todoadd.actions
+package com.example.todoapp.ui.todoadd.model
 
 import com.example.todoapp.data.item.Importance
 import java.util.Date

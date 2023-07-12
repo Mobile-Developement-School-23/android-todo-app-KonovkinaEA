@@ -20,19 +20,19 @@
         android:gravity="start"
         android:maxLines="3"
         android:textColor="?attr/label_primary"
-        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/checkBox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/checkBox"
-        app:layout_constraintTop_toTopOf="@+id/checkBox" />
+        app:layout_constraintTop_toTopOf="@+id/checkBox"
+        style="@style/TextAppearance.AppCompat.Body1"/>
 
     <TextView
         android:id="@+id/deadline_text"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:gravity="start"
-        android:textSize="14sp"
         android:textColor="?attr/label_tertiary"
         app:layout_constraintStart_toEndOf="@+id/checkBox"
-        app:layout_constraintTop_toBottomOf="@+id/todo_text" />
+        app:layout_constraintTop_toBottomOf="@+id/todo_text"
+        style="@style/TextAppearance.AppCompat.Body2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

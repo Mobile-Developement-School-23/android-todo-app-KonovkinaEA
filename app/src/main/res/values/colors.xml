@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="color_red">#FF3B30</color>
+    <color name="color_blue">#007AFF</color>
+    <color name="color_green">#34C759</color>
+    <color name="color_white">#FFFFFF</color>
+
     <color name="support_light_separator">#33000000</color>
     <color name="support_light_overlay">#0F000000</color>
     <color name="label_light_primary">#000000</color>
     <color name="label_light_secondary">#99000000</color>
     <color name="label_light_tertiary">#4D000000</color>
     <color name="label_light_disable">#26000000</color>
-    <color name="color_light_red">#FF3B30</color>
     <color name="color_light_green">#34C759</color>
     <color name="color_light_blue">#007AFF</color>
     <color name="color_light_blue_translucent">#4D007AFF</color>

@@ -16,9 +16,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.example.todoapp.R
 import com.example.todoapp.ui.theme.Blue
 import com.example.todoapp.ui.theme.ExtendedTheme
+import com.example.todoapp.ui.theme.TodoAppTheme
+import com.example.todoapp.ui.todoadd.ThemeModePreview
 import com.example.todoapp.ui.todoadd.actions.AddTodoItemUiAction
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -67,10 +70,13 @@ fun AddTodoItemTopAppBar(
 
 @Preview
 @Composable
-fun PreviewAddTodoItemTopAppBar() {
-    AddTodoItemTopAppBar(
-        text = "Text",
-        uiAction = {}
-    )
+fun PreviewAddTodoItemTopAppBar(
+    @PreviewParameter(ThemeModePreview::class) darkTheme: Boolean
+) {
+    TodoAppTheme(darkTheme = darkTheme) {
+        AddTodoItemTopAppBar(
+            text = "Text",
+            uiAction = {}
+        )
+    }
 }
-

@@ -16,13 +16,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.todoapp.R
 import com.example.todoapp.data.item.Importance
 import com.example.todoapp.ui.theme.ExtendedTheme
 import com.example.todoapp.ui.theme.Red
+import com.example.todoapp.ui.theme.TodoAppTheme
+import com.example.todoapp.ui.todoadd.ThemeModePreview
 import com.example.todoapp.ui.todoadd.actions.AddTodoItemUiAction
 
 @Composable
@@ -70,7 +71,7 @@ fun AddTodoItemDropdownMenu(
         DropdownMenuItem(
             text = { Text(stringResource(id = R.string.importance_low)) },
             onClick = {
-                uiAction(AddTodoItemUiAction.UpdatePriority(Importance.LOW))
+                uiAction(AddTodoItemUiAction.UpdateImportance(Importance.LOW))
                 closeMenu()
             },
             colors = MenuDefaults.itemColors(
@@ -80,7 +81,7 @@ fun AddTodoItemDropdownMenu(
         DropdownMenuItem(
             text = { Text(stringResource(id = R.string.importance_normal)) },
             onClick = {
-                uiAction(AddTodoItemUiAction.UpdatePriority(Importance.BASIC))
+                uiAction(AddTodoItemUiAction.UpdateImportance(Importance.BASIC))
                 closeMenu()
             },
             colors = MenuDefaults.itemColors(
@@ -90,7 +91,7 @@ fun AddTodoItemDropdownMenu(
         DropdownMenuItem(
             text = { Text(stringResource(id = R.string.importance_urgent)) },
             onClick = {
-                uiAction(AddTodoItemUiAction.UpdatePriority(Importance.IMPORTANT))
+                uiAction(AddTodoItemUiAction.UpdateImportance(Importance.IMPORTANT))
                 closeMenu()
             },
             colors = MenuDefaults.itemColors(
@@ -102,9 +103,13 @@ fun AddTodoItemDropdownMenu(
 
 @Preview
 @Composable
-fun PreviewAddTodoItemImportance() {
-    AddTodoItemImportance(
-        importance = Importance.IMPORTANT,
-        uiAction = {}
-    )
+fun PreviewAddTodoItemImportance(
+    @PreviewParameter(ThemeModePreview::class) darkTheme: Boolean
+) {
+    TodoAppTheme(darkTheme = darkTheme) {
+        AddTodoItemImportance(
+            importance = Importance.LOW,
+            uiAction = {}
+        )
+    }
 }

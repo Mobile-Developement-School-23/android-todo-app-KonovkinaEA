@@ -7,8 +7,11 @@ import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.example.todoapp.ui.theme.ExtendedTheme
+import com.example.todoapp.ui.theme.TodoAppTheme
+import com.example.todoapp.ui.todoadd.ThemeModePreview
 
 @Composable
 fun AddTodoItemDivider(
@@ -24,8 +27,12 @@ fun AddTodoItemDivider(
 
 @Preview
 @Composable
-fun PreviewAddTodoItemDivider() {
-    AddTodoItemDivider(
-        PaddingValues(all = 15.dp)
-    )
+fun PreviewAddTodoItemDivider(
+    @PreviewParameter(ThemeModePreview::class) darkTheme: Boolean
+) {
+    TodoAppTheme(darkTheme = darkTheme) {
+        AddTodoItemDivider(
+            PaddingValues(all = 15.dp)
+        )
+    }
 }

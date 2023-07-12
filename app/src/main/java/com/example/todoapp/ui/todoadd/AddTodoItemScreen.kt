@@ -8,10 +8,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.example.todoapp.data.item.Importance
 import com.example.todoapp.ui.theme.ExtendedTheme
-import com.example.todoapp.ui.todoadd.actions.AddTodoItemState
+import com.example.todoapp.ui.theme.TodoAppTheme
+import com.example.todoapp.ui.todoadd.model.AddTodoItemState
 import com.example.todoapp.ui.todoadd.actions.AddTodoItemUiAction
 import com.example.todoapp.ui.todoadd.actions.AddTodoItemUiEvent
 import com.example.todoapp.ui.todoadd.components.AddTodoItemDeadline
@@ -30,7 +32,7 @@ import java.util.Date
 fun AddTodoItemScreen(
     uiState: AddTodoItemState,
     uiEvent: Flow<AddTodoItemUiEvent>,
-    onAction: (AddTodoItemUiAction) -> Unit,
+    uiAction: (AddTodoItemUiAction) -> Unit,
     onNavigateUp: () -> Unit,
     onSave: () -> Unit
 ) {
@@ -42,7 +44,7 @@ fun AddTodoItemScreen(
 
     Scaffold(
         topBar = {
-            AddTodoItemTopAppBar(text = uiState.text, uiAction = onAction)
+            AddTodoItemTopAppBar(text = uiState.text, uiAction = uiAction)
         },
         containerColor = ExtendedTheme.colors.backPrimary
     ) {paddingValues ->
@@ -54,18 +56,43 @@ fun AddTodoItemScreen(
             item {
                 AddTodoItemTextField(
                     text = uiState.text,
-                    uiAction = onAction
+                    uiAction = uiAction
                 )
-                AddTodoItemImportance(importance = uiState.importance, uiAction = onAction)
+                AddTodoItemImportance(importance = uiState.importance, uiAction = uiAction)
                 AddTodoItemDivider(padding = PaddingValues(horizontal = 16.dp))
                 AddTodoItemDeadline(
                     deadline = uiState.deadline,
                     isDateVisible = uiState.isDeadlineSet,
-                    uiAction = onAction
+                    uiAction = uiAction
                 )
                 AddTodoItemDivider(padding = PaddingValues(top = 16.dp, bottom = 8.dp))
-                AddTodoItemDelete(enabled = uiState.isDeleteEnabled, uiAction = onAction)
+                AddTodoItemDelete(enabled = uiState.isDeleteEnabled, uiAction = uiAction)
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun PreviewAddTodoItemScreen(
+    @PreviewParameter(ThemeModePreview::class) darkTheme: Boolean
+) {
+    val state = AddTodoItemState(
+        text = "Text",
+        importance = Importance.IMPORTANT,
+        deadline = Date(),
+        isDeadlineSet = true,
+        isNewItem = false
+    )
+    val uiEvent = Channel<AddTodoItemUiEvent>().receiveAsFlow()
+
+    TodoAppTheme(darkTheme = darkTheme) {
+        AddTodoItemScreen(
+            uiState = state,
+            uiEvent = uiEvent,
+            uiAction = {},
+            onNavigateUp = {},
+            onSave = {}
+        )
     }
 }
