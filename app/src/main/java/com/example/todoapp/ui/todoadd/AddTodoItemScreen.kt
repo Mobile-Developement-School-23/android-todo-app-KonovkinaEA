@@ -48,7 +48,7 @@ fun AddTodoItemScreen(
             AddTodoItemTopAppBar(text = uiState.text, uiAction = uiAction)
         },
         containerColor = ExtendedTheme.colors.backPrimary
-    ) {paddingValues ->
+    ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()

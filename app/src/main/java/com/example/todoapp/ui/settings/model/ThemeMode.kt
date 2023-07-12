@@ -1,4 +1,4 @@
-package com.example.todoapp.ui.settings
+package com.example.todoapp.ui.settings.model
 
 import com.example.todoapp.R
 

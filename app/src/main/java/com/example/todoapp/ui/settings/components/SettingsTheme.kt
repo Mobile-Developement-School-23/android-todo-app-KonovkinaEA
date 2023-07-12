@@ -19,7 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.example.todoapp.R
-import com.example.todoapp.ui.settings.ThemeMode
+import com.example.todoapp.ui.settings.model.ThemeMode
 import com.example.todoapp.ui.settings.actions.SettingsUiAction
 import com.example.todoapp.ui.theme.ExtendedTheme
 import com.example.todoapp.ui.theme.ThemeModePreview
