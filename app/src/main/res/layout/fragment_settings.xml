@@ -7,5 +7,5 @@
     <androidx.compose.ui.platform.ComposeView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/compose_add_todo_item" />
+        android:id="@+id/compose_settings" />
 </LinearLayout>

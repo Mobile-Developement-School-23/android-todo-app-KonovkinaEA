@@ -21,7 +21,7 @@ import com.example.todoapp.R
 import com.example.todoapp.ui.theme.ExtendedTheme
 import com.example.todoapp.ui.theme.Red
 import com.example.todoapp.ui.theme.TodoAppTheme
-import com.example.todoapp.ui.todoadd.ThemeModePreview
+import com.example.todoapp.ui.theme.ThemeModePreview
 import com.example.todoapp.ui.todoadd.actions.AddTodoItemUiAction
 
 @Composable

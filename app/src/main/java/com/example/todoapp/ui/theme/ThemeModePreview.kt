@@ -1,4 +1,4 @@
-package com.example.todoapp.ui.todoadd
+package com.example.todoapp.ui.theme
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 

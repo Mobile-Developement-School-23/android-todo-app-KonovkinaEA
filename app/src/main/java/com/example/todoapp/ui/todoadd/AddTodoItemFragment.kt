@@ -16,7 +16,7 @@ import com.example.todoapp.ui.theme.TodoAppTheme
 import javax.inject.Inject
 
 @FragmentScope
-class AddTodoItemFragment : Fragment()/*, DatePickerDialog.OnDateSetListener*/ {
+class AddTodoItemFragment : Fragment() {
     private var _binding: FragmentAddTodoItemBinding? = null
     private val binding get() = _binding!!
     private val args by navArgs<AddTodoItemFragmentArgs>()
@@ -44,7 +44,7 @@ class AddTodoItemFragment : Fragment()/*, DatePickerDialog.OnDateSetListener*/ {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.findTodoItem(args)
-        binding.compose.setContent {
+        binding.composeAddTodoItem.setContent {
             TodoAppTheme {
                 AddTodoItemScreen(
                     uiState = viewModel.uiState.collectAsState().value,

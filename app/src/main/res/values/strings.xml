@@ -17,4 +17,10 @@
     <string name="load_error">Data loading error, data is not up to date!</string>
     <string name="reload">Reload</string>
     <string name="item_error">An error occurred while modifying the data</string>
+    <string name="settings_button">Settings</string>
+    <string name="theme_light">Always light</string>
+    <string name="theme_dark">Always dark</string>
+    <string name="theme_system">As in the system</string>
+    <string name="close_settings_button">Close settings window</string>
+    <string name="theme_title">Theme</string>
 </resources>

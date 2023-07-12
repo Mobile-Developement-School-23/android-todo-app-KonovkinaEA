@@ -11,7 +11,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.example.todoapp.ui.theme.ExtendedTheme
 import com.example.todoapp.ui.theme.TodoAppTheme
-import com.example.todoapp.ui.todoadd.ThemeModePreview
+import com.example.todoapp.ui.theme.ThemeModePreview
 
 @Composable
 fun AddTodoItemDivider(
