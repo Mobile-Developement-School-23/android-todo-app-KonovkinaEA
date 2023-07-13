@@ -1,4 +1,4 @@
-package com.example.todoapp.data.api.workmanager
+package com.example.todoapp.data.workmanager
 
 import android.content.Context
 import androidx.work.CoroutineWorker
@@ -7,7 +7,7 @@ import com.example.todoapp.TodoApp
 import com.example.todoapp.data.TodoItemsRepository
 import javax.inject.Inject
 
-class NetworkUnavailableWorker(appContext: Context, workerParams: WorkerParameters)
+class NetworkAvailableWorker(appContext: Context, workerParams: WorkerParameters)
     : CoroutineWorker(appContext, workerParams) {
 
     @Inject
@@ -18,7 +18,7 @@ class NetworkUnavailableWorker(appContext: Context, workerParams: WorkerParamete
     }
 
     override suspend fun doWork(): Result {
-        repository.loadDataFromDB()
+        repository.loadDataFromServer()
         return Result.success()
     }
 }

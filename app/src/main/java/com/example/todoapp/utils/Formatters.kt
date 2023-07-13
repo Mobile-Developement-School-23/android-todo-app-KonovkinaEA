@@ -13,8 +13,8 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-fun generateRandomItemId(): String =
-    SimpleDateFormat("yyyyMMddHHmmssSSS", Locale.getDefault()).format(Date())
+fun generateRandomItemId(): String = (Date().time / MS_IN_S).toString()
+//    SimpleDateFormat("yyyyMMddHHmmssSSS", Locale.getDefault()).format(Date())
 
 fun formatLongToDatePattern(date: Long): String =
     SimpleDateFormat("d MMMM yyyy", Locale.getDefault()).format(unixToDate(date))

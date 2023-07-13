@@ -1,4 +1,4 @@
-package com.example.todoapp.data.api.workmanager
+package com.example.todoapp.data.workmanager
 
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities

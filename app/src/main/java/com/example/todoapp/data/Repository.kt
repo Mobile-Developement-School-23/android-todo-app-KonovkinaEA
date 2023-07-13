@@ -6,7 +6,7 @@ import com.example.todoapp.data.api.model.ItemContainer
 import com.example.todoapp.data.api.model.ItemResponse
 import com.example.todoapp.data.api.model.TodoListContainer
 import com.example.todoapp.data.api.model.TodoListResponse
-import com.example.todoapp.data.api.workmanager.CustomWorkManager
+import com.example.todoapp.data.workmanager.CustomWorkManager
 import com.example.todoapp.data.db.RevisionDao
 import com.example.todoapp.data.item.TodoItem
 import com.example.todoapp.data.db.TodoItemDao

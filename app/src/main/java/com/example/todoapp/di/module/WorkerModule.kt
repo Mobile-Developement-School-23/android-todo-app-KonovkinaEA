@@ -3,7 +3,7 @@ package com.example.todoapp.di.module
 import android.content.Context
 import android.net.ConnectivityManager
 import androidx.work.WorkManager
-import com.example.todoapp.data.api.workmanager.CustomWorkManager
+import com.example.todoapp.data.workmanager.CustomWorkManager
 import com.example.todoapp.di.scope.AppScope
 import dagger.Module
 import dagger.Provides

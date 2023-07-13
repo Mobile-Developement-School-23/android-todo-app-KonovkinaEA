@@ -4,8 +4,7 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.os.Build
-import com.example.todoapp.data.api.workmanager.CustomWorkManager
+import com.example.todoapp.data.workmanager.CustomWorkManager
 import com.example.todoapp.di.AppComponent
 import com.example.todoapp.di.DaggerAppComponent
 import com.example.todoapp.di.scope.AppScope
@@ -30,5 +29,13 @@ class TodoApp : Application() {
         appComponent.inject(this)
         workManager.setWorkers()
         changeThemeMode(oldThemeMode)
+
+        val channel = NotificationChannel(
+            "channel_id",
+            "Channel name",
+            NotificationManager.IMPORTANCE_DEFAULT
+        )
+        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        manager.createNotificationChannel(channel)
     }
 }

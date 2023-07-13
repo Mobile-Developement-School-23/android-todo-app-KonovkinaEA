@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         when {
             ContextCompat.checkSelfPermission(
                 this, Manifest.permission.POST_NOTIFICATIONS
-            ) == PackageManager.PERMISSION_GRANTED -> {}
+            ) == PackageManager.PERMISSION_GRANTED -> { saveNotificationsPermission(pref, true) }
             shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS) -> {}
             else -> {
                 pLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)

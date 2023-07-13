@@ -25,4 +25,5 @@
     <string name="theme_title">Theme</string>
     <string name="notifications_disable">App does not have permission for notifications</string>
     <string name="notif_title">Notifications</string>
+    <string name="importance_for_notif">Importance: </string>
 </resources>
