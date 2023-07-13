@@ -6,14 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.collectAsState
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.todoapp.TodoApp
 import com.example.todoapp.databinding.FragmentAddTodoItemBinding
 import com.example.todoapp.di.scope.FragmentScope
-import com.example.todoapp.ui.settings.model.ThemeMode
 import com.example.todoapp.ui.theme.TodoAppTheme
 import javax.inject.Inject
 
@@ -25,9 +23,6 @@ class AddTodoItemFragment : Fragment() {
 
     @Inject
     lateinit var viewModel: AddTodoItemViewModel
-
-    @Inject
-    lateinit var themeMode: ThemeMode
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -50,13 +45,7 @@ class AddTodoItemFragment : Fragment() {
 
         viewModel.init(args)
         binding.composeAddTodoItem.setContent {
-            val darkTheme = when (themeMode) {
-                ThemeMode.LIGHT -> false
-                ThemeMode.DARK -> true
-                else -> isSystemInDarkTheme()
-            }
-
-            TodoAppTheme(darkTheme = darkTheme) {
+            TodoAppTheme {
                 AddTodoItemScreen(
                     uiState = viewModel.uiState.collectAsState().value,
                     uiEvent = viewModel.uiEvent,

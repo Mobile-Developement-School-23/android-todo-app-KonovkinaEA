@@ -44,10 +44,7 @@ fun SettingsScreen(
                 .padding(paddingValues)
         ) {
             item {
-                SettingsTheme(
-                    themeMode = uiState.themeMode,
-                    uiAction = uiAction
-                )
+                SettingsTheme(themeMode = uiState.themeMode, uiAction = uiAction)
             }
         }
     }

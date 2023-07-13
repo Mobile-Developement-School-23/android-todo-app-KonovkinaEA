@@ -6,12 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.collectAsState
 import androidx.navigation.fragment.findNavController
 import com.example.todoapp.TodoApp
 import com.example.todoapp.databinding.FragmentSettingsBinding
-import com.example.todoapp.ui.settings.model.ThemeMode
 import com.example.todoapp.ui.theme.TodoAppTheme
 import javax.inject.Inject
 
@@ -42,13 +40,7 @@ class SettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.composeSettings.setContent {
-            val darkTheme = when (viewModel.uiState.collectAsState().value.themeMode) {
-                ThemeMode.LIGHT -> false
-                ThemeMode.DARK -> true
-                else -> isSystemInDarkTheme()
-            }
-
-            TodoAppTheme(darkTheme = darkTheme) {
+            TodoAppTheme {
                 SettingsScreen(
                     uiState = viewModel.uiState.collectAsState().value,
                     uiEvent = viewModel.uiEvent,
