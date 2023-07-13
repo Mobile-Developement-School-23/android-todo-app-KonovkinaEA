@@ -1,7 +1,7 @@
 package com.example.todoapp.ui.settings.components
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -29,7 +29,7 @@ fun SettingsTopAppBar(
                 onClick = { uiAction(SettingsUiAction.NavigateUp) }
             ) {
                 Icon(
-                    imageVector = Icons.Default.Close,
+                    imageVector = Icons.Default.ArrowBack,
                     contentDescription = stringResource(id = R.string.close_settings_button)
                 )
             }

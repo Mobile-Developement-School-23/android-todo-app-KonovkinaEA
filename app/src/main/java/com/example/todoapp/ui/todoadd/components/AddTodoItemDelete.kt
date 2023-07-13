@@ -36,7 +36,7 @@ fun AddTodoItemDelete(
 
     TextButton(
         onClick = { uiAction(AddTodoItemUiAction.DeleteTask) },
-        modifier = Modifier.padding(horizontal = 5.dp),
+        modifier = Modifier.padding(horizontal = 5.dp).pulsateClick(),
         enabled = enabled,
         colors = ButtonDefaults.textButtonColors(
             contentColor = deleteButtonColor,
