@@ -8,12 +8,14 @@ import kotlinx.coroutines.flow.Flow
 @Composable
 fun SettingsUiActionHandler(
     uiEvent: Flow<SettingsUiEvent>,
-    onNavigateUp: () -> Unit
+    onNavigateUp: () -> Unit,
+    showNotificationsToast: () -> Unit
 ) {
     LaunchedEffect(Unit) {
         uiEvent.collect {
             when (it) {
                 SettingsUiEvent.NavigateUp -> onNavigateUp()
+                SettingsUiEvent.NotificationsDisable -> showNotificationsToast()
             }
         }
     }

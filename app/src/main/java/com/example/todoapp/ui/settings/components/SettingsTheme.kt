@@ -36,8 +36,7 @@ fun SettingsTheme(
 
     Column(
         modifier = Modifier
-            .padding(horizontal = 15.dp)
-            .padding(top = 20.dp, bottom = 15.dp)
+            .padding(all = 15.dp)
             .clickable { expanded = true }
     ) {
         Text(

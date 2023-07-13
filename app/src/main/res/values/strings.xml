@@ -23,4 +23,6 @@
     <string name="theme_system">As in the system</string>
     <string name="close_settings_button">Close settings window</string>
     <string name="theme_title">Theme</string>
+    <string name="notifications_disable">App does not have permission for notifications</string>
+    <string name="notif_title">Notifications</string>
 </resources>

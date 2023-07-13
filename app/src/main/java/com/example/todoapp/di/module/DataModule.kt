@@ -8,6 +8,7 @@ import com.example.todoapp.data.db.AppDatabase
 import com.example.todoapp.data.db.RevisionDao
 import com.example.todoapp.data.db.TodoItemDao
 import com.example.todoapp.di.scope.AppScope
+import com.example.todoapp.di.scope.ApplicationScope
 import com.example.todoapp.ui.settings.model.ThemeMode
 import com.example.todoapp.utils.THEME_KEY
 import com.example.todoapp.utils.THEME_SYSTEM_ID

@@ -1,15 +1,20 @@
 package com.example.todoapp.ui.settings
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import com.example.todoapp.R
 import com.example.todoapp.ui.settings.actions.SettingsUiAction
 import com.example.todoapp.ui.settings.actions.SettingsUiEvent
+import com.example.todoapp.ui.settings.components.SettingsNotifications
 import com.example.todoapp.ui.settings.components.SettingsTheme
 import com.example.todoapp.ui.settings.components.SettingsTopAppBar
 import com.example.todoapp.ui.settings.components.SettingsUiActionHandler
@@ -29,9 +34,14 @@ fun SettingsScreen(
     uiAction: (SettingsUiAction) -> Unit,
     onNavigateUp: () -> Unit
 ) {
+    val context = LocalContext.current
+
     SettingsUiActionHandler(
         uiEvent = uiEvent,
-        onNavigateUp = onNavigateUp
+        onNavigateUp = onNavigateUp,
+        showNotificationsToast = {
+            Toast.makeText(context, R.string.notifications_disable, Toast.LENGTH_LONG).show()
+        }
     )
 
     Scaffold(
@@ -45,6 +55,10 @@ fun SettingsScreen(
         ) {
             item {
                 SettingsTheme(themeMode = uiState.themeMode, uiAction = uiAction)
+                SettingsNotifications(
+                    isNotificationsEnabled = uiState.isNotificationsEnabled,
+                    uiAction = uiAction
+                )
             }
         }
     }

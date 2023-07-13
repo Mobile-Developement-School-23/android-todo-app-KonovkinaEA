@@ -17,3 +17,5 @@ const val THEME_LIGHT_ID = 1
 const val THEME_DARK_ID = 2
 
 const val THEME_KEY = "theme"
+const val NOTIFICATION_PERMISSION_KEY = "notification_permission"
+const val NOTIFICATION_ON = "notification_on"

@@ -25,11 +25,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.example.todoapp.R
 import com.example.todoapp.ui.theme.Blue
 import com.example.todoapp.ui.theme.BlueTranslucent
 import com.example.todoapp.ui.theme.ExtendedTheme
+import com.example.todoapp.ui.theme.ThemeModePreview
+import com.example.todoapp.ui.theme.TodoAppTheme
 import com.example.todoapp.ui.todoadd.actions.AddTodoItemUiAction
 import com.example.todoapp.utils.MS_IN_S
 import com.example.todoapp.utils.dateToUnix
@@ -45,8 +48,7 @@ fun AddTodoItemDeadline(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 15.dp)
-            .height(80.dp),
+            .padding(all = 15.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -56,13 +58,13 @@ fun AddTodoItemDeadline(
         Column {
             Text(
                 text = stringResource(id = R.string.deadline),
-                modifier = Modifier.padding(start = 4.dp),
+                modifier = Modifier.padding(start = 5.dp),
                 color = ExtendedTheme.colors.labelPrimary
             )
             AnimatedVisibility(visible = isDateVisible) {
                 Box(
                     modifier = Modifier
-                        .padding(4.dp)
+                        .padding(5.dp)
                 ) {
                     Text(text = dateText, color = Blue)
                 }
@@ -70,7 +72,7 @@ fun AddTodoItemDeadline(
         }
         Switch(
             checked = isDateVisible,
-            onCheckedChange = {checked ->
+            onCheckedChange = { checked ->
                 if (checked) {
                     isDialogOpen = true
                 } else {
@@ -141,10 +143,14 @@ private fun DatePicker(
 
 @Preview
 @Composable
-fun PreviewAddTodoItemDeadline() {
-    AddTodoItemDeadline(
-        deadline = Date(),
-        isDateVisible = true,
-        uiAction = {}
-    )
+fun PreviewAddTodoItemDeadline(
+    @PreviewParameter(ThemeModePreview::class) darkTheme: Boolean
+) {
+    TodoAppTheme(darkTheme = darkTheme) {
+        AddTodoItemDeadline(
+            deadline = Date(),
+            isDateVisible = true,
+            uiAction = {}
+        )
+    }
 }

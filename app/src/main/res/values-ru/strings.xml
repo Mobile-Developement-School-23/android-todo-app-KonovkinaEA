@@ -23,4 +23,6 @@
     <string name="theme_system">Как в системе</string>
     <string name="close_settings_button">Кнопка закрытия окна настроек</string>
     <string name="theme_title">Тема</string>
+    <string name="notifications_disable">У приложения нет разрешения на уведомления</string>
+    <string name="notif_title">Уведомления</string>
 </resources>

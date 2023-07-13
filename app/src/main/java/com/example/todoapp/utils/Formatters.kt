@@ -1,5 +1,6 @@
 package com.example.todoapp.utils
 
+import android.content.SharedPreferences
 import android.content.res.Resources
 import android.util.TypedValue
 import androidx.appcompat.app.AppCompatDelegate
@@ -96,6 +97,12 @@ fun changeThemeMode(themeMode: ThemeMode) {
         ThemeMode.DARK -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         ThemeMode.SYSTEM -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
     }
+}
+
+fun saveNotificationsPermission(pref: SharedPreferences, permission: Boolean) {
+    pref.edit()
+        .putBoolean(NOTIFICATION_PERMISSION_KEY, permission)
+        .apply()
 }
 
 val Number.toPx
