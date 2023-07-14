@@ -19,3 +19,9 @@ const val THEME_DARK_ID = 2
 const val THEME_KEY = "theme"
 const val NOTIFICATION_PERMISSION_KEY = "notification_permission"
 const val NOTIFICATION_ON = "notification_on"
+
+const val CHANNEL_ID = "channel_id"
+const val CHANNEL_NAME = "Channel name"
+const val INTENT_ID_KEY = "id"
+const val INTENT_ID_TITLE_KEY = "title"
+const val INTENT_ID_IMPORTANCE_KEY = "importance"

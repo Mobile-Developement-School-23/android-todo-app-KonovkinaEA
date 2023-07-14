@@ -18,6 +18,9 @@ import com.example.todoapp.databinding.FragmentAddTodoItemBinding
 import com.example.todoapp.di.scope.FragmentScope
 import com.example.todoapp.notifications.AlarmReceiver
 import com.example.todoapp.ui.theme.TodoAppTheme
+import com.example.todoapp.utils.INTENT_ID_IMPORTANCE_KEY
+import com.example.todoapp.utils.INTENT_ID_KEY
+import com.example.todoapp.utils.INTENT_ID_TITLE_KEY
 import com.example.todoapp.utils.MS_IN_S
 import com.example.todoapp.utils.dateToUnix
 import kotlinx.coroutines.launch
@@ -73,13 +76,13 @@ class AddTodoItemFragment : Fragment() {
         lifecycleScope.launch {
             val alarmIntent = Intent(context, AlarmReceiver::class.java).let { intent ->
                 intent
-                    .putExtra("id", args.id.toInt())
-                    .putExtra("title", viewModel.uiState.value.text)
-                    .putExtra("importance", viewModel.uiState.value.importance.toStringResource())
+                    .putExtra(INTENT_ID_KEY, args.id.toInt())
+                    .putExtra(INTENT_ID_TITLE_KEY, viewModel.uiState.value.text)
+                    .putExtra(INTENT_ID_IMPORTANCE_KEY, viewModel.uiState.value.importance.toStringResource())
                 PendingIntent.getBroadcast(context, args.id.toInt(), intent, PendingIntent.FLAG_IMMUTABLE)
             }
             if (viewModel.uiState.value.isDeadlineSet) {
-            val time = dateToUnix(viewModel.uiState.value.deadline) * MS_IN_S
+                val time = dateToUnix(viewModel.uiState.value.deadline) * MS_IN_S
                 alarmManager.setExact(
                     AlarmManager.RTC_WAKEUP,
                     time,
