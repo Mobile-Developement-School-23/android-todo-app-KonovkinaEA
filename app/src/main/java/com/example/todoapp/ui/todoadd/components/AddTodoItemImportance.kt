@@ -241,7 +241,8 @@ fun IconButtonForBottomSheet(
     ) {
         Icon(
             imageVector = imageVector,
-            contentDescription = contentDescription
+            contentDescription = contentDescription,
+            tint = ExtendedTheme.colors.labelPrimary
         )
     }
 }
