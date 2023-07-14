@@ -26,4 +26,6 @@
     <string name="notifications_disable">У приложения нет разрешения на уведомления</string>
     <string name="notif_title">Уведомления</string>
     <string name="importance_for_notif">Важность: </string>
+    <string name="save_importance_button">Изменить важность</string>
+    <string name="close_importance_button">Закрыть меню выбора важности</string>
 </resources>

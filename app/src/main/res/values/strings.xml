@@ -26,4 +26,6 @@
     <string name="notifications_disable">App does not have permission for notifications</string>
     <string name="notif_title">Notifications</string>
     <string name="importance_for_notif">Importance: </string>
+    <string name="save_importance_button">Change importance</string>
+    <string name="close_importance_button">Close importance menu</string>
 </resources>
