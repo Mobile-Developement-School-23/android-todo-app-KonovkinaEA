@@ -2,13 +2,14 @@ package com.example.todoapp.di
 
 import android.content.Context
 import com.example.todoapp.TodoApp
-import com.example.todoapp.data.api.workmanager.DataUpdatesWorker
-import com.example.todoapp.data.api.workmanager.NetworkAvailableWorker
-import com.example.todoapp.data.api.workmanager.NetworkUnavailableWorker
+import com.example.todoapp.data.workmanager.DataUpdatesWorker
+import com.example.todoapp.data.workmanager.NetworkAvailableWorker
+import com.example.todoapp.data.workmanager.NetworkUnavailableWorker
 import com.example.todoapp.di.module.ApiServiceModule
 import com.example.todoapp.di.module.DataModule
 import com.example.todoapp.di.module.WorkerModule
 import com.example.todoapp.di.scope.AppScope
+import com.example.todoapp.ui.MainActivity
 import dagger.BindsInstance
 import dagger.Component
 
@@ -26,9 +27,10 @@ interface AppComponent {
     }
 
     fun todoListFragmentComponent(): TodoListComponent
-    fun addTodoItemFragmentComponent(): AddTodoItemComponent
-
+    fun addTodoItemFragmentComponentFactory(): AddTodoItemComponent.Factory
+    fun settingsFragmentComponent(): SettingsComponent
     fun inject(todoApp: TodoApp)
+    fun inject(mainActivity: MainActivity)
     fun inject(worker: DataUpdatesWorker)
     fun inject(worker: NetworkAvailableWorker)
     fun inject(worker: NetworkUnavailableWorker)

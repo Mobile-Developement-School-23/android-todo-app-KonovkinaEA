@@ -7,12 +7,25 @@
     <string name="hint_edit_text">What needs to be done…</string>
     <string name="title_importance">Importance</string>
     <string name="deadline">Deadline</string>
+    <string name="ok_button">OK</string>
+    <string name="cancel_button">Cancel</string>
     <string name="trash">Delete</string>
     <string name="importance_low">Low</string>
     <string name="importance_normal">Basic</string>
-    <string name="importance_urgent">Important</string>
+    <string name="importance_urgent">!! Important</string>
     <string name="my_tasks">My tasks</string>
     <string name="load_error">Data loading error, data is not up to date!</string>
     <string name="reload">Reload</string>
     <string name="item_error">An error occurred while modifying the data</string>
+    <string name="settings_button">Settings</string>
+    <string name="theme_light">Always light</string>
+    <string name="theme_dark">Always dark</string>
+    <string name="theme_system">As in the system</string>
+    <string name="close_settings_button">Close settings window</string>
+    <string name="theme_title">Theme</string>
+    <string name="notifications_disable">App does not have permission for notifications</string>
+    <string name="notif_title">Notifications</string>
+    <string name="importance_for_notif">Importance: </string>
+    <string name="save_importance_button">Change importance</string>
+    <string name="close_importance_button">Close importance menu</string>
 </resources>

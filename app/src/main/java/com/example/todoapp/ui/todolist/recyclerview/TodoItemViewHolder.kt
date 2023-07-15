@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.databinding.TodoitemPreviewBinding
 import com.example.todoapp.data.item.TodoItem
 import com.example.todoapp.ui.todolist.actions.TodoListUiAction
-import com.example.todoapp.utils.formatDate
+import com.example.todoapp.utils.formatLongToDatePattern
 
 class TodoItemViewHolder(binding: TodoitemPreviewBinding) : RecyclerView.ViewHolder(binding.root) {
     private lateinit var todoItem: TodoItem
@@ -19,7 +19,7 @@ class TodoItemViewHolder(binding: TodoitemPreviewBinding) : RecyclerView.ViewHol
 
         val deadlineDate = todoItem.deadline
         if (deadlineDate != null) {
-            deadline.text = formatDate(deadlineDate)
+            deadline.text = formatLongToDatePattern(deadlineDate)
         }
 
         setupDiffCallback(onUiAction)
